@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Gaji - Arwana</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+body { display: flex; background-color: #f4f6f9; min-height: 100vh; background-size: cover; background-position: center; background-attachment: fixed; }
+
+/* Sidebar */
+.sidebar { width: 250px; background: rgba(255,255,255,0.95); border-right: 1px solid #e0e0e0; padding: 20px; display: flex; flex-direction: column; gap: 8px; height: 100vh; position: fixed; overflow-y: auto; backdrop-filter: blur(10px); }
+.logo { font-size: 20px; font-weight: bold; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
+.logo span { background: #1a1a2e; color: white; padding: 8px 12px; border-radius: 8px; }
+.menu-item { padding: 12px 15px; border-radius: 8px; cursor: pointer; color: #555; transition: 0.2s; text-decoration: none; display: block; font-size: 14px; }
+.menu-item:hover, .menu-item.active { background-color: #e8f0fe; color: #1a73e8; font-weight: 500; }
+
+/* Main */
+.main-content { flex: 1; padding: 30px; margin-left: 250px; min-height: 100vh; }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: rgba(255,255,255,0.9); padding: 20px; border-radius: 12px; backdrop-filter: blur(10px); }
+.header h1 { font-size: 22px; color: #333; margin-bottom: 5px; }
+.user-info { text-align: right; }
+.user-info strong { display: block; color: #333; font-size: 14px; }
+.user-info span { color: #777; font-size: 12px; }
+
+/* Page */
+.page { display: none; }
+.page.active { display: block; }
+
+/* Cards */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+.card { background: rgba(255,255,255,0.95); padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-left: 5px solid #ccc; backdrop-filter: blur(10px); }
+.card.blue { border-left-color: #1a73e8; }
+.card.green { border-left-color: #0f9d58; }
+.card.orange { border-left-color: #f4b400; }
+.card.purple { border-left-color: #8e44ad; }
+.card h3 { font-size: 12px; color: #777; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+.card p { font-size: 22px; font-weight: bold; color: #333; }
+.card.green p { color: #0f9d58; }
+.card.orange p { color: #f4b400; }
+.card.purple p { color: #8e44ad; }
+
+/* Table */
+.table-container { background: rgba(255,255,255,0.95); padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); backdrop-filter: blur(10px); margin-bottom: 20px; }
+table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+th, td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; font-size: 14px; }
+th { color: #777; font-weight: 500; font-size: 12px; text-transform: uppercase; }
+tr:hover { background: #f9f9f9; }
+
+/* Buttons */
+.btn { padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: 500; font-size: 13px; transition: 0.2s; }
+.btn:hover { opacity: 0.85; }
+.btn-primary { background: #1a73e8; color: white; }
+.btn-danger { background: #e74c3c; color: white; }
+.btn-success { background: #0f9d58; color: white; }
+.btn-warning { background: #f4b400; color: white; }
+.btn-sm { padding: 5px 10px; font-size: 11px; margin: 2px; }
+.btn-lg { padding: 12px 25px; font-size: 14px; }
+
+/* Modal */
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+.modal.active { display: flex; }
+.modal-content { background: white; padding: 30px; border-radius: 12px; width: 450px; max-width: 90%; max-height: 90vh; overflow-y: auto; }
+.modal-content h3 { margin-bottom: 20px; color: #333; }
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; color: #555; font-size: 13px; font-weight: 500; }
+.form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; font-family: inherit; }
+.form-group input:focus, .form-group textarea:focus { outline: none; border-color: #1a73e8; }
+.modal-buttons { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+
+/* Script List */
+.script-item { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #1a73e8; }
+.script-item strong { color: #333; }
+.script-item small { color: #777; display: block; margin-top: 3px; }
+
+/* Empty */
+.empty { text-align: center; padding: 40px; color: #999; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="logo">
+        <span id="logoIcon">G</span>
+        <div id="appName">GajiKu</div>
+    </div>
+    <a class="menu-item active" onclick="showPage('dashboard', this)">🏠 Dashboard</a>
+    <a class="menu-item" onclick="showPage('karyawan', this)">👥 Karyawan</a>
+    <a class="menu-item" onclick="showPage('gaji', this)">💰 Daftar Gaji Per Bulan</a>
+    <a class="menu-item" onclick="showPage('bonus', this)">🎁 Bonus Per 3 Bulan</a>
+    <a class="menu-item" onclick="showPage('script', this)">📝 Simpan Script</a>
+    <a class="menu-item" onclick="bukaPengaturan()">⚙️ Pengaturan</a>
+</div>
+
+<!-- MAIN -->
+<div class="main-content">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div>
+            <h1 id="pageTitle">Dashboard Gaji</h1>
+            <p style="color:#777; font-size:13px;" id="tanggalHariIni"></p>
+        </div>
+        <div class="user-info">
+            <strong id="adminName">ADMIN GAJI</strong>
+            <span>Administrator</span>
+        </div>
+    </div>
+
+    <!-- PAGE: DASHBOARD -->
+    <div id="page-dashboard" class="page active">
+        <div class="cards">
+            <div class="card blue"><h3>Total Karyawan</h3><p id="statKaryawan">0</p></div>
+            <div class="card green"><h3>Total Gaji Bulan Ini</h3><p id="statGaji">Rp 0</p></div>
+            <div class="card orange"><h3>Rata-rata Gaji</h3><p id="statRata">Rp 0</p></div>
+            <div class="card purple"><h3>Bonus 3 Bulan</h3><p id="statBonus">Rp 0</p></div>
+        </div>
+        <div class="table-container">
+            <h2 style="font-size:16px;">Ringkasan Karyawan</h2>
+            <table>
+                <thead><tr><th>NO</th><th>NAMA</th><th>JABATAN</th><th>TOTAL GAJI</th><th>STATUS</th></tr></thead>
+                <tbody id="tabelDashboard"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PAGE: KARYAWAN -->
+    <div id="page-karyawan" class="page">
+        <div class="table-container">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2 style="font-size:16px;">Daftar Karyawan</h2>
+                <button class="btn btn-primary" onclick="bukaFormKaryawan()">+ Tambah Karyawan</button>
+            </div>
+            <table>
+                <thead><tr><th>NO</th><th>NAMA</th><th>JABATAN</th><th>GAJI POKOK</th><th>AKSI</th></tr></thead>
+                <tbody id="tabelKaryawan"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PAGE: GAJI PER BULAN -->
+    <div id="page-gaji" class="page">
+        <div class="table-container">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2 style="font-size:16px;">💰 Daftar Gaji Per Bulan</h2>
+                <button class="btn btn-primary" onclick="bukaFormGaji()">+ Tambah Gaji</button>
+            </div>
+            <table>
+                <thead><tr><th>BULAN</th><th>KARYAWAN</th><th>GAJI POKOK</th><th>TUNJANGAN</th><th>TOTAL</th><th>STATUS</th><th>AKSI</th></tr></thead>
+                <tbody id="tabelGaji"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PAGE: BONUS PER 3 BULAN -->
+    <div id="page-bonus" class="page">
+        <div class="table-container">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2 style="font-size:16px;">🎁 Daftar Bonus Per 3 Bulan</h2>
+                <button class="btn btn-primary" onclick="bukaFormBonus()">+ Tambah Bonus</button>
+            </div>
+            <table>
+                <thead><tr><th>PERIODE</th><th>KARYAWAN</th><th>JUMLAH BONUS</th><th>KETERANGAN</th><th>AKSI</th></tr></thead>
+                <tbody id="tabelBonus"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PAGE: SIMPAN SCRIPT -->
+    <div id="page-script" class="page">
+        <div class="table-container">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2 style="font-size:16px;">📝 Script Tersimpan</h2>
+                <button class="btn btn-primary" onclick="bukaFormScript()">+ Tambah Script</button>
+            </div>
+            <div id="listScript" style="margin-top:15px;"></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- MODAL PENGATURAN -->
+<div id="modalPengaturan" class="modal">
+    <div class="modal-content">
+        <h3>⚙️ Pengaturan Aplikasi</h3>
+        <div class="form-group">
+            <label>Nama Aplikasi:</label>
+            <input type="text" id="inputNamaApp" placeholder="Contoh: GajiKu">
+        </div>
+        <div class="form-group">
+            <label>Nama Admin:</label>
+            <input type="text" id="inputAdmin" placeholder="Contoh: ADMIN GAJI">
+        </div>
+        <div class="form-group">
+            <label>Link Background (URL/GIF):</label>
+            <input type="text" id="inputBg" placeholder="https://example.com/gambar.gif">
+        </div>
+        <div class="modal-buttons">
+            <button class="btn" style="background:#eee;" onclick="tutupModal('modalPengaturan')">Batal</button>
+            <button class="btn btn-primary" onclick="simpanPengaturan()">Simpan</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL KARYAWAN -->
+<div id="modalKaryawan" class="modal">
+    <div class="modal-content">
+        <h3 id="judulKaryawan">Tambah Karyawan</h3>
+        <input type="hidden" id="editKaryawanId">
+        <div class="form-group"><label>Nama:</label><input type="text" id="inNama"></div>
+        <div class="form-group"><label>Jabatan:</label><input type="text" id="inJabatan"></div>
+        <div class="form-group"><label>Gaji Pokok:</label><input type="number" id="inGajiPokok"></div>
+        <div class="modal-buttons">
+            <button class="btn" style="background:#eee;" onclick="tutupModal('modalKaryawan')">Batal</button>
+            <button class="btn btn-primary" onclick="simpanKaryawan()">Simpan</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL GAJI -->
+<div id="modalGaji" class="modal">
+    <div class="modal-content">
+        <h3>Tambah Gaji Bulanan</h3>
+        <div class="form-group"><label>Bulan:</label><input type="month" id="inBulan"></div>
+        <div class="form-group"><label>Karyawan:</label><select id="inKaryawanGaji"></select></div>
+        <div class="form-group"><label>Gaji Pokok:</label><input type="number" id="inGaji"></div>
+        <div class="form-group"><label>Tunjangan:</label><input type="number" id="inTunjangan" value="0"></div>
+        <div class="form-group"><label>Status:</label>
+            <select id="inStatusGaji"><option>Lunas</option><option>Belum Dibayar</option></select>
+        </div>
+        <div class="modal-buttons">
+            <button class="btn" style="background:#eee;" onclick="tutupModal('modalGaji')">Batal</button>
+            <button class="btn btn-primary" onclick="simpanGaji()">Simpan</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL BONUS -->
+<div id="modalBonus" class="modal">
+    <div class="modal-content">
+        <h3>Tambah Bonus Per 3 Bulan</h3>
+        <div class="form-group"><label>Periode (Kuartal):</label>
+            <select id="inPeriode">
+                <option>Q1 (Jan-Mar)</option><option>Q2 (Apr-Jun)</option>
+                <option>Q3 (Jul-Sep)</option><option>Q4 (Okt-Des)</option>
+            </select>
+        </div>
+        <div class="form-group"><label>Tahun:</label><input type="number" id="inTahun" value="2026"></div>
+        <div class="form-group"><label>Karyawan:</label><select id="inKaryawanBonus"></select></div>
+        <div class="form-group"><label>Jumlah Bonus:</label><input type="number" id="inJumlahBonus"></div>
+        <div class="form-group"><label>Keterangan:</label><input type="text" id="inKeterangan" placeholder="Bonus kinerja..."></div>
+        <div class="modal-buttons">
+            <button class="btn" style="background:#eee;" onclick="tutupModal('modalBonus')">Batal</button>
+            <button class="btn btn-primary" onclick="simpanBonus()">Simpan</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL SCRIPT -->
+<div id="modalScript" class="modal">
+    <div class="modal-content" style="width:650px;">
+        <h3>📝 Simpan Script</h3>
+        <div class="form-group"><label>Nama Script:</label><input type="text" id="inNamaScript" placeholder="script_login"></div>
+        <div class="form-group"><label>Isi Script:</label><textarea id="inIsiScript" rows="12" style="font-family: monospace; font-size:13px;"></textarea></div>
+        <div class="modal-buttons">
+            <button class="btn" style="background:#eee;" onclick="tutupModal('modalScript')">Batal</button>
+            <button class="btn btn-primary" onclick="simpanScript()">Simpan Script</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ========== DATA STORAGE ==========
+let db = {
+    karyawan: JSON.parse(localStorage.getItem('db_karyawan')) || [
+        { id: 1, nama: "arwana bagus suharta sinaga", jabatan: "Kasir", gajiPokok: 10000000 }
+    ],
+    gaji: JSON.parse(localStorage.getItem('db_gaji')) || [],
+    bonus: JSON.parse(localStorage.getItem('db_bonus')) || [],
+    script: JSON.parse(localStorage.getItem('db_script')) || []
+};
+
+function saveDB() {
+    localStorage.setItem('db_karyawan', JSON.stringify(db.karyawan));
+    localStorage.setItem('db_gaji', JSON.stringify(db.gaji));
+    localStorage.setItem('db_bonus', JSON.stringify(db.bonus));
+    localStorage.setItem('db_script', JSON.stringify(db.script));
+}
+
+function formatRp(angka) {
+    return 'Rp ' + (angka || 0).toLocaleString('id-ID');
+}
+
+// ========== NAVIGASI ==========
+function showPage(page, el) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+    if (el) el.classList.add('active');
+    
+    const titles = { dashboard: 'Dashboard Gaji', karyawan: 'Daftar Karyawan', gaji: 'Daftar Gaji Per Bulan', bonus: 'Bonus Per 3 Bulan', script: 'Simpan Script' };
+    document.getElementById('pageTitle').innerText = titles[page];
+    renderAll();
+}
+
+// ========== MODAL ==========
+function bukaModal(id) { document.getElementById(id).classList.add('active'); }
+function tutupModal(id) { document.getElementById(id).classList.remove('active'); }
+
+// ========== PENGATURAN ==========
+function bukaPengaturan() {
+    document.getElementById('inputNamaApp').value = localStorage.getItem('namaApp') || 'GajiKu';
+    document.getElementById('inputAdmin').value = localStorage.getItem('adminName') || 'ADMIN GAJI';
+    document.getElementById('inputBg').value = localStorage.getItem('bgApp') || '';
+    bukaModal('modalPengaturan');
+}
+
+function simpanPengaturan() {
+    localStorage.setItem('namaApp', document.getElementById('inputNamaApp').value);
+    localStorage.setItem('adminName', document.getElementById('inputAdmin').value);
+    localStorage.setItem('bgApp', document.getElementById('inputBg').value);
+    alert('Pengaturan disimpan!');
+    location.reload();
+}
+
+// ========== KARYAWAN ==========
+function bukaFormKaryawan(id) {
+    if (id) {
+        const k = db.karyawan.find(x => x.id === id);
+        document.getElementById('judulKaryawan').innerText = 'Edit Karyawan';
+        document.getElementById('editKaryawanId').value = id;
+        document.getElementById('inNama').value = k.nama;
+        document.getElementById('inJabatan').value = k.jabatan;
+        document.getElementById('inGajiPokok').value = k.gajiPokok;
+    } else {
+        document.getElementById('judulKaryawan').innerText = 'Tambah Karyawan';
+        document.getElementById('editKaryawanId').value = '';
+        document.getElementById('inNama').value = '';
+        document.getElementById('inJabatan').value = '';
+        document.getElementById('inGajiPokok').value = '';
+    }
+    bukaModal('modalKaryawan');
+}
+
+function simpanKaryawan() {
+    const id = document.getElementById('editKaryawanId').value;
+    const data = {
+        nama: document.getElementById('inNama').value,
+        jabatan: document.getElementById('inJabatan').value,
+        gajiPokok: parseInt(document.getElementById('inGajiPokok').value) || 0
+    };
+    if (!data.nama) return alert('Nama wajib diisi!');
+    
+    if (id) {
+        const idx = db.karyawan.findIndex(x => x.id == id);
+        db.karyawan[idx] = { ...db.karyawan[idx], ...data };
+    } else {
+        db.karyawan.push({ id: Date.now(), ...data });
+    }
+    saveDB(); tutupModal('modalKaryawan'); renderAll();
+}
+
+function hapusKaryawan(id) {
+    if (!confirm('Hapus karyawan ini?')) return;
+    db.karyawan = db.karyawan.filter(x => x.id !== id);
+    saveDB(); renderAll();
+}
+
+// ========== GAJI ==========
+function bukaFormGaji() {
+    const sel = document.getElementById('inKaryawanGaji');
+    sel.innerHTML = db.karyawan.map(k => `<option value="${k.id}">${k.nama}</option>`).join('');
+    document.getElementById('inBulan').value = new Date().toISOString().slice(0,7);
+    document.getElementById('inGaji').value = '';
+    document.getElementById('inTunjangan').value = 0;
+    bukaModal('modalGaji');
+}
+
+function simpanGaji() {
+    const data = {
+        id: Date.now(),
+        bulan: document.getElementById('inBulan').value,
+        karyawanId: document.getElementById('inKaryawanGaji').value,
+        gaji: parseInt(document.getElementById('inGaji').value) || 0,
+        tunjangan: parseInt(document.getElementById('inTunjangan').value) || 0,
+        status: document.getElementById('inStatusGaji').value
+    };
+    if (!data.bulan || !data.gaji) return alert('Bulan dan Gaji wajib diisi!');
+    db.gaji.push(data);
+    saveDB(); tutupModal('modalGaji'); renderAll();
+}
+
+function hapusGaji(id) {
+    if (!confirm('Hapus data gaji ini?')) return;
+    db.gaji = db.gaji.filter(x => x.id !== id);
+    saveDB(); renderAll();
+}
+
+// ========== BONUS ==========
+function bukaFormBonus() {
+    const sel = document.getElementById('inKaryawanBonus');
+    sel.innerHTML = db.karyawan.map(k => `<option value="${k.id}">${k.nama}</option>`).join('');
+    bukaModal('modalBonus');
+}
+
+function simpanBonus() {
+    const data = {
+        id: Date.now(),
+        periode: document.getElementById('inPeriode').value + ' ' + document.getElementById('inTahun').value,
+        karyawanId: document.getElementById('inKaryawanBonus').value,
+        jumlah: parseInt(document.getElementById('inJumlahBonus').value) || 0,
+        keterangan: document.getElementById('inKeterangan').value
+    };
+    if (!data.jumlah) return alert('Jumlah bonus wajib diisi!');
+    db.bonus.push(data);
+    saveDB(); tutupModal('modalBonus'); renderAll();
+}
+
+function hapusBonus(id) {
+    if (!confirm('Hapus bonus ini?')) return;
+    db.bonus = db.bonus.filter(x => x.id !== id);
+    saveDB(); renderAll();
+}
+
+// ========== SCRIPT ==========
+function bukaFormScript() {
+    document.getElementById('inNamaScript').value = '';
+    document.getElementById('inIsiScript').value = '';
+    bukaModal('modalScript');
+}
+
+function simpanScript() {
+    const nama = document.getElementById('inNamaScript').value;
+    const isi = document.getElementById('inIsiScript').value;
+    if (!nama || !isi) return alert('Nama dan isi script wajib diisi!');
+    db.script.push({ id: Date.now(), nama, isi, tanggal: new Date().toLocaleDateString('id-ID') });
+    saveDB(); tutupModal('modalScript'); renderAll();
+}
+
+function hapusScript(id) {
+    if (!confirm('Hapus script ini?')) return;
+    db.script = db.script.filter(x => x.id !== id);
+    saveDB(); renderAll();
+}
+
+function bukaScript(id) {
+    const s = db.script.find(x => x.id === id);
+    navigator.clipboard.writeText(s.isi);
+    alert('Script "' + s.nama + '" sudah di-copy ke clipboard!');
+}
+
+// ========== RENDER ==========
+function renderAll() {
+    // Dashboard
+    document.getElementById('statKaryawan').innerText = db.karyawan.length;
+    const totalGaji = db.karyawan.reduce((a, b) => a + b.gajiPokok, 0);
+    document.getElementById('statGaji').innerText = formatRp(totalGaji);
+    document.getElementById('statRata').innerText = formatRp(db.karyawan.length ? totalGaji / db.karyawan.length : 0);
+    const totalBonus = db.bonus.reduce((a, b) => a + b.jumlah, 0);
+    document.getElementById('statBonus').innerText = formatRp(totalBonus);
+
+    document.getElementById('tabelDashboard').innerHTML = db.karyawan.map((k, i) => `
+        <tr><td>${i+1}</td><td>${k.nama}</td><td>${k.jabatan}</td><td>${formatRp(k.gajiPokok)}</td>
+        <td><span style="background:#e6f4ea; color:#0f9d58; padding:4px 8px; border-radius:4px; font-size:12px;">✓ Aktif</span></td></tr>
+    `).join('') || '<tr><td colspan="5" class="empty">Belum ada data</td></tr>';
+
+    // Karyawan
+    document.getElementById('tabelKaryawan').innerHTML = db.karyawan.map((k, i) => `
+        <tr><td>${i+1}</td><td>${k.nama}</td><td>${k.jabatan}</td><td>${formatRp(k.gajiPokok)}</td>
+        <td><button class="btn btn-warning btn-sm" onclick="bukaFormKaryawan(${k.id})">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="hapusKaryawan(${k.id})">Hapus</button></td></tr>
+    `).join('') || '<tr><td colspan="5" class="empty">Belum ada karyawan</td></tr>';
+
+    // Gaji
+    document.getElementById('tabelGaji').innerHTML = db.gaji.map(g => {
+        const k = db.karyawan.find(x => x.id == g.karyawanId);
+        const total = g.gaji + g.tunjangan;
+        const warna = g.status === 'Lunas' ? '#0f9d58' : '#e74c3c';
+        const bg = g.status === 'Lunas' ? '#e6f4ea' : '#fce8e6';
+        return `<tr><td>${g.bulan}</td><td>${k ? k.nama : '-'}</td><td>${formatRp(g.gaji)}</td>
+        <td>${formatRp(g.tunjangan)}</td><td style="font-weight:bold;">${formatRp(total)}</td>
+        <td><span style="background:${bg}; color:${warna}; padding:4px 8px; border-radius:4px; font-size:12px;">${g.status}</span></td>
+        <td><button class="btn btn-danger btn-sm" onclick="hapusGaji(${g.id})">Hapus</button></td></tr>`;
+    }).join('') || '<tr><td colspan="7" class="empty">Belum ada data gaji</td></tr>';
+
+    // Bonus
+    document.getElementById('tabelBonus').innerHTML = db.bonus.map(b => {
+        const k = db.karyawan.find(x => x.id == b.karyawanId);
+        return `<tr><td>${b.periode}</td><td>${k ? k.nama : '-'}</td>
+        <td style="font-weight:bold; color:#0f9d58;">${formatRp(b.jumlah)}</td>
+        <td>${b.keterangan || '-'}</td>
+        <td><button class="btn btn-danger btn-sm" onclick="hapusBonus(${b.id})">Hapus</button></td></tr>`;
+    }).join('') || '<tr><td colspan="5" class="empty">Belum ada bonus</td></tr>';
+
+    // Script
+    document.getElementById('listScript').innerHTML = db.script.map(s => `
+        <div class="script-item">
+            <div><strong>📄 ${s.nama}</strong><small>Dibuat: ${s.tanggal}</small></div>
+            <div>
+                <button class="btn btn-success btn-sm" onclick="bukaScript(${s.id})">📋 Copy</button>
+                <button class="btn btn-danger btn-sm" onclick="hapusScript(${s.id})">Hapus</button>
+            </div>
+        </div>
+    `).join('') || '<div class="empty">Belum ada script tersimpan</div>';
+}
+
+// ========== INIT ==========
+window.onload = function() {
+    // Tanggal
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('tanggalHariIni').innerText = new Date().toLocaleDateString('id-ID', options);
+    
+    // Pengaturan
+    const namaApp = localStorage.getItem('namaApp');
+    const adminName = localStorage.getItem('adminName');
+    const bgApp = localStorage.getItem('bgApp');
+    
+    if (namaApp) {
+        document.getElementById('appName').innerText = namaApp;
+        document.getElementById('logoIcon').innerText = namaApp.charAt(0).toUpperCase();
+    }
+    if (adminName) document.getElementById('adminName').innerText = adminName;
+    if (bgApp) document.body.style.backgroundImage = `url('${bgApp}')`;
+    
+    renderAll();
+};
+</script>
+</body>
+</html>
