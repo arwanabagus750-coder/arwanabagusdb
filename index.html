@@ -29,6 +29,8 @@ body {
     z-index: 9999;
     padding: 20px;
 }
+#loginScreen.hidden { display: none !important; }
+
 .login-box {
     background: rgba(30, 27, 75, 0.75);
     backdrop-filter: blur(30px);
@@ -46,15 +48,8 @@ body {
     border-radius: 16px; font-size: 26px; font-weight: bold;
     box-shadow: 0 0 40px rgba(139,92,246,0.8);
 }
-.login-box h1 {
-    font-size: 22px; text-align: center;
-    color: #fff; margin-bottom: 8px;
-}
-.login-box .sub {
-    text-align: center;
-    color: rgba(255,255,255,0.6);
-    font-size: 13px; margin-bottom: 25px;
-}
+.login-box h1 { font-size: 22px; text-align: center; color: #fff; margin-bottom: 8px; }
+.login-box .sub { text-align: center; color: rgba(255,255,255,0.6); font-size: 13px; margin-bottom: 25px; }
 .login-error {
     background: rgba(239,68,68,0.15);
     border: 1px solid rgba(239,68,68,0.4);
@@ -179,11 +174,7 @@ body {
 }
 .logout-icon-btn:hover { background: rgba(239,68,68,0.4); }
 
-.main-content {
-    margin-left: 240px;
-    padding: 25px 30px;
-    min-height: 100vh;
-}
+.main-content { margin-left: 240px; padding: 25px 30px; min-height: 100vh; }
 .top-header {
     display: flex; justify-content: space-between;
     align-items: center; margin-bottom: 25px;
@@ -354,9 +345,10 @@ tr:hover { background: rgba(139,92,246,0.08); }
 .badge-green { background: rgba(16,185,129,0.2); color: #34d399; }
 .badge-red { background: rgba(239,68,68,0.2); color: #f87171; }
 
+/* ============ SCRIPT CARD (FIXED) ============ */
 .script-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 18px; margin-top: 20px;
 }
 .script-card {
@@ -365,13 +357,15 @@ tr:hover { background: rgba(139,92,246,0.08); }
     padding: 20px; border-radius: 16px;
     display: flex; flex-direction: column;
     transition: 0.3s;
+    overflow: hidden;
+    min-width: 0;
 }
 .script-card:hover {
     transform: translateY(-5px);
     border-color: #8b5cf6;
     box-shadow: 0 20px 50px rgba(139,92,246,0.5);
 }
-.script-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.script-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; min-width: 0; }
 .script-card-header .icon {
     font-size: 20px;
     background: linear-gradient(135deg, #8b5cf6, #6366f1);
@@ -379,22 +373,33 @@ tr:hover { background: rgba(139,92,246,0.08); }
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
 }
-.script-card h4 { font-size: 14px; color: #fff; margin-bottom: 3px; word-break: break-word; }
+.script-card-header > div:last-child { min-width: 0; flex: 1; }
+.script-card h4 { font-size: 14px; color: #fff; margin-bottom: 3px; word-break: break-word; overflow: hidden; text-overflow: ellipsis; }
 .script-card small { font-size: 11px; color: rgba(255,255,255,0.6); }
 .script-card-preview {
-    background: rgba(0,0,0,0.5);
-    padding: 12px; border-radius: 10px;
-    font-family: 'Consolas', monospace;
-    font-size: 12px; color: #a5f3fc;
-    max-height: 120px; overflow-y: auto;
+    background: rgba(0,0,0,0.55);
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 12px;
+    color: #a5f3fc;
+    max-height: 140px;
+    overflow: auto;
     margin: 12px 0;
     border-left: 3px solid #8b5cf6;
-    white-space: pre-wrap;
-    word-break: break-all;
+    white-space: pre;
+    word-break: normal;
     line-height: 1.5;
+    scrollbar-width: thin;
+    scrollbar-color: #8b5cf6 rgba(0,0,0,0.4);
+    cursor: pointer;
 }
+.script-card-preview::-webkit-scrollbar { width: 8px; height: 8px; }
+.script-card-preview::-webkit-scrollbar-track { background: rgba(0,0,0,0.4); border-radius: 4px; }
+.script-card-preview::-webkit-scrollbar-thumb { background: #8b5cf6; border-radius: 4px; }
+.script-card-preview::-webkit-scrollbar-thumb:hover { background: #a78bfa; }
 .script-card-actions { display: flex; gap: 6px; margin-top: auto; padding-top: 12px; }
-.script-card-actions .btn { flex: 1; justify-content: center; min-width: 60px; font-size: 11px; padding: 8px 6px; }
+.script-card-actions .btn { flex: 1; justify-content: center; min-width: 50px; font-size: 11px; padding: 8px 6px; }
 
 .bg-grid {
     display: grid;
@@ -490,7 +495,8 @@ tr:hover { background: rgba(139,92,246,0.08); }
         </div>
         <button class="login-btn" onclick="doLogin()">🔓 Sign In</button>
 
-        <div class="login-info">
+        <!-- ✅ INFO DEFAULT DISEMBUNYIKAN -->
+        <div class="login-info" style="display:none;">
             💡 <b>Default:</b> Username: <b>arwanabagus</b> | Password: <b>252006</b>
         </div>
 
@@ -812,7 +818,12 @@ function showLoginError(msg) {
 }
 
 function showApp() {
-    document.getElementById('loginScreen').style.display = 'none';
+    var ls = document.getElementById('loginScreen');
+    ls.classList.add('hidden');
+    ls.style.display = 'none';
+    ls.style.visibility = 'hidden';
+    ls.style.pointerEvents = 'none';
+
     document.getElementById('appContainer').style.display = 'block';
     initApp();
 }
@@ -824,11 +835,10 @@ function confirmLogout() {
     location.reload();
 }
 
-// Enter key
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
         var ls = document.getElementById('loginScreen');
-        if (ls && ls.style.display !== 'none') doLogin();
+        if (ls && !ls.classList.contains('hidden') && ls.style.display !== 'none') doLogin();
     }
 });
 
@@ -1193,8 +1203,8 @@ function renderAll() {
     document.getElementById('listScript').innerHTML = db.script.map(function(s) {
         return '<div class="script-card">' +
             '<div class="script-card-header"><div class="icon">📄</div>' +
-            '<div style="min-width:0; flex:1;"><h4>' + s.nama + '</h4><small>📅 ' + s.tanggal + '</small></div></div>' +
-            '<div class="script-card-preview" onclick="viewScript(' + s.id + ')" style="cursor:pointer;">' + (s.isi || '(kosong)') + '</div>' +
+            '<div><h4>' + s.nama + '</h4><small>📅 ' + s.tanggal + '</small></div></div>' +
+            '<div class="script-card-preview" onclick="viewScript(' + s.id + ')">' + escapeHtml(s.isi || '(kosong)') + '</div>' +
             '<div class="script-card-actions">' +
             '<button type="button" class="btn btn-info btn-sm" onclick="viewScript(' + s.id + ')">👁️</button>' +
             '<button type="button" class="btn btn-success btn-sm" onclick="bukaScript(' + s.id + ')">📋</button>' +
@@ -1204,6 +1214,14 @@ function renderAll() {
     }).join('') || '<div class="empty" style="grid-column: 1/-1;">Belum ada script tersimpan</div>';
 
     setTimeout(renderCharts, 150);
+}
+
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
 }
 
 // ============================================================
@@ -1218,7 +1236,7 @@ function renderCharts() {
     if (typeof Chart === 'undefined') return;
 
     var c1 = document.getElementById('chartRevenue');
-    if (c1) {
+    if (c1 && document.getElementById('page-dashboard').classList.contains('active')) {
         var labels = ['May 18', 'May 25', 'Jun 1', 'Jun 8', 'Jun 15', 'Jun 18'];
         var data1 = labels.map(function() { return Math.floor(Math.random() * 50000 + 30000); });
         var ctx1 = c1.getContext('2d');
@@ -1233,7 +1251,7 @@ function renderCharts() {
     }
 
     var c2 = document.getElementById('chartGrowth');
-    if (c2) {
+    if (c2 && document.getElementById('page-dashboard').classList.contains('active')) {
         var labels2 = ['May 18', 'May 25', 'Jun 1', 'Jun 8', 'Jun 15', 'Jun 18'];
         var data2 = labels2.map(function() { return Math.floor(Math.random() * 15000 + 5000); });
         charts.growth = new Chart(c2, {
@@ -1244,7 +1262,7 @@ function renderCharts() {
     }
 
     var c3 = document.getElementById('chartDistribusi');
-    if (c3) {
+    if (c3 && document.getElementById('page-dashboard').classList.contains('active')) {
         charts.dist = new Chart(c3, {
             type: 'doughnut',
             data: { labels: ['Gaji Pokok', 'Tunjangan', 'Bonus', 'Potongan'], datasets: [{ data: [60, 20, 15, 5], backgroundColor: ['#8b5cf6', '#ec4899', '#06b6d4', '#f59e0b'], borderWidth: 0 }] },
@@ -1292,7 +1310,11 @@ window.addEventListener('load', function() {
     if (loggedIn) {
         showApp();
     } else {
-        document.getElementById('loginScreen').style.display = 'flex';
+        var ls = document.getElementById('loginScreen');
+        ls.classList.remove('hidden');
+        ls.style.display = 'flex';
+        ls.style.visibility = 'visible';
+        ls.style.pointerEvents = 'auto';
         document.getElementById('appContainer').style.display = 'none';
         setTimeout(function() { 
             var inp = document.getElementById('loginUser');
