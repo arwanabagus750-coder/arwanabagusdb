@@ -129,7 +129,32 @@ body {
 }
 
 /* ============ APP ============ */
-#appContainer { display: none; min-height: 100vh; }
+#appContainer { display: none; min-height: 100vh; position: relative; }
+#dashBgLayer {
+    position: fixed; inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -2;
+    pointer-events: none;
+    display: none;
+}
+#dashBgVideo {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    pointer-events: none;
+    display: none;
+}
+#dashBgOverlay {
+    position: fixed; inset: 0;
+    background: rgba(10, 5, 25, 0.65);
+    z-index: -1;
+    pointer-events: none;
+    display: none;
+}
+
 .sidebar {
     width: 240px;
     background: rgba(15, 15, 30, 0.95);
@@ -151,17 +176,46 @@ body {
     color: white; padding: 8px 12px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(139,92,246,0.6);
+    display: inline-flex; align-items: center; justify-content: center;
+    overflow: hidden;
 }
+.logo span img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+
+/* Section header dengan foto Itachi */
 .menu-section {
     font-size: 10px; color: #94a3b8;
     text-transform: uppercase; letter-spacing: 1.5px;
     margin: 12px 0 4px 12px; font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
 }
+.menu-section .sec-img {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid rgba(139,92,246,0.6);
+    box-shadow: 0 0 8px rgba(139,92,246,0.5);
+    flex-shrink: 0;
+}
+
 .menu-item {
     padding: 10px 14px; border-radius: 10px;
     cursor: pointer; color: #94a3b8;
     font-size: 14px; transition: 0.2s;
     display: flex; align-items: center; gap: 8px;
+    text-decoration: none;
+}
+.menu-item .menu-ico {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid rgba(139,92,246,0.4);
+    flex-shrink: 0;
+    transition: 0.2s;
+}
+.menu-item:hover .menu-ico,
+.menu-item.active .menu-ico {
+    border-color: #fff;
+    box-shadow: 0 0 10px rgba(255,255,255,0.5);
 }
 .menu-item:hover, .menu-item.active {
     background: linear-gradient(90deg, #8b5cf6, #6366f1);
@@ -180,7 +234,9 @@ body {
     display: flex; align-items: center; justify-content: center;
     color: white; font-weight: bold; font-size: 14px;
     flex-shrink: 0;
+    overflow: hidden;
 }
+.sidebar-profile .avatar img { width: 100%; height: 100%; object-fit: cover; }
 .sidebar-profile .info { flex: 1; min-width: 0; }
 .sidebar-profile strong { display: block; font-size: 11px; color: #e2e8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sidebar-profile small { font-size: 10px; color: #94a3b8; }
@@ -196,7 +252,7 @@ body {
 }
 .logout-icon-btn:hover { background: rgba(239,68,68,0.4); }
 
-.main-content { margin-left: 240px; padding: 25px 30px; min-height: 100vh; }
+.main-content { margin-left: 240px; padding: 25px 30px; min-height: 100vh; position: relative; z-index: 1; }
 .top-header {
     display: flex; justify-content: space-between;
     align-items: center; margin-bottom: 25px;
@@ -211,6 +267,7 @@ body {
     padding: 10px 16px; border-radius: 10px;
     color: #e2e8f0; font-size: 13px;
     display: flex; align-items: center; gap: 8px;
+    backdrop-filter: blur(10px);
 }
 .logout-btn {
     background: linear-gradient(135deg, #ef4444, #dc2626);
@@ -232,7 +289,7 @@ body {
     gap: 18px; margin-bottom: 20px;
 }
 .stat-box {
-    background: rgba(30,30,55,0.7);
+    background: rgba(30,30,55,0.75);
     border: 1px solid rgba(148,163,184,0.15);
     padding: 20px; border-radius: 16px;
     backdrop-filter: blur(20px);
@@ -249,7 +306,9 @@ body {
     font-size: 20px; margin-bottom: 14px;
     background: rgba(139,92,246,0.2); color: #a78bfa;
     border: 1px solid rgba(139,92,246,0.3);
+    overflow: hidden;
 }
+.stat-box .icon-wrap img { width: 100%; height: 100%; object-fit: cover; }
 .stat-box:nth-child(2) .icon-wrap { background: rgba(236,72,153,0.2); color: #f472b6; border-color: rgba(236,72,153,0.3); }
 .stat-box:nth-child(3) .icon-wrap { background: rgba(6,182,212,0.2); color: #22d3ee; border-color: rgba(6,182,212,0.3); }
 .stat-box:nth-child(4) .icon-wrap { background: rgba(34,197,94,0.2); color: #4ade80; border-color: rgba(34,197,94,0.3); }
@@ -266,7 +325,7 @@ body {
 @media (max-width: 1000px) { .dashboard-row { grid-template-columns: 1fr; } }
 
 .panel {
-    background: rgba(30,30,55,0.7);
+    background: rgba(30,30,55,0.75);
     border: 1px solid rgba(148,163,184,0.15);
     padding: 22px; border-radius: 16px;
     backdrop-filter: blur(20px);
@@ -296,14 +355,16 @@ body {
     background: linear-gradient(135deg, #8b5cf6, #6366f1);
     display: flex; align-items: center; justify-content: center;
     font-size: 16px; flex-shrink: 0;
+    overflow: hidden;
 }
+.top-item .avatar-mini img { width: 100%; height: 100%; object-fit: cover; }
 .top-item .info { flex: 1; min-width: 0; }
 .top-item .info strong { display: block; font-size: 13px; color: #e2e8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .top-item .info small { font-size: 11px; color: #94a3b8; }
 .top-item .amount { font-size: 13px; font-weight: 700; color: #e2e8f0; text-align: right; }
 
 .table-container {
-    background: rgba(30,30,55,0.7);
+    background: rgba(30,30,55,0.75);
     padding: 22px; border-radius: 16px;
     border: 1px solid rgba(148,163,184,0.15);
     backdrop-filter: blur(20px);
@@ -448,7 +509,7 @@ tr:hover { background: rgba(139,92,246,0.08); }
 .note-card-actions { display: flex; gap: 6px; }
 .note-card-actions .btn { flex: 1; justify-content: center; font-size: 11px; padding: 7px 5px; }
 
-/* ============ LOGIN BACKGROUND PICKER ============ */
+/* ============ BACKGROUND PICKER ============ */
 .bgtype-tabs {
     display: flex; gap: 8px; margin-bottom: 15px;
     flex-wrap: wrap;
@@ -593,6 +654,9 @@ tr:hover { background: rgba(139,92,246,0.08); }
 
 <!-- ============ APP ============ -->
 <div id="appContainer">
+<div id="dashBgLayer"></div>
+<video id="dashBgVideo" autoplay muted loop playsinline></video>
+<div id="dashBgOverlay"></div>
 <div class="toast-container" id="toastContainer"></div>
 
 <div class="sidebar" id="sidebar">
@@ -601,20 +665,56 @@ tr:hover { background: rgba(139,92,246,0.08); }
         <div id="appName">GajiKu Pro</div>
     </div>
 
-    <div class="menu-section">Menu Utama</div>
-    <a class="menu-item active" onclick="showPage('dashboard', this)">🏠 Dashboard</a>
+    <div class="menu-section">
+        <img class="sec-img" src="https://i.pinimg.com/736x/2f/2c/9a/2f2c9a5b7d1e8f3c2a5e6d4b9c8f1e2d.jpg" onerror="this.style.display='none'" alt="">
+        Menu Utama
+    </div>
+    <a class="menu-item active" data-page="dashboard" onclick="showPage('dashboard', this)">
+        <img class="menu-ico" src="https://i.pinimg.com/736x/2f/2c/9a/2f2c9a5b7d1e8f3c2a5e6d4b9c8f1e2d.jpg" onerror="this.style.display='none'" alt="">
+        🏠 Dashboard
+    </a>
 
-    <div class="menu-section">Keuangan</div>
-    <a class="menu-item" onclick="showPage('gaji', this)">💰 Daftar Gaji</a>
-    <a class="menu-item" onclick="showPage('bonus', this)">🎁 Bonus Per 3 Bulan</a>
-    <a class="menu-item" onclick="showPage('pengeluaran', this)">💸 Pengeluaran</a>
+    <div class="menu-section">
+        <img class="sec-img" src="https://i.pinimg.com/736x/1a/2b/3c/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d.jpg" onerror="this.style.display='none'" alt="">
+        Keuangan
+    </div>
+    <a class="menu-item" data-page="gaji" onclick="showPage('gaji', this)">
+        <img class="menu-ico" src="https://i.pinimg.com/736x/1a/2b/3c/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d.jpg" onerror="this.style.display='none'" alt="">
+        💰 Daftar Gaji
+    </a>
+    <a class="menu-item" data-page="bonus" onclick="showPage('bonus', this)">
+        <img class="menu-ico" src="https://i.pinimg.com/736x/1a/2b/3c/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d.jpg" onerror="this.style.display='none'" alt="">
+        🎁 Bonus Per 3 Bulan
+    </a>
+    <a class="menu-item" data-page="pengeluaran" onclick="showPage('pengeluaran', this)">
+        <img class="menu-ico" src="https://i.pinimg.com/736x/1a/2b/3c/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d.jpg" onerror="this.style.display='none'" alt="">
+        💸 Pengeluaran
+    </a>
 
-    <div class="menu-section">Tampilan</div>
-    <a class="menu-item" onclick="showPage('background', this)">🖼️ Ganti Background</a>
-    <a class="menu-item" onclick="showPage('loginbg', this)">🎨 Background Login</a>
-    <a class="menu-item" onclick="showPage('catatan', this)">📝 Catatan</a>
-    <a class="menu-item" onclick="showPage('script', this)">📜 Simpan Script</a>
-    <a class="menu-item" onclick="showPage('export', this)">📤 Export Data</a>
+    <div class="menu-section">
+        <img class="sec-img" src="https://i.pinimg.com/736x/9c/8b/7a/9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f.jpg" onerror="this.style.display='none'" alt="">
+        Tampilan
+    </div>
+    <a class="menu-item" data-page="background" onclick="showPage('background', this)">
+        <img class="menu-ico" src="https://i.pinimg.com/736x/9c/8b/7a/9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f.jpg" onerror="this.style.display='none'" alt="">
+        🖼️ Ganti Background
+    </a>
+    <a class="menu-item" data-page="loginbg" onclick="showPage('loginbg', this)">
+        <img class="menu-ico" src="https://i.pinimg.com/736x/9c/8b/7a/9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f.jpg" onerror="this.style.display='none'" alt="">
+        🎨 Background Login
+    </a>
+    <a class="menu-item" data-page="catatan" onclick="showPage('catatan', this)">
+        <img class="menu-ico" src="https://i.pinimg.com/736x/9c/8b/7a/9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f.jpg" onerror="this.style.display='none'" alt="">
+        📝 Catatan
+    </a>
+    <a class="menu-item" data-page="script" onclick="showPage('script', this)">
+        <img class="menu-ico" src="https://i.pinimg.com/736x/9c/8b/7a/9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f.jpg" onerror="this.style.display='none'" alt="">
+        📜 Simpan Script
+    </a>
+    <a class="menu-item" data-page="export" onclick="showPage('export', this)">
+        <img class="menu-ico" src="https://i.pinimg.com/736x/9c/8b/7a/9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f.jpg" onerror="this.style.display='none'" alt="">
+        📤 Export Data
+    </a>
     <a class="menu-item" onclick="bukaPengaturan()">⚙️ Pengaturan</a>
 
     <div class="sidebar-profile">
@@ -775,7 +875,7 @@ tr:hover { background: rgba(139,92,246,0.08); }
         </div>
     </div>
 
-    <!-- PENGELUARAN (BARU) -->
+    <!-- PENGELUARAN -->
     <div id="page-pengeluaran" class="page">
         <div class="stats-row">
             <div class="stat-box">
@@ -832,15 +932,47 @@ tr:hover { background: rgba(139,92,246,0.08); }
         </div>
     </div>
 
-    <!-- BACKGROUND -->
+    <!-- BACKGROUND DASHBOARD (UPDATED: FOTO/VIDEO URL) -->
     <div id="page-background" class="page">
         <div class="table-container">
-            <h2 style="color:#e2e8f0;">🖼️ Pilih Background Dashboard</h2>
+            <h2 style="color:#e2e8f0;">🖼️ Background Dashboard</h2>
+            <p style="color:#94a3b8; font-size:13px; margin-top:5px;">Pilih gradient siap pakai, atau isi URL foto / video untuk background dashboard.</p>
+
+            <h3 style="color:#e2e8f0; font-size:14px; margin-top:20px; margin-bottom:10px;">🌈 Gradient Preset</h3>
             <div class="bg-grid" id="bgGrid"></div>
+
+            <h3 style="color:#e2e8f0; font-size:14px; margin-top:25px; margin-bottom:10px;">🎨 Custom (Foto / Video URL)</h3>
+            <div class="bgtype-tabs">
+                <div class="bgtype-tab" data-dtype="image" onclick="setDashBgType('image')">🖼️ Foto (URL)</div>
+                <div class="bgtype-tab" data-dtype="video" onclick="setDashBgType('video')">🎬 Video (URL)</div>
+                <div class="bgtype-tab" data-dtype="none" onclick="setDashBgType('none')">❌ Tanpa Custom</div>
+            </div>
+
+            <div class="form-group">
+                <label>URL Foto / Video:</label>
+                <input type="text" id="inputDashBgUrl" placeholder="https://example.com/gambar.jpg atau https://example.com/video.mp4">
+            </div>
+
+            <div class="form-group">
+                <label>Overlay Gelap:</label>
+                <select id="inputDashBgOverlay">
+                    <option value="0.65">Sedang (65%)</option>
+                    <option value="0.4">Ringan (40%)</option>
+                    <option value="0.8">Gelap (80%)</option>
+                    <option value="0">Tanpa Overlay</option>
+                </select>
+            </div>
+
+            <div class="url-preview" id="dashBgPreview">Preview akan muncul di sini</div>
+
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="resetDashBg()">🔄 Reset Custom</button>
+                <button class="btn btn-primary" onclick="simpanDashBg()">💾 Simpan Background Dashboard</button>
+            </div>
         </div>
     </div>
 
-    <!-- BACKGROUND LOGIN (BARU) -->
+    <!-- BACKGROUND LOGIN -->
     <div id="page-loginbg" class="page">
         <div class="table-container">
             <h2 style="color:#e2e8f0;">🎨 Background Halaman Login</h2>
@@ -876,7 +1008,7 @@ tr:hover { background: rgba(139,92,246,0.08); }
         </div>
     </div>
 
-    <!-- CATATAN (BARU) -->
+    <!-- CATATAN -->
     <div id="page-catatan" class="page">
         <div class="table-container">
             <div class="table-header">
@@ -971,7 +1103,7 @@ tr:hover { background: rgba(139,92,246,0.08); }
     </div>
 </div>
 
-<!-- MODAL PENGELUARAN (BARU) -->
+<!-- MODAL PENGELUARAN -->
 <div id="modalPengeluaran" class="modal">
     <div class="modal-content">
         <h3>💸 Tambah Pengeluaran</h3>
@@ -998,7 +1130,7 @@ tr:hover { background: rgba(139,92,246,0.08); }
     </div>
 </div>
 
-<!-- MODAL CATATAN (BARU) -->
+<!-- MODAL CATATAN -->
 <div id="modalCatatan" class="modal">
     <div class="modal-content" style="width:550px;">
         <h3 id="judulModalCatatan">📝 Tambah Catatan</h3>
@@ -1101,6 +1233,13 @@ function showApp() {
 
     document.getElementById('appContainer').style.display = 'block';
     initApp();
+
+    // Restore halaman terakhir
+    var lastPage = localStorage.getItem('activePage') || 'dashboard';
+    var menuEl = document.querySelector('.menu-item[data-page="' + lastPage + '"]');
+    if (lastPage && document.getElementById('page-' + lastPage)) {
+        showPage(lastPage, menuEl);
+    }
 }
 
 function confirmLogout() {
@@ -1163,15 +1302,26 @@ function showToast(msg, type) {
 }
 
 // ============================================================
-// NAVIGASI
+// NAVIGASI (UPDATED: SIMPAN HALAMAN AKTIF)
 // ============================================================
 function showPage(page, el) {
     document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
-    document.getElementById('page-' + page).classList.add('active');
+    var pageEl = document.getElementById('page-' + page);
+    if (pageEl) pageEl.classList.add('active');
+
     document.querySelectorAll('.menu-item').forEach(function(m) { m.classList.remove('active'); });
-    if (el) el.classList.add('active');
+    if (el) {
+        el.classList.add('active');
+    } else {
+        var found = document.querySelector('.menu-item[data-page="' + page + '"]');
+        if (found) found.classList.add('active');
+    }
+
+    // Simpan halaman aktif ke localStorage
+    localStorage.setItem('activePage', page);
+
     renderAll();
-    if (page === 'background') renderBgPicker();
+    if (page === 'background') { renderBgPicker(); loadDashBgForm(); }
     if (page === 'loginbg') loadLoginBgForm();
     if (page === 'pengeluaran') renderPengeluaranTable();
     if (page === 'catatan') renderCatatanList();
@@ -1206,7 +1356,7 @@ function simpanPengaturan() {
 }
 
 // ============================================================
-// BACKGROUND DASHBOARD
+// BACKGROUND DASHBOARD (PRESET GRADIENT)
 // ============================================================
 var bgOptions = [
     { name: 'Purple Night', value: 'purple-night' },
@@ -1244,21 +1394,133 @@ function getBgStyle(v) {
 
 function applyBg(value) {
     localStorage.setItem('bgTheme', value);
-    document.body.style.background = getBgStyle(value);
-    document.body.style.backgroundSize = '400% 400%';
-    document.body.style.animation = 'bgMove 20s ease infinite';
+    // Hapus custom background jika ada
+    localStorage.removeItem('dashBg');
+    applyDashBg();
     renderBgPicker();
-    showToast('Background diganti!', 'success');
+    showToast('Background gradient diterapkan!', 'success');
 }
 
 // ============================================================
-// BACKGROUND LOGIN (BARU)
+// BACKGROUND DASHBOARD CUSTOM (FOTO/VIDEO URL) - BARU
+// ============================================================
+var dashBgType = 'none';
+
+function setDashBgType(type) {
+    dashBgType = type;
+    document.querySelectorAll('.bgtype-tab[data-dtype]').forEach(function(t) {
+        t.classList.toggle('active', t.dataset.dtype === type);
+    });
+    updateDashBgPreview();
+}
+
+function updateDashBgPreview() {
+    var url = document.getElementById('inputDashBgUrl').value.trim();
+    var preview = document.getElementById('dashBgPreview');
+
+    if (dashBgType === 'image' && url) {
+        preview.innerHTML = '<img src="' + escapeHtml(url) + '" onerror="this.parentNode.innerHTML=\'❌ Gambar gagal dimuat\'">';
+    } else if (dashBgType === 'video' && url) {
+        preview.innerHTML = '<video src="' + escapeHtml(url) + '" autoplay muted loop playsinline onerror="this.parentNode.innerHTML=\'❌ Video gagal dimuat\'"></video>';
+    } else {
+        preview.innerHTML = 'Preview akan muncul di sini';
+    }
+}
+
+function loadDashBgForm() {
+    var saved = JSON.parse(localStorage.getItem('dashBg') || 'null');
+    if (saved) {
+        dashBgType = saved.type || 'none';
+        document.getElementById('inputDashBgUrl').value = saved.url || '';
+        document.getElementById('inputDashBgOverlay').value = saved.overlay != null ? saved.overlay : '0.65';
+    } else {
+        dashBgType = 'none';
+        document.getElementById('inputDashBgUrl').value = '';
+        document.getElementById('inputDashBgOverlay').value = '0.65';
+    }
+    document.querySelectorAll('.bgtype-tab[data-dtype]').forEach(function(t) {
+        t.classList.toggle('active', t.dataset.dtype === dashBgType);
+    });
+    updateDashBgPreview();
+}
+
+function simpanDashBg() {
+    if (dashBgType === 'none') {
+        localStorage.removeItem('dashBg');
+        applyDashBg();
+        showToast('Custom background dashboard dihapus!', 'info');
+        return;
+    }
+    var data = {
+        type: dashBgType,
+        url: document.getElementById('inputDashBgUrl').value.trim(),
+        overlay: parseFloat(document.getElementById('inputDashBgOverlay').value)
+    };
+    if (!data.url) return showToast('URL wajib diisi!', 'error');
+    localStorage.setItem('dashBg', JSON.stringify(data));
+    applyDashBg();
+    showToast('Background dashboard disimpan!', 'success');
+}
+
+function resetDashBg() {
+    localStorage.removeItem('dashBg');
+    loadDashBgForm();
+    applyDashBg();
+    showToast('Custom background direset!', 'info');
+}
+
+function applyDashBg() {
+    var saved = JSON.parse(localStorage.getItem('dashBg') || 'null');
+    var layer = document.getElementById('dashBgLayer');
+    var video = document.getElementById('dashBgVideo');
+    var overlay = document.getElementById('dashBgOverlay');
+    var bgTheme = localStorage.getItem('bgTheme') || 'purple-night';
+
+    // Reset
+    layer.style.background = '';
+    layer.style.display = 'none';
+    video.style.display = 'none';
+    video.src = '';
+    overlay.style.display = 'none';
+    document.body.style.background = getBgStyle(bgTheme);
+    document.body.style.backgroundSize = '400% 400%';
+    document.body.style.animation = 'bgMove 20s ease infinite';
+
+    if (!saved) return;
+
+    // Sembunyikan body background animation
+    document.body.style.background = 'transparent';
+    document.body.style.animation = 'none';
+
+    overlay.style.display = 'block';
+    overlay.style.background = 'rgba(10, 5, 25, ' + (saved.overlay != null ? saved.overlay : 0.65) + ')';
+
+    if (saved.type === 'image') {
+        layer.style.display = 'block';
+        layer.style.background = 'url("' + saved.url + '") center/cover no-repeat fixed';
+    } else if (saved.type === 'video') {
+        video.src = saved.url;
+        video.style.display = 'block';
+        video.play().catch(function(){});
+    }
+}
+
+// Attach event input URL
+document.addEventListener('DOMContentLoaded', function() {
+    var inp1 = document.getElementById('inputLoginBgUrl');
+    if (inp1) inp1.addEventListener('input', updateLoginBgPreview);
+    var inp2 = document.getElementById('inputDashBgUrl');
+    if (inp2) inp2.addEventListener('input', updateDashBgPreview);
+});
+
+// ============================================================
+// BACKGROUND LOGIN
 // ============================================================
 var loginBgType = 'gradient';
 
 function setLoginBgType(type) {
     loginBgType = type;
-    document.querySelectorAll('.bgtype-tab').forEach(function(t) {
+    document.querySelectorAll('.bgtype-tab[data-type]').forEach(function(t) {
         t.classList.toggle('active', t.dataset.type === type);
     });
     updateLoginBgPreview();
@@ -1290,7 +1552,7 @@ function loadLoginBgForm() {
         document.getElementById('inputLoginBgUrl').value = '';
         document.getElementById('inputLoginBgOverlay').value = '0.55';
     }
-    document.querySelectorAll('.bgtype-tab').forEach(function(t) {
+    document.querySelectorAll('.bgtype-tab[data-type]').forEach(function(t) {
         t.classList.toggle('active', t.dataset.type === loginBgType);
     });
     updateLoginBgPreview();
@@ -1323,7 +1585,6 @@ function applyLoginBg() {
     var video = document.getElementById('loginBgVideo');
     var overlay = document.getElementById('loginBgOverlay');
 
-    // Reset
     layer.style.backgroundImage = '';
     layer.style.background = 'linear-gradient(135deg, #1a0b2e 0%, #16213e 50%, #0f0f2e 100%)';
     video.style.display = 'none';
@@ -1343,12 +1604,6 @@ function applyLoginBg() {
         video.play().catch(function(){});
     }
 }
-
-// Attach event untuk input URL
-document.addEventListener('DOMContentLoaded', function() {
-    var inp = document.getElementById('inputLoginBgUrl');
-    if (inp) inp.addEventListener('input', updateLoginBgPreview);
-});
 
 // ============================================================
 // GAJI
@@ -1423,7 +1678,7 @@ function hapusBonus(id) {
 }
 
 // ============================================================
-// PENGELUARAN (BARU)
+// PENGELUARAN
 // ============================================================
 function bukaFormPengeluaran() {
     document.getElementById('editPengeluaranId').value = '';
@@ -1482,7 +1737,9 @@ function hapusPengeluaran(id) {
 }
 
 function renderPengeluaranTable() {
-    var filter = document.getElementById('filterPengeluaran').value;
+    var filterEl = document.getElementById('filterPengeluaran');
+    if (!filterEl) return;
+    var filter = filterEl.value;
     var list = db.pengeluaran.slice().sort(function(a, b) {
         return new Date(b.tanggal) - new Date(a.tanggal);
     });
@@ -1516,9 +1773,9 @@ function renderPengeluaranTable() {
             '</tr>';
     }).join('');
 
-    document.getElementById('tabelPengeluaran').innerHTML = html || '<tr><td colspan="6" class="empty">Belum ada pengeluaran</td></tr>';
+    var tbody = document.getElementById('tabelPengeluaran');
+    if (tbody) tbody.innerHTML = html || '<tr><td colspan="6" class="empty">Belum ada pengeluaran</td></tr>';
 
-    // Rekap per bulan
     var rekap = {};
     db.pengeluaran.forEach(function(p) {
         var key = p.tanggal.slice(0,7);
@@ -1541,9 +1798,9 @@ function renderPengeluaranTable() {
             '</tr>';
     }).join('');
 
-    document.getElementById('tabelRekapBulan').innerHTML = rekapHtml || '<tr><td colspan="4" class="empty">Belum ada data</td></tr>';
+    var rekapEl = document.getElementById('tabelRekapBulan');
+    if (rekapEl) rekapEl.innerHTML = rekapHtml || '<tr><td colspan="4" class="empty">Belum ada data</td></tr>';
 
-    // Update stats pengeluaran
     var totalHariIni = db.pengeluaran.filter(function(p) { return p.tanggal === todayStr; })
         .reduce(function(a,b) { return a + b.jumlah; }, 0);
     var totalBulanIni = db.pengeluaran.filter(function(p) { return new Date(p.tanggal) >= monthStart; })
@@ -1561,7 +1818,7 @@ function renderPengeluaranTable() {
 }
 
 // ============================================================
-// CATATAN (BARU)
+// CATATAN
 // ============================================================
 function bukaFormCatatan() {
     document.getElementById('judulModalCatatan').innerText = '📝 Tambah Catatan';
@@ -1584,7 +1841,6 @@ function editCatatan(id) {
 }
 
 function randomFoto() {
-    // Picsum random photo
     var rand = Math.floor(Math.random() * 1000);
     var url = 'https://picsum.photos/seed/' + rand + '/400/300';
     document.getElementById('inFotoCatatan').value = url;
@@ -1599,7 +1855,6 @@ function simpanCatatan() {
 
     if (!judul || !isi) return showToast('Judul dan isi catatan wajib diisi!', 'error');
 
-    // Auto foto random kalau kosong
     if (!foto) {
         foto = 'https://picsum.photos/seed/' + Date.now() + '/400/300';
     }
@@ -1657,7 +1912,6 @@ function renderCatatanList() {
     var el = document.getElementById('listCatatan');
     if (el) el.innerHTML = html || '<div class="empty" style="grid-column:1/-1;">Belum ada catatan. Klik "+ Tambah Catatan" untuk mulai.</div>';
 
-    // Dashboard catatan (max 3)
     var dashList = db.catatan.slice().reverse().slice(0, 3);
     var dashHtml = dashList.map(function(c) {
         return '<div class="note-card">' +
@@ -1827,7 +2081,6 @@ function renderAll() {
     var trendBulan = document.getElementById('trendKeluarBulanIni');
     if (trendBulan) trendBulan.innerText = '📅 Bulan ' + today.toLocaleDateString('id-ID', { month:'long' });
 
-    // Top karyawan
     var topList = db.karyawan.slice().sort(function(a, b) { return b.gajiPokok - a.gajiPokok; }).slice(0, 5);
     var icons = ['🥇', '🥈', '🥉', '🏅', '🎖️'];
     el = document.getElementById('topKaryawanList');
@@ -1839,7 +2092,6 @@ function renderAll() {
             '</div>';
     }).join('') || '<div class="empty">Belum ada karyawan</div>';
 
-    // Pengeluaran terbaru di dashboard
     var pengTerbaru = db.pengeluaran.slice().sort(function(a,b) { return new Date(b.tanggal) - new Date(a.tanggal); }).slice(0, 5);
     el = document.getElementById('pengeluaranTerbaruList');
     if (el) el.innerHTML = pengTerbaru.map(function(p) {
@@ -1851,13 +2103,11 @@ function renderAll() {
             '</div>';
     }).join('') || '<div class="empty">Belum ada pengeluaran</div>';
 
-    // Tabel dashboard
     el = document.getElementById('tabelDashboard');
     if (el) el.innerHTML = db.karyawan.map(function(k, i) {
         return '<tr><td>' + (i+1) + '</td><td>' + escapeHtml(k.nama) + '</td><td>' + escapeHtml(k.jabatan) + '</td><td>' + formatRp(k.gajiPokok) + '</td><td><span class="badge badge-green">✓ Aktif</span></td></tr>';
     }).join('') || '<tr><td colspan="5" class="empty">Belum ada data</td></tr>';
 
-    // Tabel gaji
     el = document.getElementById('tabelGaji');
     if (el) el.innerHTML = db.gaji.map(function(g) {
         var k = db.karyawan.find(function(x) { return x.id == g.karyawanId; });
@@ -1869,7 +2119,6 @@ function renderAll() {
             '<td><button class="btn btn-danger btn-sm" onclick="hapusGaji(' + g.id + ')">🗑️</button></td></tr>';
     }).join('') || '<tr><td colspan="7" class="empty">Belum ada data gaji</td></tr>';
 
-    // Tabel bonus
     el = document.getElementById('tabelBonus');
     if (el) el.innerHTML = db.bonus.map(function(b) {
         var k = db.karyawan.find(function(x) { return x.id == b.karyawanId; });
@@ -1879,7 +2128,6 @@ function renderAll() {
             '<td><button class="btn btn-danger btn-sm" onclick="hapusBonus(' + b.id + ')">🗑️</button></td></tr>';
     }).join('') || '<tr><td colspan="5" class="empty">Belum ada bonus</td></tr>';
 
-    // List script
     el = document.getElementById('listScript');
     if (el) el.innerHTML = db.script.map(function(s) {
         return '<div class="script-card">' +
@@ -1894,9 +2142,7 @@ function renderAll() {
             '</div></div>';
     }).join('') || '<div class="empty" style="grid-column: 1/-1;">Belum ada script tersimpan</div>';
 
-    // Render catatan
     renderCatatanList();
-    // Render pengeluaran table jika ada
     if (document.getElementById('tabelPengeluaran')) renderPengeluaranTable();
 
     setTimeout(renderCharts, 150);
@@ -1949,10 +2195,7 @@ function initApp() {
     var fmt = function(d) { return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }); };
     document.getElementById('dateRange').innerText = fmt(start) + ' - ' + fmt(end);
 
-    var bgTheme = localStorage.getItem('bgTheme') || 'purple-night';
-    document.body.style.background = getBgStyle(bgTheme);
-    document.body.style.backgroundSize = '400% 400%';
-    document.body.style.animation = 'bgMove 20s ease infinite';
+    applyDashBg();
 
     var namaApp = localStorage.getItem('namaApp');
     var adminName = localStorage.getItem('adminName');
