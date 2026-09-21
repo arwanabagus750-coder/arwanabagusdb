@@ -60,13 +60,198 @@ body.light {
     --border: rgba(0, 0, 0, 0.1);
 }
 
+/* ============ LOGIN SCREEN ============ */
+.login-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a0b2e 0%, #16213e 50%, #0f0f2e 100%);
+    z-index: 99999;
+    overflow: hidden;
+}
+.login-screen::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(139,92,246,0.15), transparent 60%);
+    animation: loginGlow 8s ease-in-out infinite;
+}
+.login-screen::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: 
+        linear-gradient(rgba(139,92,246,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139,92,246,0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+}
+@keyframes loginGlow {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(-30px, 30px) scale(1.1); }
+}
+.login-box {
+    position: relative;
+    background: rgba(30, 27, 75, 0.6);
+    backdrop-filter: blur(30px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 24px;
+    padding: 50px 45px;
+    width: 460px;
+    max-width: 92%;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 100px rgba(139,92,246,0.2);
+    z-index: 2;
+    animation: loginEnter 0.6s ease;
+}
+@keyframes loginEnter {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.login-box h1 {
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, #ffffff, #a78bfa, #ffffff);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textShine 3s linear infinite;
+    line-height: 1.3;
+}
+@keyframes textShine {
+    0% { background-position: 0% 0; }
+    100% { background-position: 200% 0; }
+}
+.login-box .subtitle {
+    text-align: center;
+    color: rgba(255,255,255,0.6);
+    font-size: 14px;
+    margin-bottom: 35px;
+}
+.login-box .logo-login {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.login-box .logo-login span {
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    color: white;
+    padding: 14px 18px;
+    border-radius: 16px;
+    font-size: 26px;
+    font-weight: bold;
+    box-shadow: 0 0 40px rgba(139,92,246,0.8);
+    animation: logoGlow 2s ease-in-out infinite;
+}
+@keyframes logoGlow {
+    0%, 100% { box-shadow: 0 0 40px rgba(139,92,246,0.8); }
+    50% { box-shadow: 0 0 70px rgba(139,92,246,1); }
+}
+.login-field {
+    position: relative;
+    margin-bottom: 20px;
+}
+.login-field input {
+    width: 100%;
+    padding: 16px 18px;
+    background: rgba(15, 15, 40, 0.7);
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    border-radius: 12px;
+    color: white;
+    font-size: 14px;
+    font-family: inherit;
+    transition: 0.3s;
+    outline: none;
+}
+.login-field input::placeholder {
+    color: rgba(255,255,255,0.4);
+}
+.login-field input:focus {
+    border-color: #8b5cf6;
+    background: rgba(15, 15, 40, 0.9);
+    box-shadow: 0 0 0 4px rgba(139,92,246,0.2);
+}
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+}
+.login-options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+.login-options input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #8b5cf6;
+    cursor: pointer;
+}
+.login-options a {
+    color: #a78bfa;
+    text-decoration: none;
+    transition: 0.2s;
+}
+.login-options a:hover { color: #c4b5fd; text-decoration: underline; }
+.login-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: inherit;
+    letter-spacing: 0.5px;
+    box-shadow: 0 10px 30px rgba(139,92,246,0.4);
+}
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(139,92,246,0.7);
+}
+.login-btn:active { transform: translateY(0); }
+.login-footer {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+}
+.login-error {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    margin-bottom: 20px;
+    text-align: center;
+    display: none;
+    animation: shake 0.3s;
+}
+.login-error.show { display: block; }
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
+
+/* ============ SIDEBAR ============ */
 .sidebar { width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; gap: 5px; height: 100vh; position: fixed; overflow-y: auto; backdrop-filter: blur(20px); z-index: 100; box-shadow: 4px 0 30px rgba(0,0,0,0.4); }
 .logo { font-size: 18px; font-weight: bold; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; color: var(--text); }
 .logo span { background: linear-gradient(135deg, #8b5cf6, #6366f1); color: white; padding: 8px 12px; border-radius: 10px; box-shadow: 0 0 20px rgba(139,92,246,0.6); animation: logoGlow 2s ease-in-out infinite; }
-@keyframes logoGlow {
-    0%, 100% { box-shadow: 0 0 20px rgba(139,92,246,0.6); }
-    50% { box-shadow: 0 0 40px rgba(139,92,246,1); }
-}
 .menu-section { font-size: 10px; color: var(--text-soft); text-transform: uppercase; letter-spacing: 1.5px; margin: 15px 0 5px 15px; font-weight: 600; }
 .menu-item { padding: 11px 15px; border-radius: 10px; cursor: pointer; color: var(--text-soft); transition: 0.3s; text-decoration: none; display: flex; align-items: center; gap: 10px; font-size: 14px; position: relative; overflow: hidden; }
 .menu-item::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 0; background: linear-gradient(90deg, #8b5cf6, #6366f1); transition: width 0.3s; z-index: -1; border-radius: 10px; }
@@ -75,9 +260,27 @@ body.light {
 
 .sidebar-profile { margin-top: auto; padding: 12px; background: rgba(139,92,246,0.15); border-radius: 12px; border: 1px solid rgba(139,92,246,0.3); display: flex; align-items: center; gap: 10px; }
 .sidebar-profile .avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #6366f1); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px; box-shadow: 0 0 15px rgba(139,92,246,0.6); }
-.sidebar-profile .info { flex: 1; }
-.sidebar-profile strong { display: block; font-size: 12px; color: var(--text); }
+.sidebar-profile .info { flex: 1; min-width: 0; }
+.sidebar-profile strong { display: block; font-size: 12px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sidebar-profile small { font-size: 10px; color: var(--text-soft); }
+.logout-icon-btn {
+    background: rgba(239,68,68,0.2);
+    border: 1px solid rgba(239,68,68,0.4);
+    color: #fca5a5;
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    flex-shrink: 0;
+}
+.logout-icon-btn:hover {
+    background: rgba(239,68,68,0.4);
+    transform: scale(1.1);
+}
 
 .main-content { flex: 1; padding: 25px 30px; margin-left: 260px; min-height: 100vh; position: relative; z-index: 2; }
 
@@ -90,6 +293,23 @@ body.light {
 .date-filter:hover { background: var(--card-bg-hover); border-color: var(--accent); }
 .icon-btn { background: var(--card-bg); border: 1px solid var(--border); width: 42px; height: 42px; border-radius: 10px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: 0.3s; color: var(--text); backdrop-filter: blur(20px); }
 .icon-btn:hover { background: rgba(139,92,246,0.3); border-color: var(--accent); transform: scale(1.05); }
+.logout-btn {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    border: none;
+    color: white;
+    padding: 0 18px;
+    height: 42px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.3s;
+    font-family: inherit;
+}
+.logout-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(239,68,68,0.5); }
 
 .page { display: none; animation: fadeIn 0.4s ease; }
 .page.active { display: block; }
@@ -161,7 +381,6 @@ tr:hover { background: rgba(139,92,246,0.08); }
 .badge-blue { background: rgba(59,130,246,0.2); color: #60a5fa; }
 .badge-purple { background: rgba(139,92,246,0.2); color: #a78bfa; }
 
-/* ============ SCRIPT GRID ============ */
 .script-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; margin-top: 20px; }
 .script-card {
     background: linear-gradient(135deg, rgba(30, 27, 75, 0.95), rgba(76, 29, 149, 0.85));
@@ -188,11 +407,7 @@ tr:hover { background: rgba(139,92,246,0.08); }
     z-index: 1;
 }
 @keyframes gradientMove { 0% { background-position: 0% 0; } 100% { background-position: 200% 0; } }
-.script-card:hover {
-    transform: translateY(-5px);
-    border-color: #8b5cf6;
-    box-shadow: 0 20px 50px rgba(139,92,246,0.5);
-}
+.script-card:hover { transform: translateY(-5px); border-color: #8b5cf6; box-shadow: 0 20px 50px rgba(139,92,246,0.5); }
 .script-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; position: relative; z-index: 3; }
 .script-card-header .icon { font-size: 20px; background: linear-gradient(135deg, #8b5cf6, #6366f1); width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 20px rgba(139,92,246,0.5); flex-shrink: 0; }
 .script-card h4 { font-size: 14px; color: #ffffff; margin-bottom: 3px; word-break: break-word; font-weight: 700; }
@@ -239,7 +454,7 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
 .modal-buttons { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
 
 .empty { text-align: center; padding: 40px; color: var(--text-soft); }
-.toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+.toast-container { position: fixed; top: 20px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 10px; }
 .toast { padding: 15px 20px; border-radius: 12px; color: white; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); animation: slideIn 0.3s; min-width: 250px; font-weight: 500; }
 .toast.success { background: linear-gradient(135deg, #10b981, #059669); }
 .toast.error { background: linear-gradient(135deg, #ef4444, #dc2626); }
@@ -250,10 +465,44 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
     .sidebar { transform: translateX(-100%); transition: 0.3s; }
     .sidebar.open { transform: translateX(0); }
     .main-content { margin-left: 0; padding: 15px; }
+    .login-box { padding: 35px 25px; }
+    .login-box h1 { font-size: 20px; }
 }
 </style>
 </head>
 <body>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div class="login-screen" id="loginScreen">
+    <div class="login-box">
+        <div class="logo-login"><span>G</span></div>
+        <h1>Sign In to GajiKu Pro</h1>
+        <p class="subtitle">Enter your details to login to your account</p>
+
+        <div class="login-error" id="loginError">❌ Username atau password salah!</div>
+
+        <form onsubmit="event.preventDefault(); doLogin();">
+            <div class="login-field">
+                <input type="text" id="loginUser" placeholder="Email or Username" autocomplete="username" autofocus>
+            </div>
+            <div class="login-field">
+                <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password">
+            </div>
+            <div class="login-options">
+                <label><input type="checkbox" id="rememberMe" checked> Ingat saya</label>
+                <a href="#" onclick="event.preventDefault(); toast('Hubungi admin untuk reset password', 'info');">Lupa password?</a>
+            </div>
+            <button type="submit" class="login-btn">🔓 Sign In</button>
+        </form>
+
+        <div class="login-footer">
+            © 2026 GajiKu Pro — Secure Login System
+        </div>
+    </div>
+</div>
+
+<!-- ============ APP (Hidden saat login) ============ -->
+<div id="appContainer" style="display:none; width:100%;">
 
 <div class="chakra"></div>
 <div class="chakra"></div>
@@ -285,6 +534,7 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
             <strong id="adminName">ADMIN GAJI</strong>
             <small>Administrator</small>
         </div>
+        <button class="logout-icon-btn" onclick="confirmLogout()" title="Logout">🚪</button>
     </div>
 </div>
 
@@ -300,9 +550,11 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
                 📅 <span id="dateRange">Memuat...</span>
             </div>
             <button class="icon-btn" onclick="toggleLightMode()" title="Light Mode" id="lightBtn">☀️</button>
+            <button class="logout-btn" onclick="confirmLogout()" title="Logout">🚪 Logout</button>
         </div>
     </div>
 
+    <!-- PAGE DASHBOARD -->
     <div id="page-dashboard" class="page active">
         <div class="stats-row">
             <div class="stat-box">
@@ -382,6 +634,7 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
         </div>
     </div>
 
+    <!-- PAGE GAJI -->
     <div id="page-gaji" class="page">
         <div class="table-container">
             <div class="table-header">
@@ -395,6 +648,7 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
         </div>
     </div>
 
+    <!-- PAGE BONUS -->
     <div id="page-bonus" class="page">
         <div class="table-container">
             <div class="table-header">
@@ -408,6 +662,7 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
         </div>
     </div>
 
+    <!-- PAGE BACKGROUND -->
     <div id="page-background" class="page">
         <div class="table-container">
             <h2 style="color:var(--text);">🖼️ Pilih Background Animasi</h2>
@@ -423,6 +678,7 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
         </div>
     </div>
 
+    <!-- PAGE SCRIPT -->
     <div id="page-script" class="page">
         <div class="table-container">
             <div class="table-header">
@@ -433,6 +689,7 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
         </div>
     </div>
 
+    <!-- PAGE EXPORT -->
     <div id="page-export" class="page">
         <div class="table-container">
             <h2 style="color:var(--text);">📤 Export & Backup Data</h2>
@@ -449,6 +706,7 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
         </div>
     </div>
 </div>
+</div><!-- END APP -->
 
 <!-- MODAL PENGATURAN -->
 <div id="modalPengaturan" class="modal">
@@ -456,6 +714,12 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
         <h3>⚙️ Pengaturan Aplikasi</h3>
         <div class="form-group"><label>Nama Aplikasi:</label><input type="text" id="inputNamaApp"></div>
         <div class="form-group"><label>Nama Admin:</label><input type="text" id="inputAdmin"></div>
+
+        <hr style="border:none; border-top:1px solid var(--border); margin:20px 0;">
+        <h4 style="color:var(--text); margin-bottom:12px; font-size:14px;">🔐 Ganti Username & Password</h4>
+        <div class="form-group"><label>Username Baru:</label><input type="text" id="inputNewUser" placeholder="Biarkan kosong jika tidak diubah"></div>
+        <div class="form-group"><label>Password Baru:</label><input type="text" id="inputNewPass" placeholder="Biarkan kosong jika tidak diubah"></div>
+
         <div class="modal-buttons">
             <button class="btn btn-secondary" onclick="tutupModal('modalPengaturan')">Batal</button>
             <button class="btn btn-primary" onclick="simpanPengaturan()">Simpan</button>
@@ -503,7 +767,7 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
     </div>
 </div>
 
-<!-- MODAL SCRIPT (TAMBAH & EDIT) -->
+<!-- MODAL SCRIPT -->
 <div id="modalScript" class="modal">
     <div class="modal-content" style="width:650px;">
         <h3 id="judulModalScript">📝 Simpan Script</h3>
@@ -517,7 +781,7 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
     </div>
 </div>
 
-<!-- MODAL VIEW SCRIPT (Lihat Full Script) -->
+<!-- MODAL VIEW SCRIPT -->
 <div id="modalViewScript" class="modal">
     <div class="modal-content" style="width:700px;">
         <h3 id="viewScriptTitle">📄 Lihat Script</h3>
@@ -532,6 +796,20 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
 </div>
 
 <script>
+// ========== KONFIGURASI LOGIN DEFAULT ==========
+// Username: arwanabagus
+// Password: 252006
+const DEFAULT_USER = 'arwanabagus';
+const DEFAULT_PASS = '252006';
+
+// Ambil credential dari localStorage (kalau user pernah ganti)
+function getCredentials() {
+    return {
+        user: localStorage.getItem('auth_user') || DEFAULT_USER,
+        pass: localStorage.getItem('auth_pass') || DEFAULT_PASS
+    };
+}
+
 // ========== DATA ==========
 let db = {
     karyawan: JSON.parse(localStorage.getItem('db_karyawan')) || [
@@ -554,6 +832,83 @@ function toast(msg, type = 'success') {
     setTimeout(() => el.remove(), 3000);
 }
 
+// ========== LOGIN SYSTEM ==========
+function doLogin() {
+    const userInput = document.getElementById('loginUser').value.trim();
+    const passInput = document.getElementById('loginPass').value.trim();
+    const remember = document.getElementById('rememberMe').checked;
+    const cred = getCredentials();
+
+    if (!userInput || !passInput) {
+        showLoginError('❌ Username dan password wajib diisi!');
+        return;
+    }
+
+    if (userInput === cred.user && passInput === cred.pass) {
+        // Login sukses
+        if (remember) {
+            localStorage.setItem('auth_logged_in', 'true');
+            localStorage.setItem('auth_user_logged', userInput);
+        } else {
+            sessionStorage.setItem('auth_logged_in', 'true');
+        }
+        document.getElementById('loginError').classList.remove('show');
+        showApp();
+        toast('Login berhasil! Selamat datang ' + userInput + ' 👋', 'success');
+    } else {
+        showLoginError('❌ Username atau password salah!');
+        // Shake input
+        document.getElementById('loginUser').style.borderColor = '#ef4444';
+        document.getElementById('loginPass').style.borderColor = '#ef4444';
+        setTimeout(() => {
+            document.getElementById('loginUser').style.borderColor = '';
+            document.getElementById('loginPass').style.borderColor = '';
+        }, 1500);
+    }
+}
+
+function showLoginError(msg) {
+    const err = document.getElementById('loginError');
+    err.innerText = msg;
+    err.classList.add('show');
+    setTimeout(() => err.classList.remove('show'), 3000);
+}
+
+function showApp() {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appContainer').style.display = 'block';
+    setTimeout(initApp, 50);
+}
+
+function checkLogin() {
+    const isLoggedIn = localStorage.getItem('auth_logged_in') === 'true' || sessionStorage.getItem('auth_logged_in') === 'true';
+    if (isLoggedIn) {
+        showApp();
+    } else {
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('appContainer').style.display = 'none';
+        setTimeout(() => document.getElementById('loginUser').focus(), 300);
+    }
+}
+
+function confirmLogout() {
+    if (!confirm('Yakin ingin logout?')) return;
+    localStorage.removeItem('auth_logged_in');
+    localStorage.removeItem('auth_user_logged');
+    sessionStorage.removeItem('auth_logged_in');
+    toast('Logout berhasil!', 'info');
+    setTimeout(() => location.reload(), 700);
+}
+
+// Enter key untuk login
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') {
+        if (document.activeElement.id === 'loginUser' || document.activeElement.id === 'loginPass') {
+            doLogin();
+        }
+    }
+});
+
 // ========== NAVIGASI ==========
 function showPage(page, el) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -569,7 +924,6 @@ function showPage(page, el) {
 function bukaModal(id) { document.getElementById(id).classList.add('active'); }
 function tutupModal(id) { document.getElementById(id).classList.remove('active'); }
 
-// ========== LIGHT MODE ==========
 function toggleLightMode() {
     document.body.classList.toggle('light');
     const isLight = document.body.classList.contains('light');
@@ -587,13 +941,28 @@ function filterTable(tableId, keyword) {
 function bukaPengaturan() {
     document.getElementById('inputNamaApp').value = localStorage.getItem('namaApp') || 'GajiKu Pro';
     document.getElementById('inputAdmin').value = localStorage.getItem('adminName') || 'ADMIN GAJI';
+    document.getElementById('inputNewUser').value = '';
+    document.getElementById('inputNewPass').value = '';
     bukaModal('modalPengaturan');
 }
 function simpanPengaturan() {
     localStorage.setItem('namaApp', document.getElementById('inputNamaApp').value);
     localStorage.setItem('adminName', document.getElementById('inputAdmin').value);
+
+    const newUser = document.getElementById('inputNewUser').value.trim();
+    const newPass = document.getElementById('inputNewPass').value.trim();
+
+    if (newUser) {
+        localStorage.setItem('auth_user', newUser);
+        toast('Username berhasil diubah!');
+    }
+    if (newPass) {
+        localStorage.setItem('auth_pass', newPass);
+        toast('Password berhasil diubah!');
+    }
+
     toast('Pengaturan disimpan!');
-    setTimeout(() => location.reload(), 800);
+    setTimeout(() => location.reload(), 900);
 }
 
 // ========== BACKGROUND ==========
@@ -703,8 +1072,7 @@ function hapusBonus(id) {
     saveDB(); renderAll(); toast('Bonus dihapus', 'info');
 }
 
-// ========== SCRIPT (CRUD LENGKAP) ==========
-// Buka form TAMBAH script
+// ========== SCRIPT ==========
 function bukaFormScript() {
     document.getElementById('judulModalScript').innerText = '📝 Simpan Script Baru';
     document.getElementById('editScriptId').value = '';
@@ -712,8 +1080,6 @@ function bukaFormScript() {
     document.getElementById('inIsiScript').value = '';
     bukaModal('modalScript');
 }
-
-// Buka form EDIT script
 function editScript(id) {
     const s = db.script.find(x => x.id === id);
     if (!s) return toast('Script tidak ditemukan!', 'error');
@@ -723,8 +1089,6 @@ function editScript(id) {
     document.getElementById('inIsiScript').value = s.isi;
     bukaModal('modalScript');
 }
-
-// Simpan script (Tambah atau Update)
 function simpanScript() {
     const id = document.getElementById('editScriptId').value;
     const nama = document.getElementById('inNamaScript').value.trim();
@@ -732,28 +1096,21 @@ function simpanScript() {
     if (!nama || !isi) return toast('Nama dan isi script wajib diisi!', 'error');
 
     if (id) {
-        // Update
         const idx = db.script.findIndex(x => x.id == id);
         db.script[idx] = { ...db.script[idx], nama, isi, tanggal: new Date().toLocaleDateString('id-ID') };
         toast('Script berhasil diupdate!');
     } else {
-        // Tambah baru
         db.script.push({ id: Date.now(), nama, isi, tanggal: new Date().toLocaleDateString('id-ID') });
         toast('Script disimpan!');
     }
-    saveDB();
-    tutupModal('modalScript');
-    renderAll();
+    saveDB(); tutupModal('modalScript'); renderAll();
 }
-
-// Copy script ke clipboard
 function bukaScript(id) {
     const s = db.script.find(x => x.id === id);
     if (!s) return;
     navigator.clipboard.writeText(s.isi).then(() => {
         toast('Script "' + s.nama + '" tersalin ke clipboard!');
     }).catch(() => {
-        // Fallback kalau clipboard gagal
         const ta = document.createElement('textarea');
         ta.value = s.isi;
         document.body.appendChild(ta);
@@ -763,8 +1120,6 @@ function bukaScript(id) {
         toast('Script "' + s.nama + '" tersalin!');
     });
 }
-
-// Lihat script full (modal view)
 let currentViewScript = null;
 function viewScript(id) {
     const s = db.script.find(x => x.id === id);
@@ -774,7 +1129,6 @@ function viewScript(id) {
     document.getElementById('viewScriptContent').innerText = s.isi;
     bukaModal('modalViewScript');
 }
-
 function copyFromView() {
     if (!currentViewScript) return;
     navigator.clipboard.writeText(currentViewScript.isi).then(() => {
@@ -789,8 +1143,6 @@ function copyFromView() {
         toast('Script tersalin!');
     });
 }
-
-// Hapus script
 function hapusScript(id) {
     if (!confirm('Hapus script ini?')) return;
     db.script = db.script.filter(x => x.id !== id);
@@ -850,7 +1202,6 @@ function renderAll() {
     document.getElementById('revenueTotal').innerText = formatRp(totalGaji);
     document.getElementById('growthTotal').innerText = formatRp(totalBonus);
 
-    // Top Karyawan
     const topList = [...db.karyawan].sort((a, b) => b.gajiPokok - a.gajiPokok).slice(0, 5);
     document.getElementById('topKaryawanList').innerHTML = topList.map((k, i) => {
         const icons = ['🥇', '🥈', '🥉', '🏅', '🎖️'];
@@ -870,14 +1221,12 @@ function renderAll() {
         `;
     }).join('') || '<div class="empty">Belum ada karyawan</div>';
 
-    // Dashboard table
     document.getElementById('tabelDashboard').innerHTML = db.karyawan.map((k, i) => `
         <tr><td>${i+1}</td><td>${k.nama}</td><td>${k.jabatan}</td>
         <td>${formatRp(k.gajiPokok)}</td>
         <td><span class="badge badge-green">✓ Aktif</span></td></tr>
     `).join('') || '<tr><td colspan="5" class="empty">Belum ada data</td></tr>';
 
-    // Gaji
     document.getElementById('tabelGaji').innerHTML = db.gaji.map(g => {
         const k = db.karyawan.find(x => x.id == g.karyawanId);
         const total = g.gaji + g.tunjangan - (g.potongan || 0);
@@ -888,7 +1237,6 @@ function renderAll() {
         <td><button class="btn btn-danger btn-sm" onclick="hapusGaji(${g.id})">🗑️</button></td></tr>`;
     }).join('') || '<tr><td colspan="7" class="empty">Belum ada data gaji</td></tr>';
 
-    // Bonus
     document.getElementById('tabelBonus').innerHTML = db.bonus.map(b => {
         const k = db.karyawan.find(x => x.id == b.karyawanId);
         return `<tr><td>${b.periode}</td><td>${k ? k.nama : '-'}</td>
@@ -897,7 +1245,6 @@ function renderAll() {
         <td><button class="btn btn-danger btn-sm" onclick="hapusBonus(${b.id})">🗑️</button></td></tr>`;
     }).join('') || '<tr><td colspan="5" class="empty">Belum ada bonus</td></tr>';
 
-    // ========== SCRIPT GRID (DENGAN EDIT, COPY, HAPUS, VIEW) ==========
     document.getElementById('listScript').innerHTML = db.script.map((s, i) => `
         <div class="script-card" style="animation-delay: ${i * 0.1}s">
             <div class="script-card-header">
@@ -910,8 +1257,8 @@ function renderAll() {
             <div class="script-card-preview" onclick="viewScript(${s.id})" style="cursor:pointer;" title="Klik untuk lihat full script">${s.isi || '(script kosong)'}</div>
             <div class="script-card-actions">
                 <button type="button" class="btn btn-info btn-sm" onclick="event.stopPropagation(); viewScript(${s.id})" title="Lihat">👁️</button>
-                <button type="button" class="btn btn-success btn-sm" onclick="event.stopPropagation(); bukaScript(${s.id})" title="Copy">📋 Copy</button>
-                <button type="button" class="btn btn-warning btn-sm" onclick="event.stopPropagation(); editScript(${s.id})" title="Edit">✏️ Edit</button>
+                <button type="button" class="btn btn-success btn-sm" onclick="event.stopPropagation(); bukaScript(${s.id})" title="Copy">📋</button>
+                <button type="button" class="btn btn-warning btn-sm" onclick="event.stopPropagation(); editScript(${s.id})" title="Edit">✏️</button>
                 <button type="button" class="btn btn-danger btn-sm" onclick="event.stopPropagation(); hapusScript(${s.id})" title="Hapus">🗑️</button>
             </div>
         </div>
@@ -1023,6 +1370,8 @@ function renderCharts() {
 // ========== PARTIKEL ==========
 function createParticles() {
     const container = document.getElementById('particles');
+    if (!container) return;
+    container.innerHTML = '';
     for (let i = 0; i < 25; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
@@ -1034,16 +1383,18 @@ function createParticles() {
     }
 }
 
-// ========== INIT ==========
-window.onload = function() {
+// ========== INIT APP (setelah login) ==========
+function initApp() {
     const end = new Date();
     const start = new Date(); start.setDate(end.getDate() - 30);
     const fmt = (d) => d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-    document.getElementById('dateRange').innerText = `${fmt(start)} - ${fmt(end)}`;
+    const dr = document.getElementById('dateRange');
+    if (dr) dr.innerText = `${fmt(start)} - ${fmt(end)}`;
 
     if (localStorage.getItem('lightMode') === 'true') {
         document.body.classList.add('light');
-        document.getElementById('lightBtn').innerText = '🌙';
+        const lb = document.getElementById('lightBtn');
+        if (lb) lb.innerText = '🌙';
     }
 
     const bgTheme = localStorage.getItem('bgTheme') || 'purple-night';
@@ -1071,7 +1422,23 @@ window.onload = function() {
 
     createParticles();
     renderAll();
+}
+
+// ========== BOOT ==========
+window.onload = function() {
+    // Cek status login
+    checkLogin();
 };
+
+// Cek juga saat halaman di-reload
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-hide login screen kalau sudah login
+    const isLoggedIn = localStorage.getItem('auth_logged_in') === 'true' || sessionStorage.getItem('auth_logged_in') === 'true';
+    if (!isLoggedIn) {
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('appContainer').style.display = 'none';
+    }
+});
 </script>
 </body>
 </html>
