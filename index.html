@@ -432,12 +432,12 @@ tr:hover { background: rgba(139,92,246,0.08); }
 </head>
 <body>
 
-<!-- ============ LOGIN SCREEN (Selalu tampil awal) ============ -->
+<!-- ============ LOGIN SCREEN ============ -->
 <div id="loginScreen">
     <div class="login-box">
         <div class="login-logo"><span>G</span></div>
-        <h1>Sign In to GajiKu Pro</h1>
-        <p class="subtitle">Masukkan data Anda untuk login ke akun</p>
+        <h1>Login Dashboard Arwana</h1>
+        <p class="subtitle">Datang datang, silakan login untuk masuk</p>
 
         <div class="login-error" id="loginError">❌ Username atau password salah!</div>
 
@@ -457,11 +457,11 @@ tr:hover { background: rgba(139,92,246,0.08); }
             💡 <b>Default:</b> Username: <b>arwanabagus</b> | Password: <b>252006</b>
         </div>
 
-        <div class="login-footer">© 2026 GajiKu Pro — Secure Login System</div>
+        <div class="login-footer">© 2026 Dashboard Arwana — Secure Login System</div>
     </div>
 </div>
 
-<!-- ============ APP (Hidden dulu) ============ -->
+<!-- ============ APP ============ -->
 <div id="appContainer" style="display:none; width:100%;">
 
 <div class="particles" id="particles"></div>
@@ -781,7 +781,6 @@ function doLogin() {
     }
 
     if (userInput === cred.user && passInput === cred.pass) {
-        // Login sukses
         if (remember) {
             localStorage.setItem('auth_logged_in', 'true');
             localStorage.setItem('auth_user_logged', userInput);
@@ -815,7 +814,6 @@ function checkLoginOnLoad() {
     if (loggedIn) {
         showApp();
     } else {
-        // Tetap tampilkan login (sudah tampil default)
         document.getElementById('loginScreen').style.display = 'flex';
         document.getElementById('appContainer').style.display = 'none';
     }
@@ -829,7 +827,6 @@ function confirmLogout() {
     location.reload();
 }
 
-// Enter key pada login
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
         var ls = document.getElementById('loginScreen');
