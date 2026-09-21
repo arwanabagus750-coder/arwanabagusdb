@@ -181,7 +181,6 @@ body {
 }
 .logo span img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
 
-/* Section header dengan foto Itachi */
 .menu-section {
     font-size: 10px; color: #94a3b8;
     text-transform: uppercase; letter-spacing: 1.5px;
@@ -279,6 +278,22 @@ body {
     font-family: inherit;
 }
 .logout-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(239,68,68,0.5); }
+
+/* Guest Mode Banner */
+#guestBanner {
+    display: none;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 25px rgba(245,158,11,0.4);
+}
+#guestBanner.show { display: flex; }
 
 .page { display: none; }
 .page.active { display: block; }
@@ -410,6 +425,13 @@ tr:hover { background: rgba(139,92,246,0.08); }
 .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
 .badge-green { background: rgba(16,185,129,0.2); color: #34d399; }
 .badge-red { background: rgba(239,68,68,0.2); color: #f87171; }
+.badge-orange { background: rgba(245,158,11,0.2); color: #fbbf24; }
+
+/* Guest mode: sembunyikan tombol aksi */
+body.guest-mode .btn-action,
+body.guest-mode .btn-danger,
+body.guest-mode .btn-warning,
+body.guest-mode .add-btn { display: none !important; }
 
 .script-grid {
     display: grid;
@@ -462,11 +484,9 @@ tr:hover { background: rgba(139,92,246,0.08); }
 .script-card-preview::-webkit-scrollbar { width: 8px; height: 8px; }
 .script-card-preview::-webkit-scrollbar-track { background: rgba(0,0,0,0.4); border-radius: 4px; }
 .script-card-preview::-webkit-scrollbar-thumb { background: #8b5cf6; border-radius: 4px; }
-.script-card-preview::-webkit-scrollbar-thumb:hover { background: #a78bfa; }
 .script-card-actions { display: flex; gap: 6px; margin-top: auto; padding-top: 12px; }
 .script-card-actions .btn { flex: 1; justify-content: center; min-width: 50px; font-size: 11px; padding: 8px 6px; }
 
-/* ============ CATATAN (NOTEPAD) ============ */
 .notes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -509,7 +529,6 @@ tr:hover { background: rgba(139,92,246,0.08); }
 .note-card-actions { display: flex; gap: 6px; }
 .note-card-actions .btn { flex: 1; justify-content: center; font-size: 11px; padding: 7px 5px; }
 
-/* ============ BACKGROUND PICKER ============ */
 .bgtype-tabs {
     display: flex; gap: 8px; margin-bottom: 15px;
     flex-wrap: wrap;
@@ -565,6 +584,86 @@ tr:hover { background: rgba(139,92,246,0.08); }
     background: linear-gradient(transparent, rgba(0,0,0,0.85));
     color: white; padding: 20px 10px 8px;
     font-size: 12px; font-weight: 600;
+}
+
+/* ============ SHARE PAGE ============ */
+.share-pages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px; margin: 12px 0;
+}
+.share-page-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px; border-radius: 10px;
+    background: rgba(139,92,246,0.1);
+    border: 1px solid rgba(139,92,246,0.25);
+    cursor: pointer;
+    font-size: 13px;
+    transition: 0.2s;
+    user-select: none;
+}
+.share-page-item:hover { background: rgba(139,92,246,0.2); }
+.share-page-item input[type="checkbox"] { accent-color: #8b5cf6; cursor: pointer; }
+.share-page-item.checked {
+    background: rgba(139,92,246,0.3);
+    border-color: #8b5cf6;
+}
+.share-link-box {
+    background: rgba(0,0,0,0.4);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(139,92,246,0.3);
+    margin: 15px 0;
+    word-break: break-all;
+    font-family: 'Consolas', monospace;
+    font-size: 13px;
+    color: #a5f3fc;
+    display: none;
+}
+.share-link-box.show { display: block; }
+.share-link-box .link-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.share-item {
+    background: rgba(30,30,55,0.7);
+    border: 1px solid rgba(148,163,184,0.15);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 12px;
+    flex-wrap: wrap;
+}
+.share-item-info { flex: 1; min-width: 200px; }
+.share-item-info strong { display: block; font-size: 14px; margin-bottom: 4px; }
+.share-item-info small { font-size: 11px; color: #94a3b8; display: block; word-break: break-all; margin-bottom: 4px; }
+.share-item-pages { font-size: 11px; color: #a78bfa; }
+.share-item .share-actions { display: flex; gap: 6px; }
+
+/* Profile Picture Upload */
+.profile-preview {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(139,92,246,0.15);
+    border: 3px solid rgba(139,92,246,0.4);
+    display: flex; align-items: center; justify-content: center;
+    margin: 10px auto;
+    overflow: hidden;
+    font-size: 40px;
+    color: #a78bfa;
+    font-weight: bold;
+}
+.profile-preview img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+}
+.file-input-hidden {
+    position: absolute;
+    width: 0.1px; height: 0.1px;
+    opacity: 0; overflow: hidden;
+    z-index: -1;
 }
 
 .modal {
@@ -711,23 +810,36 @@ tr:hover { background: rgba(139,92,246,0.08); }
         <img class="menu-ico" src="https://i.pinimg.com/736x/9c/8b/7a/9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f.jpg" onerror="this.style.display='none'" alt="">
         📜 Simpan Script
     </a>
-    <a class="menu-item" data-page="export" onclick="showPage('export', this)">
+
+    <div class="menu-section admin-only">
+        <img class="sec-img" src="https://i.pinimg.com/736x/9c/8b/7a/9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f.jpg" onerror="this.style.display='none'" alt="">
+        Admin
+    </div>
+    <a class="menu-item admin-only" data-page="export" onclick="showPage('export', this)">
         <img class="menu-ico" src="https://i.pinimg.com/736x/9c/8b/7a/9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f.jpg" onerror="this.style.display='none'" alt="">
         📤 Export Data
     </a>
-    <a class="menu-item" onclick="bukaPengaturan()">⚙️ Pengaturan</a>
+    <a class="menu-item admin-only" data-page="share" onclick="showPage('share', this)">
+        <img class="menu-ico" src="https://i.pinimg.com/736x/9c/8b/7a/9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f.jpg" onerror="this.style.display='none'" alt="">
+        🔗 Bagikan Akses
+    </a>
+    <a class="menu-item admin-only" onclick="bukaPengaturan()">⚙️ Pengaturan</a>
 
     <div class="sidebar-profile">
         <div class="avatar" id="sidebarAvatar">A</div>
         <div class="info">
             <strong id="adminName">ADMIN GAJI</strong>
-            <small>Administrator</small>
+            <small id="profileStatus">Administrator</small>
         </div>
         <button class="logout-icon-btn" onclick="confirmLogout()" title="Logout">🚪</button>
     </div>
 </div>
 
 <div class="main-content">
+
+    <div id="guestBanner">
+        👁️ <span id="guestBannerText">Mode Tamu — Anda hanya dapat melihat halaman yang diizinkan</span>
+    </div>
 
     <div class="top-header">
         <div>
@@ -852,7 +964,7 @@ tr:hover { background: rgba(139,92,246,0.08); }
         <div class="table-container">
             <div class="table-header">
                 <h2>💰 Daftar Gaji Per Bulan</h2>
-                <button class="btn btn-primary" onclick="bukaFormGaji()">+ Tambah Gaji</button>
+                <button class="btn btn-primary add-btn" onclick="bukaFormGaji()">+ Tambah Gaji</button>
             </div>
             <table>
                 <thead><tr><th>BULAN</th><th>KARYAWAN</th><th>GAJI POKOK</th><th>TUNJANGAN</th><th>TOTAL</th><th>STATUS</th><th>AKSI</th></tr></thead>
@@ -866,7 +978,7 @@ tr:hover { background: rgba(139,92,246,0.08); }
         <div class="table-container">
             <div class="table-header">
                 <h2>🎁 Daftar Bonus Per 3 Bulan</h2>
-                <button class="btn btn-primary" onclick="bukaFormBonus()">+ Tambah Bonus</button>
+                <button class="btn btn-primary add-btn" onclick="bukaFormBonus()">+ Tambah Bonus</button>
             </div>
             <table>
                 <thead><tr><th>PERIODE</th><th>KARYAWAN</th><th>JUMLAH BONUS</th><th>KETERANGAN</th><th>AKSI</th></tr></thead>
@@ -914,7 +1026,7 @@ tr:hover { background: rgba(139,92,246,0.08); }
                         <option value="week">7 Hari Terakhir</option>
                         <option value="month">Bulan Ini</option>
                     </select>
-                    <button class="btn btn-primary" onclick="bukaFormPengeluaran()">+ Tambah Pengeluaran</button>
+                    <button class="btn btn-primary add-btn" onclick="bukaFormPengeluaran()">+ Tambah Pengeluaran</button>
                 </div>
             </div>
             <table>
@@ -932,7 +1044,7 @@ tr:hover { background: rgba(139,92,246,0.08); }
         </div>
     </div>
 
-    <!-- BACKGROUND DASHBOARD (UPDATED: FOTO/VIDEO URL) -->
+    <!-- BACKGROUND DASHBOARD -->
     <div id="page-background" class="page">
         <div class="table-container">
             <h2 style="color:#e2e8f0;">🖼️ Background Dashboard</h2>
@@ -1013,7 +1125,7 @@ tr:hover { background: rgba(139,92,246,0.08); }
         <div class="table-container">
             <div class="table-header">
                 <h2>📝 Catatan & Foto Random</h2>
-                <button class="btn btn-primary" onclick="bukaFormCatatan()">+ Tambah Catatan</button>
+                <button class="btn btn-primary add-btn" onclick="bukaFormCatatan()">+ Tambah Catatan</button>
             </div>
             <div class="notes-grid" id="listCatatan"></div>
         </div>
@@ -1024,7 +1136,7 @@ tr:hover { background: rgba(139,92,246,0.08); }
         <div class="table-container">
             <div class="table-header">
                 <h2>📜 Script Tersimpan</h2>
-                <button class="btn btn-primary" onclick="bukaFormScript()">+ Tambah Script</button>
+                <button class="btn btn-primary add-btn" onclick="bukaFormScript()">+ Tambah Script</button>
             </div>
             <div class="script-grid" id="listScript"></div>
         </div>
@@ -1044,6 +1156,49 @@ tr:hover { background: rgba(139,92,246,0.08); }
             </div>
         </div>
     </div>
+
+    <!-- SHARE PAGE (BARU) -->
+    <div id="page-share" class="page">
+        <div class="table-container">
+            <h2 style="color:#e2e8f0;">🔗 Bagikan Akses</h2>
+            <p style="color:#94a3b8; font-size:13px; margin-top:5px;">Buat link untuk dibagikan ke rekan. Mereka hanya bisa <b>melihat</b> halaman yang Anda izinkan, tanpa bisa mengubah data.</p>
+
+            <div class="form-group" style="margin-top:20px;">
+                <label>Nama Penerima (opsional):</label>
+                <input type="text" id="shareRecipient" placeholder="Contoh: Budi - Staff Keuangan">
+            </div>
+
+            <div class="form-group">
+                <label>Halaman yang diizinkan untuk dilihat:</label>
+                <div class="share-pages-grid" id="sharePageCheckboxes"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Masa berlaku link:</label>
+                <select id="shareExpiry">
+                    <option value="0">Selamanya (sampai dihapus)</option>
+                    <option value="1">1 Hari</option>
+                    <option value="7">7 Hari</option>
+                    <option value="30">30 Hari</option>
+                </select>
+            </div>
+
+            <button class="btn btn-primary btn-lg" onclick="generateShareLink()">🔗 Generate Link</button>
+
+            <div class="share-link-box" id="shareLinkResult">
+                <div style="font-size:12px; color:#94a3b8; margin-bottom:8px;">✅ Link berhasil dibuat! Salin dan kirim ke rekan:</div>
+                <div id="shareLinkText"></div>
+                <div class="link-actions">
+                    <button class="btn btn-success btn-sm" onclick="copyShareLink()">📋 Copy Link</button>
+                    <button class="btn btn-info btn-sm" onclick="testShareLink()">🧪 Test Link</button>
+                </div>
+            </div>
+
+            <hr style="border:none; border-top:1px solid rgba(148,163,184,0.15); margin:25px 0;">
+            <h3 style="color:#e2e8f0; font-size:15px; margin-bottom:15px;">📋 Daftar Link Aktif</h3>
+            <div id="shareList"></div>
+        </div>
+    </div>
 </div>
 </div>
 
@@ -1051,6 +1206,18 @@ tr:hover { background: rgba(139,92,246,0.08); }
 <div id="modalPengaturan" class="modal">
     <div class="modal-content">
         <h3>⚙️ Pengaturan</h3>
+
+        <div class="form-group">
+            <label>Foto Profil:</label>
+            <div class="profile-preview" id="profilePreview">👤</div>
+            <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+                <label for="inputProfileFile" class="btn btn-info" style="cursor:pointer; margin:0;">📁 Upload Foto</label>
+                <input type="file" id="inputProfileFile" class="file-input-hidden" accept="image/*">
+                <button type="button" class="btn btn-danger" onclick="resetProfilePic()">🗑️ Hapus Foto</button>
+            </div>
+            <input type="text" id="inputProfilePic" placeholder="Atau tempel URL foto (contoh: https://i.imgur.com/xxx.gif)" style="margin-top:10px;">
+        </div>
+
         <div class="form-group"><label>Nama Aplikasi:</label><input type="text" id="inputNamaApp"></div>
         <div class="form-group"><label>Nama Admin:</label><input type="text" id="inputAdmin"></div>
         <hr style="border:none; border-top:1px solid rgba(148,163,184,0.15); margin:20px 0;">
@@ -1177,11 +1344,77 @@ tr:hover { background: rgba(139,92,246,0.08); }
 
 <script>
 // ============================================================
-// KONFIGURASI LOGIN
+// KONFIGURASI
 // ============================================================
 var DEFAULT_USER = 'arwanabagus';
 var DEFAULT_PASS = '252006';
+var ALL_PAGES = ['dashboard', 'gaji', 'bonus', 'pengeluaran', 'background', 'loginbg', 'catatan', 'script', 'export', 'share'];
+var PAGE_LABELS = {
+    dashboard: '🏠 Dashboard',
+    gaji: '💰 Daftar Gaji',
+    bonus: '🎁 Bonus',
+    pengeluaran: '💸 Pengeluaran',
+    background: '🖼️ Ganti Background',
+    loginbg: '🎨 Background Login',
+    catatan: '📝 Catatan',
+    script: '📜 Script',
+    export: '📤 Export',
+    share: '🔗 Bagikan'
+};
 
+// ============================================================
+// GUEST MODE
+// ============================================================
+var guestMode = false;
+var guestAllowed = [];
+
+function checkGuestMode() {
+    var params = new URLSearchParams(window.location.search);
+    var token = params.get('share');
+    if (!token) return false;
+
+    var shareData = JSON.parse(localStorage.getItem('share_' + token) || 'null');
+    if (!shareData) return false;
+
+    if (shareData.expiry && shareData.expiry > 0) {
+        var now = Date.now();
+        if (now > shareData.created + (shareData.expiry * 24 * 60 * 60 * 1000)) {
+            return false;
+        }
+    }
+
+    guestMode = true;
+    guestAllowed = shareData.pages || ['dashboard'];
+    sessionStorage.setItem('guestMode', 'true');
+    sessionStorage.setItem('guestAllowed', JSON.stringify(guestAllowed));
+    sessionStorage.setItem('guestToken', token);
+    return true;
+}
+
+function applyGuestMode() {
+    if (!guestMode) return;
+    document.body.classList.add('guest-mode');
+    document.getElementById('guestBanner').classList.add('show');
+
+    // Sembunyikan menu admin
+    document.querySelectorAll('.admin-only').forEach(function(el) { el.style.display = 'none'; });
+
+    // Sembunyikan menu yang tidak diizinkan
+    ALL_PAGES.forEach(function(p) {
+        if (guestAllowed.indexOf(p) === -1) {
+            var el = document.querySelector('.menu-item[data-page="' + p + '"]');
+            if (el) el.style.display = 'none';
+        }
+    });
+
+    // Update profile status
+    document.getElementById('profileStatus').innerText = '👁️ Mode Tamu';
+    document.getElementById('guestBannerText').innerText = 'Mode Tamu — Anda dapat melihat: ' + guestAllowed.map(function(p) { return PAGE_LABELS[p] || p; }).join(', ');
+}
+
+// ============================================================
+// LOGIN
+// ============================================================
 function getCred() {
     return {
         user: localStorage.getItem('auth_user') || DEFAULT_USER,
@@ -1189,9 +1422,6 @@ function getCred() {
     };
 }
 
-// ============================================================
-// LOGIN
-// ============================================================
 function doLogin() {
     var u = document.getElementById('loginUser').value.trim();
     var p = document.getElementById('loginPass').value.trim();
@@ -1232,10 +1462,22 @@ function showApp() {
     ls.style.pointerEvents = 'none';
 
     document.getElementById('appContainer').style.display = 'block';
+
+    // Check guest mode
+    if (guestMode) {
+        applyGuestMode();
+    }
+
     initApp();
 
-    // Restore halaman terakhir
-    var lastPage = localStorage.getItem('activePage') || 'dashboard';
+    // Restore halaman terakhir (kecuali guest)
+    var lastPage;
+    if (guestMode) {
+        lastPage = guestAllowed[0] || 'dashboard';
+    } else {
+        lastPage = localStorage.getItem('activePage') || 'dashboard';
+    }
+
     var menuEl = document.querySelector('.menu-item[data-page="' + lastPage + '"]');
     if (lastPage && document.getElementById('page-' + lastPage)) {
         showPage(lastPage, menuEl);
@@ -1246,7 +1488,10 @@ function confirmLogout() {
     if (!confirm('Yakin ingin logout?')) return;
     localStorage.removeItem('auth_logged_in');
     sessionStorage.removeItem('auth_logged_in');
-    location.reload();
+    sessionStorage.removeItem('guestMode');
+    sessionStorage.removeItem('guestAllowed');
+    sessionStorage.removeItem('guestToken');
+    location.href = window.location.pathname;
 }
 
 document.addEventListener('keydown', function(e) {
@@ -1271,6 +1516,10 @@ var db = {
 };
 
 function saveDB() {
+    if (guestMode) {
+        showToast('Mode tamu — tidak bisa mengubah data!', 'error');
+        return;
+    }
     localStorage.setItem('db_karyawan', JSON.stringify(db.karyawan));
     localStorage.setItem('db_gaji', JSON.stringify(db.gaji));
     localStorage.setItem('db_bonus', JSON.stringify(db.bonus));
@@ -1302,9 +1551,15 @@ function showToast(msg, type) {
 }
 
 // ============================================================
-// NAVIGASI (UPDATED: SIMPAN HALAMAN AKTIF)
+// NAVIGASI
 // ============================================================
 function showPage(page, el) {
+    // Cek izin guest
+    if (guestMode && guestAllowed.indexOf(page) === -1) {
+        showToast('❌ Anda tidak punya akses ke halaman ini', 'error');
+        return;
+    }
+
     document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
     var pageEl = document.getElementById('page-' + page);
     if (pageEl) pageEl.classList.add('active');
@@ -1317,32 +1572,93 @@ function showPage(page, el) {
         if (found) found.classList.add('active');
     }
 
-    // Simpan halaman aktif ke localStorage
-    localStorage.setItem('activePage', page);
+    if (!guestMode) {
+        localStorage.setItem('activePage', page);
+    }
 
     renderAll();
     if (page === 'background') { renderBgPicker(); loadDashBgForm(); }
     if (page === 'loginbg') loadLoginBgForm();
     if (page === 'pengeluaran') renderPengeluaranTable();
     if (page === 'catatan') renderCatatanList();
+    if (page === 'share') renderSharePage();
     if (page === 'dashboard') setTimeout(renderCharts, 150);
 }
 
-function bukaModal(id) { document.getElementById(id).classList.add('active'); }
+function bukaModal(id) {
+    if (guestMode) { showToast('Mode tamu — tidak bisa mengubah data!', 'error'); return; }
+    document.getElementById(id).classList.add('active');
+}
 function tutupModal(id) { document.getElementById(id).classList.remove('active'); }
+
+// ============================================================
+// PROFILE PICTURE (BARU)
+// ============================================================
+function loadProfilePic() {
+    var pic = localStorage.getItem('profilePic');
+    if (!pic) return;
+    applyProfilePic(pic);
+}
+
+function applyProfilePic(pic) {
+    var avatar = document.getElementById('sidebarAvatar');
+    if (avatar) avatar.innerHTML = '<img src="' + pic + '" alt="Profile">';
+    var preview = document.getElementById('profilePreview');
+    if (preview) preview.innerHTML = '<img src="' + pic + '" alt="Profile">';
+    var profilePicInput = document.getElementById('inputProfilePic');
+    if (profilePicInput) profilePicInput.value = pic.startsWith('data:') ? '' : pic;
+}
+
+function updateProfilePreview() {
+    var url = document.getElementById('inputProfilePic').value.trim();
+    var preview = document.getElementById('profilePreview');
+    if (url) {
+        preview.innerHTML = '<img src="' + escapeHtml(url) + '" onerror="this.parentNode.innerHTML=\'👤\'">';
+    } else if (!localStorage.getItem('profilePic')) {
+        preview.innerHTML = '👤';
+    }
+}
+
+function resetProfilePic() {
+    if (guestMode) return;
+    if (!confirm('Hapus foto profil?')) return;
+    localStorage.removeItem('profilePic');
+    document.getElementById('profilePreview').innerHTML = '👤';
+    document.getElementById('inputProfilePic').value = '';
+    var adminName = document.getElementById('adminName').innerText || 'Admin';
+    document.getElementById('sidebarAvatar').innerHTML = adminName.charAt(0).toUpperCase();
+    showToast('Foto profil dihapus', 'info');
+}
 
 // ============================================================
 // PENGATURAN
 // ============================================================
 function bukaPengaturan() {
+    if (guestMode) { showToast('Mode tamu — tidak bisa buka pengaturan!', 'error'); return; }
     document.getElementById('inputNamaApp').value = localStorage.getItem('namaApp') || 'GajiKu Pro';
     document.getElementById('inputAdmin').value = localStorage.getItem('adminName') || 'ADMIN GAJI';
     document.getElementById('inputNewUser').value = '';
     document.getElementById('inputNewPass').value = '';
+    var pic = localStorage.getItem('profilePic') || '';
+    document.getElementById('inputProfilePic').value = pic.startsWith('data:') ? '' : pic;
+    if (pic) {
+        document.getElementById('profilePreview').innerHTML = '<img src="' + pic + '" alt="Profile">';
+    } else {
+        document.getElementById('profilePreview').innerHTML = '👤';
+    }
     bukaModal('modalPengaturan');
 }
 
 function simpanPengaturan() {
+    if (guestMode) return;
+
+    // Simpan foto profil
+    var picUrl = document.getElementById('inputProfilePic').value.trim();
+    if (picUrl) {
+        localStorage.setItem('profilePic', picUrl);
+        applyProfilePic(picUrl);
+    }
+
     localStorage.setItem('namaApp', document.getElementById('inputNamaApp').value);
     localStorage.setItem('adminName', document.getElementById('inputAdmin').value);
 
@@ -1353,6 +1669,150 @@ function simpanPengaturan() {
 
     showToast('Pengaturan disimpan!', 'success');
     setTimeout(function() { location.reload(); }, 800);
+}
+
+// ============================================================
+// SHARE FUNCTIONS (BARU)
+// ============================================================
+function renderSharePage() {
+    if (guestMode) return;
+
+    // Build checkboxes
+    var html = '';
+    ALL_PAGES.forEach(function(p) {
+        if (p === 'share') return; // Jangan izinkan share halaman share
+        html += '<label class="share-page-item">' +
+            '<input type="checkbox" value="' + p + '" onchange="updateShareCheckbox(this)"> ' +
+            (PAGE_LABELS[p] || p) +
+        '</label>';
+    });
+    document.getElementById('sharePageCheckboxes').innerHTML = html;
+
+    renderShareList();
+}
+
+function updateShareCheckbox(el) {
+    el.parentElement.classList.toggle('checked', el.checked);
+}
+
+function generateShareLink() {
+    if (guestMode) return;
+
+    var selected = [];
+    document.querySelectorAll('#sharePageCheckboxes input[type="checkbox"]:checked').forEach(function(cb) {
+        selected.push(cb.value);
+    });
+
+    if (selected.length === 0) {
+        showToast('Pilih minimal 1 halaman!', 'error');
+        return;
+    }
+
+    var recipient = document.getElementById('shareRecipient').value.trim() || 'Tanpa Nama';
+    var expiryDays = parseInt(document.getElementById('shareExpiry').value) || 0;
+
+    // Generate token
+    var token = 'ARW' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase();
+
+    var shareData = {
+        token: token,
+        recipient: recipient,
+        pages: selected,
+        created: Date.now(),
+        expiry: expiryDays
+    };
+
+    localStorage.setItem('share_' + token, JSON.stringify(shareData));
+
+    // Build URL
+    var baseUrl = window.location.origin + window.location.pathname;
+    var shareUrl = baseUrl + '?share=' + token;
+
+    document.getElementById('shareLinkText').innerText = shareUrl;
+    document.getElementById('shareLinkResult').classList.add('show');
+    document.getElementById('shareLinkResult').dataset.token = token;
+
+    showToast('✅ Link berhasil dibuat!', 'success');
+    renderShareList();
+}
+
+function copyShareLink() {
+    var text = document.getElementById('shareLinkText').innerText;
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(function() {
+            showToast('Link tersalin!', 'success');
+        }).catch(function() { fallbackCopy(text, 'Link'); });
+    } else {
+        fallbackCopy(text, 'Link');
+    }
+}
+
+function testShareLink() {
+    var token = document.getElementById('shareLinkResult').dataset.token;
+    if (!token) return;
+    var url = window.location.origin + window.location.pathname + '?share=' + token;
+    window.open(url, '_blank');
+}
+
+function renderShareList() {
+    var list = [];
+    for (var i = 0; i < localStorage.length; i++) {
+        var key = localStorage.key(i);
+        if (key.indexOf('share_') === 0) {
+            try {
+                var data = JSON.parse(localStorage.getItem(key));
+                if (data && data.token) list.push(data);
+            } catch(e) {}
+        }
+    }
+
+    list.sort(function(a, b) { return b.created - a.created; });
+
+    var html = list.map(function(s) {
+        var createdDate = new Date(s.created).toLocaleString('id-ID');
+        var expiryText = s.expiry === 0 ? 'Selamanya' : s.expiry + ' hari';
+        var isExpired = false;
+        if (s.expiry > 0) {
+            isExpired = Date.now() > s.created + (s.expiry * 24 * 60 * 60 * 1000);
+        }
+        var statusBadge = isExpired ? '<span class="badge badge-red">Kadaluarsa</span>' : '<span class="badge badge-green">Aktif</span>';
+
+        var pagesText = s.pages.map(function(p) { return PAGE_LABELS[p] || p; }).join(', ');
+        var url = window.location.origin + window.location.pathname + '?share=' + s.token;
+
+        return '<div class="share-item">' +
+            '<div class="share-item-info">' +
+                '<strong>👤 ' + escapeHtml(s.recipient) + ' ' + statusBadge + '</strong>' +
+                '<small>🔗 ' + url + '</small>' +
+                '<div class="share-item-pages">📄 ' + pagesText + '</div>' +
+                '<small style="margin-top:4px;">📅 Dibuat: ' + createdDate + ' • ⏳ ' + expiryText + '</small>' +
+            '</div>' +
+            '<div class="share-actions">' +
+                '<button class="btn btn-info btn-sm" onclick="copyShareUrl(\'' + s.token + '\')">📋</button>' +
+                '<button class="btn btn-danger btn-sm" onclick="deleteShare(\'' + s.token + '\')">🗑️</button>' +
+            '</div>' +
+        '</div>';
+    }).join('');
+
+    document.getElementById('shareList').innerHTML = html || '<div class="empty">Belum ada link yang dibuat</div>';
+}
+
+function copyShareUrl(token) {
+    var url = window.location.origin + window.location.pathname + '?share=' + token;
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(function() {
+            showToast('Link tersalin!', 'success');
+        }).catch(function() { fallbackCopy(url, 'Link'); });
+    } else {
+        fallbackCopy(url, 'Link');
+    }
+}
+
+function deleteShare(token) {
+    if (!confirm('Hapus link ini? Rekan yang sudah punya link tidak akan bisa akses lagi.')) return;
+    localStorage.removeItem('share_' + token);
+    renderShareList();
+    showToast('Link dihapus', 'info');
 }
 
 // ============================================================
@@ -1393,8 +1853,8 @@ function getBgStyle(v) {
 }
 
 function applyBg(value) {
+    if (guestMode) return;
     localStorage.setItem('bgTheme', value);
-    // Hapus custom background jika ada
     localStorage.removeItem('dashBg');
     applyDashBg();
     renderBgPicker();
@@ -1402,7 +1862,7 @@ function applyBg(value) {
 }
 
 // ============================================================
-// BACKGROUND DASHBOARD CUSTOM (FOTO/VIDEO URL) - BARU
+// BACKGROUND DASHBOARD CUSTOM
 // ============================================================
 var dashBgType = 'none';
 
@@ -1445,6 +1905,7 @@ function loadDashBgForm() {
 }
 
 function simpanDashBg() {
+    if (guestMode) return;
     if (dashBgType === 'none') {
         localStorage.removeItem('dashBg');
         applyDashBg();
@@ -1463,6 +1924,7 @@ function simpanDashBg() {
 }
 
 function resetDashBg() {
+    if (guestMode) return;
     localStorage.removeItem('dashBg');
     loadDashBgForm();
     applyDashBg();
@@ -1476,7 +1938,6 @@ function applyDashBg() {
     var overlay = document.getElementById('dashBgOverlay');
     var bgTheme = localStorage.getItem('bgTheme') || 'purple-night';
 
-    // Reset
     layer.style.background = '';
     layer.style.display = 'none';
     video.style.display = 'none';
@@ -1488,7 +1949,6 @@ function applyDashBg() {
 
     if (!saved) return;
 
-    // Sembunyikan body background animation
     document.body.style.background = 'transparent';
     document.body.style.animation = 'none';
 
@@ -1505,12 +1965,33 @@ function applyDashBg() {
     }
 }
 
-// Attach event input URL
 document.addEventListener('DOMContentLoaded', function() {
     var inp1 = document.getElementById('inputLoginBgUrl');
     if (inp1) inp1.addEventListener('input', updateLoginBgPreview);
     var inp2 = document.getElementById('inputDashBgUrl');
     if (inp2) inp2.addEventListener('input', updateDashBgPreview);
+    var inp3 = document.getElementById('inputProfilePic');
+    if (inp3) inp3.addEventListener('input', updateProfilePreview);
+
+    // File upload handler
+    var fileInput = document.getElementById('inputProfileFile');
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            if (!file) return;
+            if (file.size > 500000) {
+                showToast('File terlalu besar! Max 500KB', 'error');
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function(ev) {
+                document.getElementById('inputProfilePic').value = ev.target.result;
+                updateProfilePreview();
+                showToast('Foto siap disimpan! Klik Simpan.', 'info');
+            };
+            reader.readAsDataURL(file);
+        });
+    }
 });
 
 // ============================================================
@@ -1559,6 +2040,7 @@ function loadLoginBgForm() {
 }
 
 function simpanLoginBg() {
+    if (guestMode) return;
     var data = {
         type: loginBgType,
         url: document.getElementById('inputLoginBgUrl').value.trim(),
@@ -1573,6 +2055,7 @@ function simpanLoginBg() {
 }
 
 function resetLoginBg() {
+    if (guestMode) return;
     localStorage.removeItem('loginBg');
     loadLoginBgForm();
     applyLoginBg();
@@ -1609,6 +2092,7 @@ function applyLoginBg() {
 // GAJI
 // ============================================================
 function bukaFormGaji() {
+    if (guestMode) return;
     document.getElementById('inKaryawanGaji').innerHTML = db.karyawan.map(function(k) {
         return '<option value="' + k.id + '">' + k.nama + '</option>';
     }).join('');
@@ -1619,6 +2103,7 @@ function bukaFormGaji() {
 }
 
 function simpanGaji() {
+    if (guestMode) return;
     var data = {
         id: Date.now(),
         bulan: document.getElementById('inBulan').value,
@@ -1636,6 +2121,7 @@ function simpanGaji() {
 }
 
 function hapusGaji(id) {
+    if (guestMode) return;
     if (!confirm('Hapus data gaji ini?')) return;
     db.gaji = db.gaji.filter(function(x) { return x.id !== id; });
     saveDB();
@@ -1647,6 +2133,7 @@ function hapusGaji(id) {
 // BONUS
 // ============================================================
 function bukaFormBonus() {
+    if (guestMode) return;
     document.getElementById('inKaryawanBonus').innerHTML = db.karyawan.map(function(k) {
         return '<option value="' + k.id + '">' + k.nama + '</option>';
     }).join('');
@@ -1654,6 +2141,7 @@ function bukaFormBonus() {
 }
 
 function simpanBonus() {
+    if (guestMode) return;
     var data = {
         id: Date.now(),
         periode: document.getElementById('inPeriode').value + ' ' + document.getElementById('inTahun').value,
@@ -1670,6 +2158,7 @@ function simpanBonus() {
 }
 
 function hapusBonus(id) {
+    if (guestMode) return;
     if (!confirm('Hapus bonus ini?')) return;
     db.bonus = db.bonus.filter(function(x) { return x.id !== id; });
     saveDB();
@@ -1681,6 +2170,7 @@ function hapusBonus(id) {
 // PENGELUARAN
 // ============================================================
 function bukaFormPengeluaran() {
+    if (guestMode) return;
     document.getElementById('editPengeluaranId').value = '';
     document.getElementById('inTanggalPengeluaran').value = new Date().toISOString().slice(0,10);
     document.getElementById('inKategoriPengeluaran').value = 'Operasional';
@@ -1690,6 +2180,7 @@ function bukaFormPengeluaran() {
 }
 
 function editPengeluaran(id) {
+    if (guestMode) return;
     var p = db.pengeluaran.find(function(x) { return x.id === id; });
     if (!p) return showToast('Data tidak ditemukan!', 'error');
     document.getElementById('editPengeluaranId').value = id;
@@ -1701,6 +2192,7 @@ function editPengeluaran(id) {
 }
 
 function simpanPengeluaran() {
+    if (guestMode) return;
     var id = document.getElementById('editPengeluaranId').value;
     var data = {
         id: id ? parseInt(id) : Date.now(),
@@ -1728,6 +2220,7 @@ function simpanPengeluaran() {
 }
 
 function hapusPengeluaran(id) {
+    if (guestMode) return;
     if (!confirm('Hapus pengeluaran ini?')) return;
     db.pengeluaran = db.pengeluaran.filter(function(x) { return x.id !== id; });
     saveDB();
@@ -1760,16 +2253,16 @@ function renderPengeluaranTable() {
     var html = list.map(function(p) {
         var tgl = new Date(p.tanggal).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
         var periode = p.tanggal.slice(0,7);
+        var aksiHtml = guestMode ? '<span style="color:#94a3b8; font-size:11px;">👁️ Lihat</span>' :
+            '<button class="btn btn-warning btn-sm" onclick="editPengeluaran(' + p.id + ')">✏️</button>' +
+            '<button class="btn btn-danger btn-sm" onclick="hapusPengeluaran(' + p.id + ')">🗑️</button>';
         return '<tr>' +
             '<td>' + tgl + '</td>' +
             '<td><span class="badge badge-red">' + escapeHtml(p.kategori) + '</span></td>' +
             '<td>' + escapeHtml(p.keterangan) + '</td>' +
             '<td style="font-weight:bold; color:#f87171;">-' + formatRp(p.jumlah) + '</td>' +
             '<td>' + periode + '</td>' +
-            '<td>' +
-                '<button class="btn btn-warning btn-sm" onclick="editPengeluaran(' + p.id + ')">✏️</button>' +
-                '<button class="btn btn-danger btn-sm" onclick="hapusPengeluaran(' + p.id + ')">🗑️</button>' +
-            '</td>' +
+            '<td>' + aksiHtml + '</td>' +
             '</tr>';
     }).join('');
 
@@ -1821,6 +2314,7 @@ function renderPengeluaranTable() {
 // CATATAN
 // ============================================================
 function bukaFormCatatan() {
+    if (guestMode) return;
     document.getElementById('judulModalCatatan').innerText = '📝 Tambah Catatan';
     document.getElementById('editCatatanId').value = '';
     document.getElementById('inJudulCatatan').value = '';
@@ -1830,6 +2324,7 @@ function bukaFormCatatan() {
 }
 
 function editCatatan(id) {
+    if (guestMode) return;
     var c = db.catatan.find(function(x) { return x.id === id; });
     if (!c) return showToast('Catatan tidak ditemukan!', 'error');
     document.getElementById('judulModalCatatan').innerText = '✏️ Edit Catatan';
@@ -1848,6 +2343,7 @@ function randomFoto() {
 }
 
 function simpanCatatan() {
+    if (guestMode) return;
     var id = document.getElementById('editCatatanId').value;
     var judul = document.getElementById('inJudulCatatan').value.trim();
     var isi = document.getElementById('inIsiCatatan').value.trim();
@@ -1884,6 +2380,7 @@ function simpanCatatan() {
 }
 
 function hapusCatatan(id) {
+    if (guestMode) return;
     if (!confirm('Hapus catatan ini?')) return;
     db.catatan = db.catatan.filter(function(x) { return x.id !== id; });
     saveDB();
@@ -1895,22 +2392,24 @@ function hapusCatatan(id) {
 function renderCatatanList() {
     var list = db.catatan.slice().reverse();
     var html = list.map(function(c) {
+        var actions = guestMode ? '' :
+            '<div class="note-card-actions">' +
+                '<button class="btn btn-warning btn-sm" onclick="editCatatan(' + c.id + ')">✏️ Edit</button>' +
+                '<button class="btn btn-danger btn-sm" onclick="hapusCatatan(' + c.id + ')">🗑️ Hapus</button>' +
+            '</div>';
         return '<div class="note-card">' +
             (c.foto ? '<img class="note-card-img" src="' + escapeHtml(c.foto) + '" onerror="this.style.display=\'none\'">' : '') +
             '<div class="note-card-body">' +
                 '<h4>' + escapeHtml(c.judul) + '</h4>' +
                 '<div class="meta">📅 ' + escapeHtml(c.tanggal) + '</div>' +
                 '<p>' + escapeHtml(c.isi) + '</p>' +
-                '<div class="note-card-actions">' +
-                    '<button class="btn btn-warning btn-sm" onclick="editCatatan(' + c.id + ')">✏️ Edit</button>' +
-                    '<button class="btn btn-danger btn-sm" onclick="hapusCatatan(' + c.id + ')">🗑️ Hapus</button>' +
-                '</div>' +
+                actions +
             '</div>' +
         '</div>';
     }).join('');
 
     var el = document.getElementById('listCatatan');
-    if (el) el.innerHTML = html || '<div class="empty" style="grid-column:1/-1;">Belum ada catatan. Klik "+ Tambah Catatan" untuk mulai.</div>';
+    if (el) el.innerHTML = html || '<div class="empty" style="grid-column:1/-1;">Belum ada catatan.</div>';
 
     var dashList = db.catatan.slice().reverse().slice(0, 3);
     var dashHtml = dashList.map(function(c) {
@@ -1931,6 +2430,7 @@ function renderCatatanList() {
 // SCRIPT
 // ============================================================
 function bukaFormScript() {
+    if (guestMode) return;
     document.getElementById('judulModalScript').innerText = '📜 Simpan Script Baru';
     document.getElementById('editScriptId').value = '';
     document.getElementById('inNamaScript').value = '';
@@ -1939,6 +2439,7 @@ function bukaFormScript() {
 }
 
 function editScript(id) {
+    if (guestMode) return;
     var s = db.script.find(function(x) { return x.id === id; });
     if (!s) return showToast('Script tidak ditemukan!', 'error');
     document.getElementById('judulModalScript').innerText = '✏️ Edit Script';
@@ -1949,6 +2450,7 @@ function editScript(id) {
 }
 
 function simpanScript() {
+    if (guestMode) return;
     var id = document.getElementById('editScriptId').value;
     var nama = document.getElementById('inNamaScript').value.trim();
     var isi = document.getElementById('inIsiScript').value.trim();
@@ -1986,7 +2488,7 @@ function fallbackCopy(text, nama) {
     ta.value = text;
     document.body.appendChild(ta);
     ta.select();
-    try { document.execCommand('copy'); showToast('Script "' + nama + '" tersalin!', 'success'); }
+    try { document.execCommand('copy'); showToast('"' + nama + '" tersalin!', 'success'); }
     catch(e) { showToast('Gagal copy!', 'error'); }
     ta.remove();
 }
@@ -2013,6 +2515,7 @@ function copyFromView() {
 }
 
 function hapusScript(id) {
+    if (guestMode) return;
     if (!confirm('Hapus script ini?')) return;
     db.script = db.script.filter(function(x) { return x.id !== id; });
     saveDB();
@@ -2024,6 +2527,7 @@ function hapusScript(id) {
 // EXPORT
 // ============================================================
 function exportCSV(jenis) {
+    if (guestMode) { showToast('Mode tamu — tidak bisa export!', 'error'); return; }
     var data = db[jenis];
     if (!data || !data.length) return showToast('Data kosong!', 'error');
     var headers = Object.keys(data[0]);
@@ -2040,6 +2544,7 @@ function exportCSV(jenis) {
 }
 
 function backupJSON() {
+    if (guestMode) { showToast('Mode tamu — tidak bisa backup!', 'error'); return; }
     var blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -2113,33 +2618,37 @@ function renderAll() {
         var k = db.karyawan.find(function(x) { return x.id == g.karyawanId; });
         var total = g.gaji + g.tunjangan;
         var warna = g.status === 'Lunas' ? 'badge-green' : 'badge-red';
+        var aksi = guestMode ? '<span style="color:#94a3b8; font-size:11px;">👁️</span>' : '<button class="btn btn-danger btn-sm" onclick="hapusGaji(' + g.id + ')">🗑️</button>';
         return '<tr><td>' + g.bulan + '</td><td>' + (k ? escapeHtml(k.nama) : '-') + '</td><td>' + formatRp(g.gaji) + '</td>' +
             '<td>' + formatRp(g.tunjangan) + '</td><td style="font-weight:bold;">' + formatRp(total) + '</td>' +
             '<td><span class="badge ' + warna + '">' + g.status + '</span></td>' +
-            '<td><button class="btn btn-danger btn-sm" onclick="hapusGaji(' + g.id + ')">🗑️</button></td></tr>';
+            '<td>' + aksi + '</td></tr>';
     }).join('') || '<tr><td colspan="7" class="empty">Belum ada data gaji</td></tr>';
 
     el = document.getElementById('tabelBonus');
     if (el) el.innerHTML = db.bonus.map(function(b) {
         var k = db.karyawan.find(function(x) { return x.id == b.karyawanId; });
+        var aksi = guestMode ? '<span style="color:#94a3b8; font-size:11px;">👁️</span>' : '<button class="btn btn-danger btn-sm" onclick="hapusBonus(' + b.id + ')">🗑️</button>';
         return '<tr><td>' + b.periode + '</td><td>' + (k ? escapeHtml(k.nama) : '-') + '</td>' +
             '<td style="font-weight:bold; color:#4ade80;">' + formatRp(b.jumlah) + '</td>' +
             '<td>' + escapeHtml(b.keterangan || '-') + '</td>' +
-            '<td><button class="btn btn-danger btn-sm" onclick="hapusBonus(' + b.id + ')">🗑️</button></td></tr>';
+            '<td>' + aksi + '</td></tr>';
     }).join('') || '<tr><td colspan="5" class="empty">Belum ada bonus</td></tr>';
 
     el = document.getElementById('listScript');
     if (el) el.innerHTML = db.script.map(function(s) {
+        var actions = guestMode ?
+            '<button type="button" class="btn btn-info btn-sm" onclick="viewScript(' + s.id + ')">👁️</button>' +
+            '<button type="button" class="btn btn-success btn-sm" onclick="bukaScript(' + s.id + ')">📋</button>' :
+            '<button type="button" class="btn btn-info btn-sm" onclick="viewScript(' + s.id + ')">👁️</button>' +
+            '<button type="button" class="btn btn-success btn-sm" onclick="bukaScript(' + s.id + ')">📋</button>' +
+            '<button type="button" class="btn btn-warning btn-sm" onclick="editScript(' + s.id + ')">✏️</button>' +
+            '<button type="button" class="btn btn-danger btn-sm" onclick="hapusScript(' + s.id + ')">🗑️</button>';
         return '<div class="script-card">' +
             '<div class="script-card-header"><div class="icon">📜</div>' +
             '<div><h4>' + escapeHtml(s.nama) + '</h4><small>📅 ' + escapeHtml(s.tanggal) + '</small></div></div>' +
             '<div class="script-card-preview" onclick="viewScript(' + s.id + ')">' + escapeHtml(s.isi || '(kosong)') + '</div>' +
-            '<div class="script-card-actions">' +
-            '<button type="button" class="btn btn-info btn-sm" onclick="viewScript(' + s.id + ')">👁️</button>' +
-            '<button type="button" class="btn btn-success btn-sm" onclick="bukaScript(' + s.id + ')">📋</button>' +
-            '<button type="button" class="btn btn-warning btn-sm" onclick="editScript(' + s.id + ')">✏️</button>' +
-            '<button type="button" class="btn btn-danger btn-sm" onclick="hapusScript(' + s.id + ')">🗑️</button>' +
-            '</div></div>';
+            '<div class="script-card-actions">' + actions + '</div></div>';
     }).join('') || '<div class="empty" style="grid-column: 1/-1;">Belum ada script tersimpan</div>';
 
     renderCatatanList();
@@ -2196,6 +2705,7 @@ function initApp() {
     document.getElementById('dateRange').innerText = fmt(start) + ' - ' + fmt(end);
 
     applyDashBg();
+    loadProfilePic();
 
     var namaApp = localStorage.getItem('namaApp');
     var adminName = localStorage.getItem('adminName');
@@ -2205,8 +2715,14 @@ function initApp() {
     }
     if (adminName) {
         document.getElementById('adminName').innerText = adminName;
-        document.getElementById('sidebarAvatar').innerText = adminName.charAt(0).toUpperCase();
+        if (!localStorage.getItem('profilePic')) {
+            document.getElementById('sidebarAvatar').innerText = adminName.charAt(0).toUpperCase();
+        }
         document.getElementById('adminFirstName').innerText = adminName.split(' ')[0];
+    }
+
+    if (guestMode) {
+        document.getElementById('profileStatus').innerText = '👁️ Mode Tamu';
     }
 
     renderAll();
@@ -2218,8 +2734,13 @@ function initApp() {
 window.addEventListener('load', function() {
     applyLoginBg();
 
+    // Cek guest mode dari URL
+    var isGuest = checkGuestMode();
+
     var loggedIn = localStorage.getItem('auth_logged_in') === 'true' 
-                || sessionStorage.getItem('auth_logged_in') === 'true';
+                || sessionStorage.getItem('auth_logged_in') === 'true'
+                || isGuest;
+
     if (loggedIn) {
         showApp();
     } else {
