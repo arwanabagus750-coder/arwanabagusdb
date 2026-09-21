@@ -28,10 +28,32 @@ body {
     background: linear-gradient(135deg, #1a0b2e 0%, #16213e 50%, #0f0f2e 100%);
     z-index: 9999;
     padding: 20px;
+    overflow: hidden;
 }
 #loginScreen.hidden { display: none !important; }
-
+#loginBgLayer {
+    position: absolute; inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+}
+#loginBgVideo {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    display: none;
+}
+#loginBgOverlay {
+    position: absolute; inset: 0;
+    background: rgba(10, 5, 25, 0.55);
+    z-index: 1;
+    display: none;
+}
 .login-box {
+    position: relative;
+    z-index: 2;
     background: rgba(30, 27, 75, 0.75);
     backdrop-filter: blur(30px);
     border: 1px solid rgba(139, 92, 246, 0.3);
@@ -190,15 +212,6 @@ body {
     color: #e2e8f0; font-size: 13px;
     display: flex; align-items: center; gap: 8px;
 }
-.icon-btn {
-    background: rgba(30,30,55,0.7);
-    border: 1px solid rgba(148,163,184,0.15);
-    width: 42px; height: 42px; border-radius: 10px;
-    cursor: pointer; font-size: 16px;
-    display: flex; align-items: center; justify-content: center;
-    color: #e2e8f0;
-}
-.icon-btn:hover { background: rgba(139,92,246,0.3); }
 .logout-btn {
     background: linear-gradient(135deg, #ef4444, #dc2626);
     border: none; color: white;
@@ -243,6 +256,7 @@ body {
 .stat-box h4 { font-size: 12px; color: #94a3b8; font-weight: 500; margin-bottom: 8px; }
 .stat-box .value { font-size: 22px; font-weight: 700; color: #e2e8f0; margin-bottom: 8px; }
 .stat-box .trend { font-size: 12px; color: #4ade80; font-weight: 600; }
+.stat-box .trend.down { color: #f87171; }
 
 .dashboard-row {
     display: grid;
@@ -301,15 +315,6 @@ body {
     gap: 10px; margin-bottom: 15px;
 }
 .table-header h2 { font-size: 15px; color: #e2e8f0; }
-.search-box {
-    padding: 9px 14px;
-    border: 1px solid rgba(148,163,184,0.15);
-    border-radius: 10px; font-size: 13px;
-    background: rgba(139,92,246,0.1);
-    color: #e2e8f0; width: 220px;
-}
-.search-box::placeholder { color: #94a3b8; }
-.search-box:focus { outline: none; border-color: #8b5cf6; }
 
 table { width: 100%; border-collapse: collapse; margin-top: 10px; }
 th, td {
@@ -345,7 +350,6 @@ tr:hover { background: rgba(139,92,246,0.08); }
 .badge-green { background: rgba(16,185,129,0.2); color: #34d399; }
 .badge-red { background: rgba(239,68,68,0.2); color: #f87171; }
 
-/* ============ SCRIPT CARD (FIXED) ============ */
 .script-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -400,6 +404,87 @@ tr:hover { background: rgba(139,92,246,0.08); }
 .script-card-preview::-webkit-scrollbar-thumb:hover { background: #a78bfa; }
 .script-card-actions { display: flex; gap: 6px; margin-top: auto; padding-top: 12px; }
 .script-card-actions .btn { flex: 1; justify-content: center; min-width: 50px; font-size: 11px; padding: 8px 6px; }
+
+/* ============ CATATAN (NOTEPAD) ============ */
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px; margin-top: 20px;
+}
+.note-card {
+    background: linear-gradient(135deg, rgba(30, 27, 75, 0.95), rgba(76, 29, 149, 0.85));
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    transition: 0.3s;
+    min-width: 0;
+}
+.note-card:hover {
+    transform: translateY(-5px);
+    border-color: #8b5cf6;
+    box-shadow: 0 20px 50px rgba(139,92,246,0.5);
+}
+.note-card-img {
+    width: 100%; height: 160px;
+    object-fit: cover;
+    background: #0f0f1e;
+    display: block;
+}
+.note-card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.note-card-body h4 { font-size: 14px; color: #fff; margin-bottom: 8px; word-break: break-word; }
+.note-card-body p {
+    font-size: 13px; color: #cbd5e1;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+    flex: 1;
+    margin-bottom: 10px;
+}
+.note-card-body .meta {
+    font-size: 11px; color: rgba(255,255,255,0.5);
+    margin-bottom: 10px;
+}
+.note-card-actions { display: flex; gap: 6px; }
+.note-card-actions .btn { flex: 1; justify-content: center; font-size: 11px; padding: 7px 5px; }
+
+/* ============ LOGIN BACKGROUND PICKER ============ */
+.bgtype-tabs {
+    display: flex; gap: 8px; margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+.bgtype-tab {
+    padding: 8px 16px; border-radius: 10px;
+    background: rgba(139,92,246,0.15);
+    border: 1px solid rgba(139,92,246,0.3);
+    color: #a78bfa; cursor: pointer;
+    font-size: 13px; font-weight: 600;
+    transition: 0.2s;
+}
+.bgtype-tab:hover { background: rgba(139,92,246,0.3); }
+.bgtype-tab.active {
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    color: white;
+    border-color: transparent;
+}
+.url-preview {
+    width: 100%; height: 200px;
+    border-radius: 12px;
+    background: rgba(0,0,0,0.4);
+    border: 1px dashed rgba(139,92,246,0.4);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    margin: 12px 0;
+    color: #94a3b8;
+    font-size: 13px;
+    text-align: center;
+    padding: 10px;
+}
+.url-preview img, .url-preview video {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+}
 
 .bg-grid {
     display: grid;
@@ -476,6 +561,9 @@ tr:hover { background: rgba(139,92,246,0.08); }
 
 <!-- ============ LOGIN SCREEN ============ -->
 <div id="loginScreen">
+    <div id="loginBgLayer"></div>
+    <video id="loginBgVideo" autoplay muted loop playsinline></video>
+    <div id="loginBgOverlay"></div>
     <div class="login-box">
         <div class="login-logo"><span>G</span></div>
         <h1>Login Dashboard Arwana</h1>
@@ -495,7 +583,6 @@ tr:hover { background: rgba(139,92,246,0.08); }
         </div>
         <button class="login-btn" onclick="doLogin()">🔓 Sign In</button>
 
-        <!-- ✅ INFO DEFAULT DISEMBUNYIKAN -->
         <div class="login-info" style="display:none;">
             💡 <b>Default:</b> Username: <b>arwanabagus</b> | Password: <b>252006</b>
         </div>
@@ -520,10 +607,13 @@ tr:hover { background: rgba(139,92,246,0.08); }
     <div class="menu-section">Keuangan</div>
     <a class="menu-item" onclick="showPage('gaji', this)">💰 Daftar Gaji</a>
     <a class="menu-item" onclick="showPage('bonus', this)">🎁 Bonus Per 3 Bulan</a>
+    <a class="menu-item" onclick="showPage('pengeluaran', this)">💸 Pengeluaran</a>
 
     <div class="menu-section">Tampilan</div>
     <a class="menu-item" onclick="showPage('background', this)">🖼️ Ganti Background</a>
-    <a class="menu-item" onclick="showPage('script', this)">📝 Simpan Script</a>
+    <a class="menu-item" onclick="showPage('loginbg', this)">🎨 Background Login</a>
+    <a class="menu-item" onclick="showPage('catatan', this)">📝 Catatan</a>
+    <a class="menu-item" onclick="showPage('script', this)">📜 Simpan Script</a>
     <a class="menu-item" onclick="showPage('export', this)">📤 Export Data</a>
     <a class="menu-item" onclick="bukaPengaturan()">⚙️ Pengaturan</a>
 
@@ -579,6 +669,33 @@ tr:hover { background: rgba(139,92,246,0.08); }
             </div>
         </div>
 
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="icon-wrap">💸</div>
+                <h4>Pengeluaran Hari Ini</h4>
+                <div class="value" id="statKeluarHariIni">Rp 0</div>
+                <div class="trend down" id="trendKeluarHariIni">—</div>
+            </div>
+            <div class="stat-box">
+                <div class="icon-wrap">📉</div>
+                <h4>Pengeluaran Bulan Ini</h4>
+                <div class="value" id="statKeluarBulanIni">Rp 0</div>
+                <div class="trend down" id="trendKeluarBulanIni">—</div>
+            </div>
+            <div class="stat-box">
+                <div class="icon-wrap">📝</div>
+                <h4>Total Catatan</h4>
+                <div class="value" id="statCatatan">0</div>
+                <div class="trend">📌 Tersimpan</div>
+            </div>
+            <div class="stat-box">
+                <div class="icon-wrap">⚖️</div>
+                <h4>Saldo Bersih</h4>
+                <div class="value" id="statSaldo">Rp 0</div>
+                <div class="trend">💰 Gaji - Pengeluaran</div>
+            </div>
+        </div>
+
         <div class="dashboard-row">
             <div class="panel">
                 <div class="panel-header">
@@ -599,18 +716,24 @@ tr:hover { background: rgba(139,92,246,0.08); }
         <div class="dashboard-row">
             <div class="panel">
                 <div class="panel-header">
-                    <h3>📊 Pertumbuhan Gaji</h3>
-                    <div class="dropdown">Weekly ▾</div>
+                    <h3>💸 Pengeluaran Terbaru</h3>
+                    <div class="dropdown">7 hari ▾</div>
                 </div>
-                <div class="big-number" id="growthTotal">Rp 0</div>
-                <div class="big-trend">↑ 20.5% vs bulan lalu</div>
-                <canvas id="chartGrowth" height="70"></canvas>
+                <div class="top-list" id="pengeluaranTerbaruList" style="max-height:300px; overflow-y:auto;"></div>
             </div>
 
             <div class="panel">
                 <div class="panel-header"><h3>🥧 Distribusi Gaji</h3></div>
                 <canvas id="chartDistribusi" height="200"></canvas>
             </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header">
+                <h2>📌 Catatan Terbaru</h2>
+                <button class="btn btn-primary" onclick="showPage('catatan')">Lihat Semua</button>
+            </div>
+            <div class="notes-grid" id="catatanDashboardList"></div>
         </div>
 
         <div class="table-container">
@@ -652,11 +775,115 @@ tr:hover { background: rgba(139,92,246,0.08); }
         </div>
     </div>
 
+    <!-- PENGELUARAN (BARU) -->
+    <div id="page-pengeluaran" class="page">
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="icon-wrap">📅</div>
+                <h4>Pengeluaran Hari Ini</h4>
+                <div class="value" id="pengHariIni">Rp 0</div>
+                <div class="trend down">Total hari ini</div>
+            </div>
+            <div class="stat-box">
+                <div class="icon-wrap">📆</div>
+                <h4>Pengeluaran Bulan Ini</h4>
+                <div class="value" id="pengBulanIni">Rp 0</div>
+                <div class="trend down">Total bulan ini</div>
+            </div>
+            <div class="stat-box">
+                <div class="icon-wrap">📊</div>
+                <h4>Total Semua Pengeluaran</h4>
+                <div class="value" id="pengTotal">Rp 0</div>
+                <div class="trend down">Semua waktu</div>
+            </div>
+            <div class="stat-box">
+                <div class="icon-wrap">🔢</div>
+                <h4>Jumlah Transaksi</h4>
+                <div class="value" id="pengCount">0</div>
+                <div class="trend">🧾 Total entri</div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header">
+                <h2>💸 Daftar Pengeluaran</h2>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <select id="filterPengeluaran" onchange="renderPengeluaranTable()" style="padding:9px 14px; border-radius:10px; background:rgba(139,92,246,0.1); color:#e2e8f0; border:1px solid rgba(148,163,184,0.15); font-size:13px;">
+                        <option value="all">Semua</option>
+                        <option value="today">Hari Ini</option>
+                        <option value="week">7 Hari Terakhir</option>
+                        <option value="month">Bulan Ini</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="bukaFormPengeluaran()">+ Tambah Pengeluaran</button>
+                </div>
+            </div>
+            <table>
+                <thead><tr><th>TANGGAL</th><th>KATEGORI</th><th>KETERANGAN</th><th>JUMLAH</th><th>PERIODE</th><th>AKSI</th></tr></thead>
+                <tbody id="tabelPengeluaran"></tbody>
+            </table>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header"><h2>📊 Rekap Per Bulan</h2></div>
+            <table>
+                <thead><tr><th>BULAN</th><th>TOTAL PENGELUARAN</th><th>JUMLAH TRANSAKSI</th><th>RATA-RATA/HARI</th></tr></thead>
+                <tbody id="tabelRekapBulan"></tbody>
+            </table>
+        </div>
+    </div>
+
     <!-- BACKGROUND -->
     <div id="page-background" class="page">
         <div class="table-container">
-            <h2 style="color:#e2e8f0;">🖼️ Pilih Background</h2>
+            <h2 style="color:#e2e8f0;">🖼️ Pilih Background Dashboard</h2>
             <div class="bg-grid" id="bgGrid"></div>
+        </div>
+    </div>
+
+    <!-- BACKGROUND LOGIN (BARU) -->
+    <div id="page-loginbg" class="page">
+        <div class="table-container">
+            <h2 style="color:#e2e8f0;">🎨 Background Halaman Login</h2>
+            <p style="color:#94a3b8; font-size:13px; margin-top:5px;">Pilih tipe background untuk halaman login: gradient, foto (URL), atau video (URL).</p>
+
+            <div class="bgtype-tabs" style="margin-top:20px;">
+                <div class="bgtype-tab active" data-type="gradient" onclick="setLoginBgType('gradient')">🌈 Gradient</div>
+                <div class="bgtype-tab" data-type="image" onclick="setLoginBgType('image')">🖼️ Foto (URL)</div>
+                <div class="bgtype-tab" data-type="video" onclick="setLoginBgType('video')">🎬 Video (URL)</div>
+            </div>
+
+            <div class="form-group">
+                <label>URL Foto / Video (kosongkan untuk gradient):</label>
+                <input type="text" id="inputLoginBgUrl" placeholder="https://example.com/gambar.jpg atau https://example.com/video.mp4">
+            </div>
+
+            <div class="form-group">
+                <label>Overlay Gelap (agar teks terbaca):</label>
+                <select id="inputLoginBgOverlay">
+                    <option value="0.55">Sedang (55%)</option>
+                    <option value="0.3">Ringan (30%)</option>
+                    <option value="0.75">Gelap (75%)</option>
+                    <option value="0">Tanpa Overlay</option>
+                </select>
+            </div>
+
+            <div class="url-preview" id="loginBgPreview">Preview akan muncul di sini</div>
+
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="resetLoginBg()">🔄 Reset ke Default</button>
+                <button class="btn btn-primary" onclick="simpanLoginBg()">💾 Simpan Background Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATATAN (BARU) -->
+    <div id="page-catatan" class="page">
+        <div class="table-container">
+            <div class="table-header">
+                <h2>📝 Catatan & Foto Random</h2>
+                <button class="btn btn-primary" onclick="bukaFormCatatan()">+ Tambah Catatan</button>
+            </div>
+            <div class="notes-grid" id="listCatatan"></div>
         </div>
     </div>
 
@@ -664,7 +891,7 @@ tr:hover { background: rgba(139,92,246,0.08); }
     <div id="page-script" class="page">
         <div class="table-container">
             <div class="table-header">
-                <h2>📝 Script Tersimpan</h2>
+                <h2>📜 Script Tersimpan</h2>
                 <button class="btn btn-primary" onclick="bukaFormScript()">+ Tambah Script</button>
             </div>
             <div class="script-grid" id="listScript"></div>
@@ -679,6 +906,8 @@ tr:hover { background: rgba(139,92,246,0.08); }
                 <button class="btn btn-success btn-lg" onclick="exportCSV('karyawan')">📋 Export Karyawan</button>
                 <button class="btn btn-success btn-lg" onclick="exportCSV('gaji')">💰 Export Gaji</button>
                 <button class="btn btn-success btn-lg" onclick="exportCSV('bonus')">🎁 Export Bonus</button>
+                <button class="btn btn-success btn-lg" onclick="exportCSV('pengeluaran')">💸 Export Pengeluaran</button>
+                <button class="btn btn-success btn-lg" onclick="exportCSV('catatan')">📝 Export Catatan</button>
                 <button class="btn btn-primary btn-lg" onclick="backupJSON()">💾 Backup JSON</button>
             </div>
         </div>
@@ -742,10 +971,56 @@ tr:hover { background: rgba(139,92,246,0.08); }
     </div>
 </div>
 
+<!-- MODAL PENGELUARAN (BARU) -->
+<div id="modalPengeluaran" class="modal">
+    <div class="modal-content">
+        <h3>💸 Tambah Pengeluaran</h3>
+        <input type="hidden" id="editPengeluaranId">
+        <div class="form-group"><label>Tanggal:</label><input type="date" id="inTanggalPengeluaran"></div>
+        <div class="form-group"><label>Kategori:</label>
+            <select id="inKategoriPengeluaran">
+                <option>Operasional</option>
+                <option>Gaji Karyawan</option>
+                <option>Transportasi</option>
+                <option>Makan & Minum</option>
+                <option>Listrik & Air</option>
+                <option>Internet & Pulsa</option>
+                <option>Peralatan</option>
+                <option>Lainnya</option>
+            </select>
+        </div>
+        <div class="form-group"><label>Keterangan:</label><input type="text" id="inKetPengeluaran" placeholder="Contoh: Beli ATK kantor"></div>
+        <div class="form-group"><label>Jumlah (Rp):</label><input type="number" id="inJumlahPengeluaran"></div>
+        <div class="modal-buttons">
+            <button class="btn btn-secondary" onclick="tutupModal('modalPengeluaran')">Batal</button>
+            <button class="btn btn-primary" onclick="simpanPengeluaran()">Simpan</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL CATATAN (BARU) -->
+<div id="modalCatatan" class="modal">
+    <div class="modal-content" style="width:550px;">
+        <h3 id="judulModalCatatan">📝 Tambah Catatan</h3>
+        <input type="hidden" id="editCatatanId">
+        <div class="form-group"><label>Judul Catatan:</label><input type="text" id="inJudulCatatan" placeholder="Contoh: Ide bisnis baru"></div>
+        <div class="form-group">
+            <label>URL Foto Random (opsional):</label>
+            <input type="text" id="inFotoCatatan" placeholder="https://picsum.photos/400/300 atau kosongkan untuk acak">
+            <button type="button" class="btn btn-info btn-sm" style="margin-top:8px;" onclick="randomFoto()">🎲 Foto Random</button>
+        </div>
+        <div class="form-group"><label>Isi Catatan:</label><textarea id="inIsiCatatan" rows="6" placeholder="Tulis kata-kata / catatan di sini..."></textarea></div>
+        <div class="modal-buttons">
+            <button class="btn btn-secondary" onclick="tutupModal('modalCatatan')">Batal</button>
+            <button class="btn btn-primary" onclick="simpanCatatan()">Simpan</button>
+        </div>
+    </div>
+</div>
+
 <!-- MODAL SCRIPT -->
 <div id="modalScript" class="modal">
     <div class="modal-content" style="width:600px;">
-        <h3 id="judulModalScript">📝 Simpan Script</h3>
+        <h3 id="judulModalScript">📜 Simpan Script</h3>
         <input type="hidden" id="editScriptId">
         <div class="form-group"><label>Nama Script:</label><input type="text" id="inNamaScript"></div>
         <div class="form-group"><label>Isi Script:</label><textarea id="inIsiScript" rows="10" style="font-family:monospace; font-size:13px;"></textarea></div>
@@ -851,7 +1126,9 @@ var db = {
     ],
     gaji: JSON.parse(localStorage.getItem('db_gaji')) || [],
     bonus: JSON.parse(localStorage.getItem('db_bonus')) || [],
-    script: JSON.parse(localStorage.getItem('db_script')) || []
+    script: JSON.parse(localStorage.getItem('db_script')) || [],
+    pengeluaran: JSON.parse(localStorage.getItem('db_pengeluaran')) || [],
+    catatan: JSON.parse(localStorage.getItem('db_catatan')) || []
 };
 
 function saveDB() {
@@ -859,9 +1136,19 @@ function saveDB() {
     localStorage.setItem('db_gaji', JSON.stringify(db.gaji));
     localStorage.setItem('db_bonus', JSON.stringify(db.bonus));
     localStorage.setItem('db_script', JSON.stringify(db.script));
+    localStorage.setItem('db_pengeluaran', JSON.stringify(db.pengeluaran));
+    localStorage.setItem('db_catatan', JSON.stringify(db.catatan));
 }
 
 function formatRp(n) { return 'Rp ' + (n || 0).toLocaleString('id-ID'); }
+
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
 
 // ============================================================
 // TOAST
@@ -885,6 +1172,9 @@ function showPage(page, el) {
     if (el) el.classList.add('active');
     renderAll();
     if (page === 'background') renderBgPicker();
+    if (page === 'loginbg') loadLoginBgForm();
+    if (page === 'pengeluaran') renderPengeluaranTable();
+    if (page === 'catatan') renderCatatanList();
     if (page === 'dashboard') setTimeout(renderCharts, 150);
 }
 
@@ -916,7 +1206,7 @@ function simpanPengaturan() {
 }
 
 // ============================================================
-// BACKGROUND
+// BACKGROUND DASHBOARD
 // ============================================================
 var bgOptions = [
     { name: 'Purple Night', value: 'purple-night' },
@@ -960,6 +1250,105 @@ function applyBg(value) {
     renderBgPicker();
     showToast('Background diganti!', 'success');
 }
+
+// ============================================================
+// BACKGROUND LOGIN (BARU)
+// ============================================================
+var loginBgType = 'gradient';
+
+function setLoginBgType(type) {
+    loginBgType = type;
+    document.querySelectorAll('.bgtype-tab').forEach(function(t) {
+        t.classList.toggle('active', t.dataset.type === type);
+    });
+    updateLoginBgPreview();
+}
+
+function updateLoginBgPreview() {
+    var url = document.getElementById('inputLoginBgUrl').value.trim();
+    var preview = document.getElementById('loginBgPreview');
+
+    if (loginBgType === 'image' && url) {
+        preview.innerHTML = '<img src="' + escapeHtml(url) + '" onerror="this.parentNode.innerHTML=\'❌ Gambar gagal dimuat\'">';
+    } else if (loginBgType === 'video' && url) {
+        preview.innerHTML = '<video src="' + escapeHtml(url) + '" autoplay muted loop playsinline onerror="this.parentNode.innerHTML=\'❌ Video gagal dimuat\'"></video>';
+    } else if (loginBgType === 'gradient') {
+        preview.innerHTML = '<div style="width:100%; height:100%; background: linear-gradient(135deg, #1a0b2e 0%, #16213e 50%, #0f0f2e 100%); border-radius:12px;"></div>';
+    } else {
+        preview.innerHTML = 'Preview akan muncul di sini';
+    }
+}
+
+function loadLoginBgForm() {
+    var saved = JSON.parse(localStorage.getItem('loginBg') || 'null');
+    if (saved) {
+        loginBgType = saved.type || 'gradient';
+        document.getElementById('inputLoginBgUrl').value = saved.url || '';
+        document.getElementById('inputLoginBgOverlay').value = saved.overlay != null ? saved.overlay : '0.55';
+    } else {
+        loginBgType = 'gradient';
+        document.getElementById('inputLoginBgUrl').value = '';
+        document.getElementById('inputLoginBgOverlay').value = '0.55';
+    }
+    document.querySelectorAll('.bgtype-tab').forEach(function(t) {
+        t.classList.toggle('active', t.dataset.type === loginBgType);
+    });
+    updateLoginBgPreview();
+}
+
+function simpanLoginBg() {
+    var data = {
+        type: loginBgType,
+        url: document.getElementById('inputLoginBgUrl').value.trim(),
+        overlay: parseFloat(document.getElementById('inputLoginBgOverlay').value)
+    };
+    if (data.type !== 'gradient' && !data.url) {
+        return showToast('URL wajib diisi untuk tipe foto/video!', 'error');
+    }
+    localStorage.setItem('loginBg', JSON.stringify(data));
+    applyLoginBg();
+    showToast('Background login disimpan!', 'success');
+}
+
+function resetLoginBg() {
+    localStorage.removeItem('loginBg');
+    loadLoginBgForm();
+    applyLoginBg();
+    showToast('Background login direset!', 'info');
+}
+
+function applyLoginBg() {
+    var saved = JSON.parse(localStorage.getItem('loginBg') || 'null');
+    var layer = document.getElementById('loginBgLayer');
+    var video = document.getElementById('loginBgVideo');
+    var overlay = document.getElementById('loginBgOverlay');
+
+    // Reset
+    layer.style.backgroundImage = '';
+    layer.style.background = 'linear-gradient(135deg, #1a0b2e 0%, #16213e 50%, #0f0f2e 100%)';
+    video.style.display = 'none';
+    video.src = '';
+    overlay.style.display = 'none';
+
+    if (!saved || saved.type === 'gradient') return;
+
+    overlay.style.display = 'block';
+    overlay.style.background = 'rgba(10, 5, 25, ' + (saved.overlay != null ? saved.overlay : 0.55) + ')';
+
+    if (saved.type === 'image') {
+        layer.style.background = 'url("' + saved.url + '") center/cover no-repeat';
+    } else if (saved.type === 'video') {
+        video.src = saved.url;
+        video.style.display = 'block';
+        video.play().catch(function(){});
+    }
+}
+
+// Attach event untuk input URL
+document.addEventListener('DOMContentLoaded', function() {
+    var inp = document.getElementById('inputLoginBgUrl');
+    if (inp) inp.addEventListener('input', updateLoginBgPreview);
+});
 
 // ============================================================
 // GAJI
@@ -1034,10 +1423,261 @@ function hapusBonus(id) {
 }
 
 // ============================================================
+// PENGELUARAN (BARU)
+// ============================================================
+function bukaFormPengeluaran() {
+    document.getElementById('editPengeluaranId').value = '';
+    document.getElementById('inTanggalPengeluaran').value = new Date().toISOString().slice(0,10);
+    document.getElementById('inKategoriPengeluaran').value = 'Operasional';
+    document.getElementById('inKetPengeluaran').value = '';
+    document.getElementById('inJumlahPengeluaran').value = '';
+    bukaModal('modalPengeluaran');
+}
+
+function editPengeluaran(id) {
+    var p = db.pengeluaran.find(function(x) { return x.id === id; });
+    if (!p) return showToast('Data tidak ditemukan!', 'error');
+    document.getElementById('editPengeluaranId').value = id;
+    document.getElementById('inTanggalPengeluaran').value = p.tanggal;
+    document.getElementById('inKategoriPengeluaran').value = p.kategori;
+    document.getElementById('inKetPengeluaran').value = p.keterangan;
+    document.getElementById('inJumlahPengeluaran').value = p.jumlah;
+    bukaModal('modalPengeluaran');
+}
+
+function simpanPengeluaran() {
+    var id = document.getElementById('editPengeluaranId').value;
+    var data = {
+        id: id ? parseInt(id) : Date.now(),
+        tanggal: document.getElementById('inTanggalPengeluaran').value,
+        kategori: document.getElementById('inKategoriPengeluaran').value,
+        keterangan: document.getElementById('inKetPengeluaran').value.trim() || '-',
+        jumlah: parseInt(document.getElementById('inJumlahPengeluaran').value) || 0
+    };
+
+    if (!data.tanggal || !data.jumlah) return showToast('Tanggal dan Jumlah wajib diisi!', 'error');
+
+    if (id) {
+        var idx = db.pengeluaran.findIndex(function(x) { return x.id == id; });
+        db.pengeluaran[idx] = data;
+        showToast('Pengeluaran diupdate!', 'success');
+    } else {
+        db.pengeluaran.push(data);
+        showToast('Pengeluaran disimpan!', 'success');
+    }
+
+    saveDB();
+    tutupModal('modalPengeluaran');
+    renderAll();
+    renderPengeluaranTable();
+}
+
+function hapusPengeluaran(id) {
+    if (!confirm('Hapus pengeluaran ini?')) return;
+    db.pengeluaran = db.pengeluaran.filter(function(x) { return x.id !== id; });
+    saveDB();
+    renderAll();
+    renderPengeluaranTable();
+    showToast('Pengeluaran dihapus', 'info');
+}
+
+function renderPengeluaranTable() {
+    var filter = document.getElementById('filterPengeluaran').value;
+    var list = db.pengeluaran.slice().sort(function(a, b) {
+        return new Date(b.tanggal) - new Date(a.tanggal);
+    });
+
+    var today = new Date(); today.setHours(0,0,0,0);
+    var todayStr = today.toISOString().slice(0,10);
+    var weekAgo = new Date(today); weekAgo.setDate(weekAgo.getDate() - 7);
+    var monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+
+    if (filter === 'today') {
+        list = list.filter(function(p) { return p.tanggal === todayStr; });
+    } else if (filter === 'week') {
+        list = list.filter(function(p) { return new Date(p.tanggal) >= weekAgo; });
+    } else if (filter === 'month') {
+        list = list.filter(function(p) { return new Date(p.tanggal) >= monthStart; });
+    }
+
+    var html = list.map(function(p) {
+        var tgl = new Date(p.tanggal).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
+        var periode = p.tanggal.slice(0,7);
+        return '<tr>' +
+            '<td>' + tgl + '</td>' +
+            '<td><span class="badge badge-red">' + escapeHtml(p.kategori) + '</span></td>' +
+            '<td>' + escapeHtml(p.keterangan) + '</td>' +
+            '<td style="font-weight:bold; color:#f87171;">-' + formatRp(p.jumlah) + '</td>' +
+            '<td>' + periode + '</td>' +
+            '<td>' +
+                '<button class="btn btn-warning btn-sm" onclick="editPengeluaran(' + p.id + ')">✏️</button>' +
+                '<button class="btn btn-danger btn-sm" onclick="hapusPengeluaran(' + p.id + ')">🗑️</button>' +
+            '</td>' +
+            '</tr>';
+    }).join('');
+
+    document.getElementById('tabelPengeluaran').innerHTML = html || '<tr><td colspan="6" class="empty">Belum ada pengeluaran</td></tr>';
+
+    // Rekap per bulan
+    var rekap = {};
+    db.pengeluaran.forEach(function(p) {
+        var key = p.tanggal.slice(0,7);
+        if (!rekap[key]) rekap[key] = { total: 0, count: 0, days: {} };
+        rekap[key].total += p.jumlah;
+        rekap[key].count += 1;
+        rekap[key].days[p.tanggal] = true;
+    });
+
+    var rekapKeys = Object.keys(rekap).sort().reverse();
+    var rekapHtml = rekapKeys.map(function(k) {
+        var bulan = new Date(k + '-01').toLocaleDateString('id-ID', { month:'long', year:'numeric' });
+        var numDays = Object.keys(rekap[k].days).length;
+        var rata = rekap[k].total / numDays;
+        return '<tr>' +
+            '<td style="font-weight:600;">' + bulan + '</td>' +
+            '<td style="font-weight:bold; color:#f87171;">' + formatRp(rekap[k].total) + '</td>' +
+            '<td>' + rekap[k].count + ' transaksi</td>' +
+            '<td>' + formatRp(rata) + '</td>' +
+            '</tr>';
+    }).join('');
+
+    document.getElementById('tabelRekapBulan').innerHTML = rekapHtml || '<tr><td colspan="4" class="empty">Belum ada data</td></tr>';
+
+    // Update stats pengeluaran
+    var totalHariIni = db.pengeluaran.filter(function(p) { return p.tanggal === todayStr; })
+        .reduce(function(a,b) { return a + b.jumlah; }, 0);
+    var totalBulanIni = db.pengeluaran.filter(function(p) { return new Date(p.tanggal) >= monthStart; })
+        .reduce(function(a,b) { return a + b.jumlah; }, 0);
+    var totalSemua = db.pengeluaran.reduce(function(a,b) { return a + b.jumlah; }, 0);
+
+    var elHari = document.getElementById('pengHariIni');
+    if (elHari) elHari.innerText = formatRp(totalHariIni);
+    var elBulan = document.getElementById('pengBulanIni');
+    if (elBulan) elBulan.innerText = formatRp(totalBulanIni);
+    var elTotal = document.getElementById('pengTotal');
+    if (elTotal) elTotal.innerText = formatRp(totalSemua);
+    var elCount = document.getElementById('pengCount');
+    if (elCount) elCount.innerText = db.pengeluaran.length;
+}
+
+// ============================================================
+// CATATAN (BARU)
+// ============================================================
+function bukaFormCatatan() {
+    document.getElementById('judulModalCatatan').innerText = '📝 Tambah Catatan';
+    document.getElementById('editCatatanId').value = '';
+    document.getElementById('inJudulCatatan').value = '';
+    document.getElementById('inFotoCatatan').value = '';
+    document.getElementById('inIsiCatatan').value = '';
+    bukaModal('modalCatatan');
+}
+
+function editCatatan(id) {
+    var c = db.catatan.find(function(x) { return x.id === id; });
+    if (!c) return showToast('Catatan tidak ditemukan!', 'error');
+    document.getElementById('judulModalCatatan').innerText = '✏️ Edit Catatan';
+    document.getElementById('editCatatanId').value = id;
+    document.getElementById('inJudulCatatan').value = c.judul;
+    document.getElementById('inFotoCatatan').value = c.foto || '';
+    document.getElementById('inIsiCatatan').value = c.isi;
+    bukaModal('modalCatatan');
+}
+
+function randomFoto() {
+    // Picsum random photo
+    var rand = Math.floor(Math.random() * 1000);
+    var url = 'https://picsum.photos/seed/' + rand + '/400/300';
+    document.getElementById('inFotoCatatan').value = url;
+    showToast('Foto random dipilih!', 'info');
+}
+
+function simpanCatatan() {
+    var id = document.getElementById('editCatatanId').value;
+    var judul = document.getElementById('inJudulCatatan').value.trim();
+    var isi = document.getElementById('inIsiCatatan').value.trim();
+    var foto = document.getElementById('inFotoCatatan').value.trim();
+
+    if (!judul || !isi) return showToast('Judul dan isi catatan wajib diisi!', 'error');
+
+    // Auto foto random kalau kosong
+    if (!foto) {
+        foto = 'https://picsum.photos/seed/' + Date.now() + '/400/300';
+    }
+
+    if (id) {
+        var idx = db.catatan.findIndex(function(x) { return x.id == id; });
+        db.catatan[idx].judul = judul;
+        db.catatan[idx].isi = isi;
+        db.catatan[idx].foto = foto;
+        db.catatan[idx].tanggal = new Date().toLocaleString('id-ID');
+        showToast('Catatan diupdate!', 'success');
+    } else {
+        db.catatan.push({
+            id: Date.now(),
+            judul: judul,
+            isi: isi,
+            foto: foto,
+            tanggal: new Date().toLocaleString('id-ID')
+        });
+        showToast('Catatan disimpan!', 'success');
+    }
+
+    saveDB();
+    tutupModal('modalCatatan');
+    renderAll();
+    renderCatatanList();
+}
+
+function hapusCatatan(id) {
+    if (!confirm('Hapus catatan ini?')) return;
+    db.catatan = db.catatan.filter(function(x) { return x.id !== id; });
+    saveDB();
+    renderAll();
+    renderCatatanList();
+    showToast('Catatan dihapus', 'info');
+}
+
+function renderCatatanList() {
+    var list = db.catatan.slice().reverse();
+    var html = list.map(function(c) {
+        return '<div class="note-card">' +
+            (c.foto ? '<img class="note-card-img" src="' + escapeHtml(c.foto) + '" onerror="this.style.display=\'none\'">' : '') +
+            '<div class="note-card-body">' +
+                '<h4>' + escapeHtml(c.judul) + '</h4>' +
+                '<div class="meta">📅 ' + escapeHtml(c.tanggal) + '</div>' +
+                '<p>' + escapeHtml(c.isi) + '</p>' +
+                '<div class="note-card-actions">' +
+                    '<button class="btn btn-warning btn-sm" onclick="editCatatan(' + c.id + ')">✏️ Edit</button>' +
+                    '<button class="btn btn-danger btn-sm" onclick="hapusCatatan(' + c.id + ')">🗑️ Hapus</button>' +
+                '</div>' +
+            '</div>' +
+        '</div>';
+    }).join('');
+
+    var el = document.getElementById('listCatatan');
+    if (el) el.innerHTML = html || '<div class="empty" style="grid-column:1/-1;">Belum ada catatan. Klik "+ Tambah Catatan" untuk mulai.</div>';
+
+    // Dashboard catatan (max 3)
+    var dashList = db.catatan.slice().reverse().slice(0, 3);
+    var dashHtml = dashList.map(function(c) {
+        return '<div class="note-card">' +
+            (c.foto ? '<img class="note-card-img" src="' + escapeHtml(c.foto) + '" onerror="this.style.display=\'none\'">' : '') +
+            '<div class="note-card-body">' +
+                '<h4>' + escapeHtml(c.judul) + '</h4>' +
+                '<div class="meta">📅 ' + escapeHtml(c.tanggal) + '</div>' +
+                '<p>' + escapeHtml(c.isi) + '</p>' +
+            '</div>' +
+        '</div>';
+    }).join('');
+    var dashEl = document.getElementById('catatanDashboardList');
+    if (dashEl) dashEl.innerHTML = dashHtml || '<div class="empty" style="grid-column:1/-1;">Belum ada catatan</div>';
+}
+
+// ============================================================
 // SCRIPT
 // ============================================================
 function bukaFormScript() {
-    document.getElementById('judulModalScript').innerText = '📝 Simpan Script Baru';
+    document.getElementById('judulModalScript').innerText = '📜 Simpan Script Baru';
     document.getElementById('editScriptId').value = '';
     document.getElementById('inNamaScript').value = '';
     document.getElementById('inIsiScript').value = '';
@@ -1131,7 +1771,7 @@ function hapusScript(id) {
 // ============================================================
 function exportCSV(jenis) {
     var data = db[jenis];
-    if (!data.length) return showToast('Data kosong!', 'error');
+    if (!data || !data.length) return showToast('Data kosong!', 'error');
     var headers = Object.keys(data[0]);
     var csv = headers.join(',') + '\n';
     data.forEach(function(row) {
@@ -1160,50 +1800,91 @@ function backupJSON() {
 function renderAll() {
     var totalGaji = db.karyawan.reduce(function(a, b) { return a + b.gajiPokok; }, 0);
     var totalBonus = db.bonus.reduce(function(a, b) { return a + b.jumlah; }, 0);
+    var totalPengeluaran = db.pengeluaran.reduce(function(a, b) { return a + b.jumlah; }, 0);
 
-    document.getElementById('statKaryawan').innerText = db.karyawan.length;
-    document.getElementById('statGaji').innerText = formatRp(totalGaji);
-    document.getElementById('statRata').innerText = formatRp(db.karyawan.length ? totalGaji / db.karyawan.length : 0);
-    document.getElementById('statBonus').innerText = formatRp(totalBonus);
-    document.getElementById('revenueTotal').innerText = formatRp(totalGaji);
-    document.getElementById('growthTotal').innerText = formatRp(totalBonus);
+    var today = new Date(); today.setHours(0,0,0,0);
+    var todayStr = today.toISOString().slice(0,10);
+    var monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
 
+    var pengHariIni = db.pengeluaran.filter(function(p) { return p.tanggal === todayStr; })
+        .reduce(function(a,b) { return a + b.jumlah; }, 0);
+    var pengBulanIni = db.pengeluaran.filter(function(p) { return new Date(p.tanggal) >= monthStart; })
+        .reduce(function(a,b) { return a + b.jumlah; }, 0);
+
+    var el;
+    el = document.getElementById('statKaryawan'); if (el) el.innerText = db.karyawan.length;
+    el = document.getElementById('statGaji'); if (el) el.innerText = formatRp(totalGaji);
+    el = document.getElementById('statRata'); if (el) el.innerText = formatRp(db.karyawan.length ? totalGaji / db.karyawan.length : 0);
+    el = document.getElementById('statBonus'); if (el) el.innerText = formatRp(totalBonus);
+    el = document.getElementById('revenueTotal'); if (el) el.innerText = formatRp(totalGaji);
+    el = document.getElementById('statKeluarHariIni'); if (el) el.innerText = formatRp(pengHariIni);
+    el = document.getElementById('statKeluarBulanIni'); if (el) el.innerText = formatRp(pengBulanIni);
+    el = document.getElementById('statCatatan'); if (el) el.innerText = db.catatan.length;
+    el = document.getElementById('statSaldo'); if (el) el.innerText = formatRp(totalGaji - totalPengeluaran);
+
+    var trendHari = document.getElementById('trendKeluarHariIni');
+    if (trendHari) trendHari.innerText = pengHariIni > 0 ? '⚠️ Ada pengeluaran hari ini' : '✓ Tidak ada pengeluaran';
+    var trendBulan = document.getElementById('trendKeluarBulanIni');
+    if (trendBulan) trendBulan.innerText = '📅 Bulan ' + today.toLocaleDateString('id-ID', { month:'long' });
+
+    // Top karyawan
     var topList = db.karyawan.slice().sort(function(a, b) { return b.gajiPokok - a.gajiPokok; }).slice(0, 5);
     var icons = ['🥇', '🥈', '🥉', '🏅', '🎖️'];
-    document.getElementById('topKaryawanList').innerHTML = topList.map(function(k, i) {
+    el = document.getElementById('topKaryawanList');
+    if (el) el.innerHTML = topList.map(function(k, i) {
         return '<div class="top-item">' +
             '<div class="avatar-mini">' + (icons[i] || '👤') + '</div>' +
-            '<div class="info"><strong>' + k.nama + '</strong><small>' + k.jabatan + '</small></div>' +
+            '<div class="info"><strong>' + escapeHtml(k.nama) + '</strong><small>' + escapeHtml(k.jabatan) + '</small></div>' +
             '<div><div class="amount">' + formatRp(k.gajiPokok) + '</div></div>' +
             '</div>';
     }).join('') || '<div class="empty">Belum ada karyawan</div>';
 
-    document.getElementById('tabelDashboard').innerHTML = db.karyawan.map(function(k, i) {
-        return '<tr><td>' + (i+1) + '</td><td>' + k.nama + '</td><td>' + k.jabatan + '</td><td>' + formatRp(k.gajiPokok) + '</td><td><span class="badge badge-green">✓ Aktif</span></td></tr>';
+    // Pengeluaran terbaru di dashboard
+    var pengTerbaru = db.pengeluaran.slice().sort(function(a,b) { return new Date(b.tanggal) - new Date(a.tanggal); }).slice(0, 5);
+    el = document.getElementById('pengeluaranTerbaruList');
+    if (el) el.innerHTML = pengTerbaru.map(function(p) {
+        var tgl = new Date(p.tanggal).toLocaleDateString('id-ID', { day:'numeric', month:'short' });
+        return '<div class="top-item">' +
+            '<div class="avatar-mini" style="background: linear-gradient(135deg, #ef4444, #dc2626);">💸</div>' +
+            '<div class="info"><strong>' + escapeHtml(p.keterangan) + '</strong><small>' + escapeHtml(p.kategori) + ' • ' + tgl + '</small></div>' +
+            '<div><div class="amount" style="color:#f87171;">-' + formatRp(p.jumlah) + '</div></div>' +
+            '</div>';
+    }).join('') || '<div class="empty">Belum ada pengeluaran</div>';
+
+    // Tabel dashboard
+    el = document.getElementById('tabelDashboard');
+    if (el) el.innerHTML = db.karyawan.map(function(k, i) {
+        return '<tr><td>' + (i+1) + '</td><td>' + escapeHtml(k.nama) + '</td><td>' + escapeHtml(k.jabatan) + '</td><td>' + formatRp(k.gajiPokok) + '</td><td><span class="badge badge-green">✓ Aktif</span></td></tr>';
     }).join('') || '<tr><td colspan="5" class="empty">Belum ada data</td></tr>';
 
-    document.getElementById('tabelGaji').innerHTML = db.gaji.map(function(g) {
+    // Tabel gaji
+    el = document.getElementById('tabelGaji');
+    if (el) el.innerHTML = db.gaji.map(function(g) {
         var k = db.karyawan.find(function(x) { return x.id == g.karyawanId; });
         var total = g.gaji + g.tunjangan;
         var warna = g.status === 'Lunas' ? 'badge-green' : 'badge-red';
-        return '<tr><td>' + g.bulan + '</td><td>' + (k ? k.nama : '-') + '</td><td>' + formatRp(g.gaji) + '</td>' +
+        return '<tr><td>' + g.bulan + '</td><td>' + (k ? escapeHtml(k.nama) : '-') + '</td><td>' + formatRp(g.gaji) + '</td>' +
             '<td>' + formatRp(g.tunjangan) + '</td><td style="font-weight:bold;">' + formatRp(total) + '</td>' +
             '<td><span class="badge ' + warna + '">' + g.status + '</span></td>' +
             '<td><button class="btn btn-danger btn-sm" onclick="hapusGaji(' + g.id + ')">🗑️</button></td></tr>';
     }).join('') || '<tr><td colspan="7" class="empty">Belum ada data gaji</td></tr>';
 
-    document.getElementById('tabelBonus').innerHTML = db.bonus.map(function(b) {
+    // Tabel bonus
+    el = document.getElementById('tabelBonus');
+    if (el) el.innerHTML = db.bonus.map(function(b) {
         var k = db.karyawan.find(function(x) { return x.id == b.karyawanId; });
-        return '<tr><td>' + b.periode + '</td><td>' + (k ? k.nama : '-') + '</td>' +
+        return '<tr><td>' + b.periode + '</td><td>' + (k ? escapeHtml(k.nama) : '-') + '</td>' +
             '<td style="font-weight:bold; color:#4ade80;">' + formatRp(b.jumlah) + '</td>' +
-            '<td>' + (b.keterangan || '-') + '</td>' +
+            '<td>' + escapeHtml(b.keterangan || '-') + '</td>' +
             '<td><button class="btn btn-danger btn-sm" onclick="hapusBonus(' + b.id + ')">🗑️</button></td></tr>';
     }).join('') || '<tr><td colspan="5" class="empty">Belum ada bonus</td></tr>';
 
-    document.getElementById('listScript').innerHTML = db.script.map(function(s) {
+    // List script
+    el = document.getElementById('listScript');
+    if (el) el.innerHTML = db.script.map(function(s) {
         return '<div class="script-card">' +
-            '<div class="script-card-header"><div class="icon">📄</div>' +
-            '<div><h4>' + s.nama + '</h4><small>📅 ' + s.tanggal + '</small></div></div>' +
+            '<div class="script-card-header"><div class="icon">📜</div>' +
+            '<div><h4>' + escapeHtml(s.nama) + '</h4><small>📅 ' + escapeHtml(s.tanggal) + '</small></div></div>' +
             '<div class="script-card-preview" onclick="viewScript(' + s.id + ')">' + escapeHtml(s.isi || '(kosong)') + '</div>' +
             '<div class="script-card-actions">' +
             '<button type="button" class="btn btn-info btn-sm" onclick="viewScript(' + s.id + ')">👁️</button>' +
@@ -1213,15 +1894,12 @@ function renderAll() {
             '</div></div>';
     }).join('') || '<div class="empty" style="grid-column: 1/-1;">Belum ada script tersimpan</div>';
 
-    setTimeout(renderCharts, 150);
-}
+    // Render catatan
+    renderCatatanList();
+    // Render pengeluaran table jika ada
+    if (document.getElementById('tabelPengeluaran')) renderPengeluaranTable();
 
-function escapeHtml(str) {
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+    setTimeout(renderCharts, 150);
 }
 
 // ============================================================
@@ -1234,9 +1912,10 @@ function renderCharts() {
     });
     charts = {};
     if (typeof Chart === 'undefined') return;
+    if (!document.getElementById('page-dashboard').classList.contains('active')) return;
 
     var c1 = document.getElementById('chartRevenue');
-    if (c1 && document.getElementById('page-dashboard').classList.contains('active')) {
+    if (c1) {
         var labels = ['May 18', 'May 25', 'Jun 1', 'Jun 8', 'Jun 15', 'Jun 18'];
         var data1 = labels.map(function() { return Math.floor(Math.random() * 50000 + 30000); });
         var ctx1 = c1.getContext('2d');
@@ -1250,22 +1929,11 @@ function renderCharts() {
         });
     }
 
-    var c2 = document.getElementById('chartGrowth');
-    if (c2 && document.getElementById('page-dashboard').classList.contains('active')) {
-        var labels2 = ['May 18', 'May 25', 'Jun 1', 'Jun 8', 'Jun 15', 'Jun 18'];
-        var data2 = labels2.map(function() { return Math.floor(Math.random() * 15000 + 5000); });
-        charts.growth = new Chart(c2, {
-            type: 'bar',
-            data: { labels: labels2, datasets: [{ data: data2, backgroundColor: 'rgba(139,92,246,0.7)', borderRadius: 6 }] },
-            options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { color: '#94a3b8' } }, y: { grid: { color: 'rgba(148,163,184,0.1)' }, ticks: { color: '#94a3b8' } } } }
-        });
-    }
-
     var c3 = document.getElementById('chartDistribusi');
-    if (c3 && document.getElementById('page-dashboard').classList.contains('active')) {
+    if (c3) {
         charts.dist = new Chart(c3, {
             type: 'doughnut',
-            data: { labels: ['Gaji Pokok', 'Tunjangan', 'Bonus', 'Potongan'], datasets: [{ data: [60, 20, 15, 5], backgroundColor: ['#8b5cf6', '#ec4899', '#06b6d4', '#f59e0b'], borderWidth: 0 }] },
+            data: { labels: ['Gaji Pokok', 'Tunjangan', 'Bonus', 'Pengeluaran'], datasets: [{ data: [60, 20, 15, 5], backgroundColor: ['#8b5cf6', '#ec4899', '#06b6d4', '#f59e0b'], borderWidth: 0 }] },
             options: { responsive: true, cutout: '65%', plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', padding: 12, boxWidth: 12 } } } }
         });
     }
@@ -1305,6 +1973,8 @@ function initApp() {
 // BOOT
 // ============================================================
 window.addEventListener('load', function() {
+    applyLoginBg();
+
     var loggedIn = localStorage.getItem('auth_logged_in') === 'true' 
                 || sessionStorage.getItem('auth_logged_in') === 'true';
     if (loggedIn) {
