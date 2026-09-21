@@ -34,14 +34,6 @@ body {
     100% { transform: translateY(-100px); opacity: 0; }
 }
 
-.chakra { position: fixed; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(124,58,237,0.3), transparent 70%); pointer-events: none; z-index: 0; animation: chakraPulse 5s ease-in-out infinite; }
-.chakra:nth-child(1) { top: -150px; left: -150px; }
-.chakra:nth-child(2) { bottom: -150px; right: -150px; animation-delay: 2.5s; }
-@keyframes chakraPulse {
-    0%, 100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.3); opacity: 0.9; }
-}
-
 :root {
     --sidebar-bg: rgba(15, 15, 30, 0.95);
     --card-bg: rgba(30, 30, 55, 0.7);
@@ -50,18 +42,10 @@ body {
     --text-soft: #94a3b8;
     --border: rgba(148, 163, 184, 0.15);
     --accent: #8b5cf6;
-    --accent-2: #6366f1;
-}
-body.light {
-    --sidebar-bg: rgba(255, 255, 255, 0.95);
-    --card-bg: rgba(255, 255, 255, 0.9);
-    --text: #1e293b;
-    --text-soft: #64748b;
-    --border: rgba(0, 0, 0, 0.1);
 }
 
 /* ============ LOGIN SCREEN ============ */
-.login-screen {
+#loginScreen {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
@@ -72,7 +56,7 @@ body.light {
     z-index: 99999;
     overflow: hidden;
 }
-.login-screen::before {
+#loginScreen::before {
     content: '';
     position: absolute;
     top: -50%; left: -50%;
@@ -80,7 +64,7 @@ body.light {
     background: radial-gradient(circle, rgba(139,92,246,0.15), transparent 60%);
     animation: loginGlow 8s ease-in-out infinite;
 }
-.login-screen::after {
+#loginScreen::after {
     content: '';
     position: absolute;
     top: 0; left: 0;
@@ -97,12 +81,13 @@ body.light {
 }
 .login-box {
     position: relative;
-    background: rgba(30, 27, 75, 0.6);
+    background: rgba(30, 27, 75, 0.7);
     backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
     border: 1px solid rgba(139, 92, 246, 0.3);
     border-radius: 24px;
-    padding: 50px 45px;
-    width: 460px;
+    padding: 45px 40px;
+    width: 440px;
     max-width: 92%;
     box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 100px rgba(139,92,246,0.2);
     z-index: 2;
@@ -112,54 +97,57 @@ body.light {
     from { opacity: 0; transform: translateY(30px) scale(0.95); }
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
-.login-box h1 {
-    font-size: 26px;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 10px;
-    background: linear-gradient(90deg, #ffffff, #a78bfa, #ffffff);
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: textShine 3s linear infinite;
-    line-height: 1.3;
-}
-@keyframes textShine {
-    0% { background-position: 0% 0; }
-    100% { background-position: 200% 0; }
-}
-.login-box .subtitle {
-    text-align: center;
-    color: rgba(255,255,255,0.6);
-    font-size: 14px;
-    margin-bottom: 35px;
-}
-.login-box .logo-login {
+.login-logo {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
 }
-.login-box .logo-login span {
+.login-logo span {
     background: linear-gradient(135deg, #8b5cf6, #6366f1);
     color: white;
-    padding: 14px 18px;
+    padding: 14px 20px;
     border-radius: 16px;
-    font-size: 26px;
+    font-size: 28px;
     font-weight: bold;
     box-shadow: 0 0 40px rgba(139,92,246,0.8);
-    animation: logoGlow 2s ease-in-out infinite;
 }
-@keyframes logoGlow {
-    0%, 100% { box-shadow: 0 0 40px rgba(139,92,246,0.8); }
-    50% { box-shadow: 0 0 70px rgba(139,92,246,1); }
+.login-box h1 {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 8px;
+    color: #ffffff;
+    line-height: 1.3;
+}
+.login-box .subtitle {
+    text-align: center;
+    color: rgba(255,255,255,0.6);
+    font-size: 13px;
+    margin-bottom: 30px;
+}
+.login-error {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    margin-bottom: 18px;
+    text-align: center;
+    display: none;
+}
+.login-error.show { display: block; animation: shake 0.4s; }
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
 }
 .login-field {
-    position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 .login-field input {
     width: 100%;
-    padding: 16px 18px;
+    padding: 15px 18px;
     background: rgba(15, 15, 40, 0.7);
     border: 1px solid rgba(139, 92, 246, 0.25);
     border-radius: 12px;
@@ -169,9 +157,7 @@ body.light {
     transition: 0.3s;
     outline: none;
 }
-.login-field input::placeholder {
-    color: rgba(255,255,255,0.4);
-}
+.login-field input::placeholder { color: rgba(255,255,255,0.4); }
 .login-field input:focus {
     border-color: #8b5cf6;
     background: rgba(15, 15, 40, 0.9);
@@ -181,7 +167,7 @@ body.light {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     font-size: 13px;
     color: rgba(255,255,255,0.6);
 }
@@ -205,7 +191,7 @@ body.light {
 .login-options a:hover { color: #c4b5fd; text-decoration: underline; }
 .login-btn {
     width: 100%;
-    padding: 16px;
+    padding: 15px;
     background: linear-gradient(135deg, #8b5cf6, #6366f1);
     border: none;
     border-radius: 12px;
@@ -223,35 +209,28 @@ body.light {
     box-shadow: 0 15px 40px rgba(139,92,246,0.7);
 }
 .login-btn:active { transform: translateY(0); }
+.login-info {
+    text-align: center;
+    margin-top: 20px;
+    padding: 12px;
+    background: rgba(139,92,246,0.1);
+    border: 1px dashed rgba(139,92,246,0.4);
+    border-radius: 10px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+}
+.login-info b { color: #a78bfa; }
 .login-footer {
     text-align: center;
-    margin-top: 25px;
-    font-size: 12px;
-    color: rgba(255,255,255,0.4);
-}
-.login-error {
-    background: rgba(239, 68, 68, 0.15);
-    border: 1px solid rgba(239, 68, 68, 0.4);
-    color: #fca5a5;
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 13px;
-    margin-bottom: 20px;
-    text-align: center;
-    display: none;
-    animation: shake 0.3s;
-}
-.login-error.show { display: block; }
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-8px); }
-    75% { transform: translateX(8px); }
+    margin-top: 18px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
 }
 
 /* ============ SIDEBAR ============ */
 .sidebar { width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; gap: 5px; height: 100vh; position: fixed; overflow-y: auto; backdrop-filter: blur(20px); z-index: 100; box-shadow: 4px 0 30px rgba(0,0,0,0.4); }
 .logo { font-size: 18px; font-weight: bold; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; color: var(--text); }
-.logo span { background: linear-gradient(135deg, #8b5cf6, #6366f1); color: white; padding: 8px 12px; border-radius: 10px; box-shadow: 0 0 20px rgba(139,92,246,0.6); animation: logoGlow 2s ease-in-out infinite; }
+.logo span { background: linear-gradient(135deg, #8b5cf6, #6366f1); color: white; padding: 8px 12px; border-radius: 10px; box-shadow: 0 0 20px rgba(139,92,246,0.6); }
 .menu-section { font-size: 10px; color: var(--text-soft); text-transform: uppercase; letter-spacing: 1.5px; margin: 15px 0 5px 15px; font-weight: 600; }
 .menu-item { padding: 11px 15px; border-radius: 10px; cursor: pointer; color: var(--text-soft); transition: 0.3s; text-decoration: none; display: flex; align-items: center; gap: 10px; font-size: 14px; position: relative; overflow: hidden; }
 .menu-item::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 0; background: linear-gradient(90deg, #8b5cf6, #6366f1); transition: width 0.3s; z-index: -1; border-radius: 10px; }
@@ -259,7 +238,7 @@ body.light {
 .menu-item:hover, .menu-item.active { color: white; font-weight: 600; transform: translateX(3px); }
 
 .sidebar-profile { margin-top: auto; padding: 12px; background: rgba(139,92,246,0.15); border-radius: 12px; border: 1px solid rgba(139,92,246,0.3); display: flex; align-items: center; gap: 10px; }
-.sidebar-profile .avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #6366f1); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px; box-shadow: 0 0 15px rgba(139,92,246,0.6); }
+.sidebar-profile .avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #6366f1); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px; flex-shrink: 0; }
 .sidebar-profile .info { flex: 1; min-width: 0; }
 .sidebar-profile strong { display: block; font-size: 12px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sidebar-profile small { font-size: 10px; color: var(--text-soft); }
@@ -277,16 +256,12 @@ body.light {
     transition: 0.3s;
     flex-shrink: 0;
 }
-.logout-icon-btn:hover {
-    background: rgba(239,68,68,0.4);
-    transform: scale(1.1);
-}
+.logout-icon-btn:hover { background: rgba(239,68,68,0.4); transform: scale(1.1); }
 
 .main-content { flex: 1; padding: 25px 30px; margin-left: 260px; min-height: 100vh; position: relative; z-index: 2; }
 
 .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 15px; flex-wrap: wrap; }
 .welcome-text h1 { font-size: 22px; color: var(--text); margin-bottom: 4px; font-weight: 700; }
-.welcome-text h1 span { font-size: 24px; }
 .welcome-text p { color: var(--text-soft); font-size: 13px; }
 .top-header-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .date-filter { background: var(--card-bg); border: 1px solid var(--border); padding: 10px 16px; border-radius: 10px; color: var(--text); font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(20px); transition: 0.2s; }
@@ -316,12 +291,7 @@ body.light {
 @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
 .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; margin-bottom: 20px; }
-.stat-box { background: var(--card-bg); border: 1px solid var(--border); padding: 20px; border-radius: 16px; backdrop-filter: blur(20px); transition: 0.4s; position: relative; overflow: hidden; animation: cardEntrance 0.6s ease forwards; opacity: 0; transform: translateY(20px); }
-.stat-box:nth-child(1) { animation-delay: 0.05s; }
-.stat-box:nth-child(2) { animation-delay: 0.1s; }
-.stat-box:nth-child(3) { animation-delay: 0.15s; }
-.stat-box:nth-child(4) { animation-delay: 0.2s; }
-@keyframes cardEntrance { to { opacity: 1; transform: translateY(0); } }
+.stat-box { background: var(--card-bg); border: 1px solid var(--border); padding: 20px; border-radius: 16px; backdrop-filter: blur(20px); transition: 0.4s; position: relative; overflow: hidden; }
 .stat-box:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 20px 50px rgba(139,92,246,0.35); background: var(--card-bg-hover); }
 .stat-box .icon-wrap { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 14px; background: rgba(139,92,246,0.2); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
 .stat-box:nth-child(2) .icon-wrap { background: rgba(236,72,153,0.2); color: #f472b6; border-color: rgba(236,72,153,0.3); }
@@ -333,7 +303,7 @@ body.light {
 
 .dashboard-row { display: grid; grid-template-columns: 2fr 1fr; gap: 18px; margin-bottom: 20px; }
 @media (max-width: 1000px) { .dashboard-row { grid-template-columns: 1fr; } }
-.panel { background: var(--card-bg); border: 1px solid var(--border); padding: 22px; border-radius: 16px; backdrop-filter: blur(20px); animation: cardEntrance 0.6s ease forwards; opacity: 0; transform: translateY(20px); transition: 0.3s; }
+.panel { background: var(--card-bg); border: 1px solid var(--border); padding: 22px; border-radius: 16px; backdrop-filter: blur(20px); transition: 0.3s; }
 .panel:hover { border-color: rgba(139,92,246,0.4); }
 .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
 .panel-header h3 { font-size: 15px; color: var(--text); font-weight: 600; }
@@ -343,7 +313,7 @@ body.light {
 .big-trend { font-size: 13px; color: #4ade80; font-weight: 600; margin-bottom: 15px; }
 
 .top-list { display: flex; flex-direction: column; gap: 12px; }
-.top-item { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 10px; transition: 0.2s; cursor: pointer; }
+.top-item { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 10px; transition: 0.2s; }
 .top-item:hover { background: rgba(139,92,246,0.1); }
 .top-item .avatar-mini { width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, #8b5cf6, #6366f1); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
 .top-item .info { flex: 1; min-width: 0; }
@@ -357,7 +327,7 @@ body.light {
 .table-header h2 { font-size: 15px; color: var(--text); }
 .search-box { padding: 9px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; background: rgba(139,92,246,0.1); color: var(--text); width: 220px; }
 .search-box::placeholder { color: var(--text-soft); }
-.search-box:focus { outline: none; border-color: var(--accent); background: rgba(139,92,246,0.15); }
+.search-box:focus { outline: none; border-color: var(--accent); }
 table { width: 100%; border-collapse: collapse; margin-top: 10px; }
 th, td { text-align: left; padding: 13px 10px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text); }
 th { color: var(--text-soft); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
@@ -377,9 +347,6 @@ tr:hover { background: rgba(139,92,246,0.08); }
 .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
 .badge-green { background: rgba(16,185,129,0.2); color: #34d399; }
 .badge-red { background: rgba(239,68,68,0.2); color: #f87171; }
-.badge-orange { background: rgba(245,158,11,0.2); color: #fbbf24; }
-.badge-blue { background: rgba(59,130,246,0.2); color: #60a5fa; }
-.badge-purple { background: rgba(139,92,246,0.2); color: #a78bfa; }
 
 .script-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; margin-top: 20px; }
 .script-card {
@@ -390,8 +357,6 @@ tr:hover { background: rgba(139,92,246,0.08); }
     position: relative;
     overflow: hidden;
     transition: 0.4s;
-    animation: cardEntrance 0.5s ease forwards;
-    opacity: 0;
     display: flex;
     flex-direction: column;
     color: #e2e8f0;
@@ -409,7 +374,7 @@ tr:hover { background: rgba(139,92,246,0.08); }
 @keyframes gradientMove { 0% { background-position: 0% 0; } 100% { background-position: 200% 0; } }
 .script-card:hover { transform: translateY(-5px); border-color: #8b5cf6; box-shadow: 0 20px 50px rgba(139,92,246,0.5); }
 .script-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; position: relative; z-index: 3; }
-.script-card-header .icon { font-size: 20px; background: linear-gradient(135deg, #8b5cf6, #6366f1); width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 20px rgba(139,92,246,0.5); flex-shrink: 0; }
+.script-card-header .icon { font-size: 20px; background: linear-gradient(135deg, #8b5cf6, #6366f1); width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .script-card h4 { font-size: 14px; color: #ffffff; margin-bottom: 3px; word-break: break-word; font-weight: 700; }
 .script-card small { font-size: 11px; color: rgba(255,255,255,0.6); }
 .script-card-preview {
@@ -429,9 +394,6 @@ tr:hover { background: rgba(139,92,246,0.08); }
     z-index: 3;
     line-height: 1.5;
 }
-.script-card-preview::-webkit-scrollbar { width: 6px; }
-.script-card-preview::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 3px; }
-.script-card-preview::-webkit-scrollbar-thumb { background: #8b5cf6; border-radius: 3px; }
 .script-card-actions { display: flex; gap: 6px; margin-top: auto; padding-top: 12px; position: relative; z-index: 10; flex-wrap: wrap; }
 .script-card-actions .btn { flex: 1; justify-content: center; cursor: pointer; position: relative; z-index: 11; min-width: 70px; font-size: 11px; padding: 8px 6px; }
 
@@ -443,9 +405,8 @@ tr:hover { background: rgba(139,92,246,0.08); }
 .bg-option.active::after { content: '✓'; position: absolute; top: 8px; right: 8px; background: #10b981; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
 
 .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
-.modal.active { display: flex; animation: fadeIn 0.2s; }
+.modal.active { display: flex; }
 .modal-content { background: #1e1b4b; padding: 30px; border-radius: 20px; width: 450px; max-width: 90%; max-height: 90vh; overflow-y: auto; color: #e2e8f0; box-shadow: 0 20px 60px rgba(0,0,0,0.7); border: 1px solid rgba(139,92,246,0.3); }
-body.light .modal-content { background: #ffffff; color: #1e293b; }
 .modal-content h3 { margin-bottom: 20px; color: inherit; }
 .form-group { margin-bottom: 15px; }
 .form-group label { display: block; margin-bottom: 6px; color: var(--text-soft); font-size: 12px; font-weight: 500; }
@@ -454,7 +415,7 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
 .modal-buttons { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
 
 .empty { text-align: center; padding: 40px; color: var(--text-soft); }
-.toast-container { position: fixed; top: 20px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 10px; }
+.toast-container { position: fixed; top: 20px; right: 20px; z-index: 999999; display: flex; flex-direction: column; gap: 10px; }
 .toast { padding: 15px 20px; border-radius: 12px; color: white; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); animation: slideIn 0.3s; min-width: 250px; font-weight: 500; }
 .toast.success { background: linear-gradient(135deg, #10b981, #059669); }
 .toast.error { background: linear-gradient(135deg, #ef4444, #dc2626); }
@@ -466,46 +427,43 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
     .sidebar.open { transform: translateX(0); }
     .main-content { margin-left: 0; padding: 15px; }
     .login-box { padding: 35px 25px; }
-    .login-box h1 { font-size: 20px; }
 }
 </style>
 </head>
 <body>
 
-<!-- ============ LOGIN SCREEN ============ -->
-<div class="login-screen" id="loginScreen">
+<!-- ============ LOGIN SCREEN (Selalu tampil awal) ============ -->
+<div id="loginScreen">
     <div class="login-box">
-        <div class="logo-login"><span>G</span></div>
+        <div class="login-logo"><span>G</span></div>
         <h1>Sign In to GajiKu Pro</h1>
-        <p class="subtitle">Enter your details to login to your account</p>
+        <p class="subtitle">Masukkan data Anda untuk login ke akun</p>
 
         <div class="login-error" id="loginError">❌ Username atau password salah!</div>
 
-        <form onsubmit="event.preventDefault(); doLogin();">
-            <div class="login-field">
-                <input type="text" id="loginUser" placeholder="Email or Username" autocomplete="username" autofocus>
-            </div>
-            <div class="login-field">
-                <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password">
-            </div>
-            <div class="login-options">
-                <label><input type="checkbox" id="rememberMe" checked> Ingat saya</label>
-                <a href="#" onclick="event.preventDefault(); toast('Hubungi admin untuk reset password', 'info');">Lupa password?</a>
-            </div>
-            <button type="submit" class="login-btn">🔓 Sign In</button>
-        </form>
-
-        <div class="login-footer">
-            © 2026 GajiKu Pro — Secure Login System
+        <div class="login-field">
+            <input type="text" id="loginUser" placeholder="Email or Username" autocomplete="username">
         </div>
+        <div class="login-field">
+            <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password">
+        </div>
+        <div class="login-options">
+            <label><input type="checkbox" id="rememberMe" checked> Ingat saya</label>
+            <a href="javascript:void(0)" onclick="alert('Hubungi admin untuk reset password')">Lupa password?</a>
+        </div>
+        <button class="login-btn" onclick="doLogin()">🔓 Sign In</button>
+
+        <div class="login-info">
+            💡 <b>Default:</b> Username: <b>arwanabagus</b> | Password: <b>252006</b>
+        </div>
+
+        <div class="login-footer">© 2026 GajiKu Pro — Secure Login System</div>
     </div>
 </div>
 
-<!-- ============ APP (Hidden saat login) ============ -->
+<!-- ============ APP (Hidden dulu) ============ -->
 <div id="appContainer" style="display:none; width:100%;">
 
-<div class="chakra"></div>
-<div class="chakra"></div>
 <div class="particles" id="particles"></div>
 <div class="toast-container" id="toastContainer"></div>
 
@@ -542,15 +500,15 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
 
     <div class="top-header">
         <div class="welcome-text">
-            <h1>Welcome back, <span id="adminFirstName">Alex</span> 👋</h1>
-            <p>Here's what's happening with your business today.</p>
+            <h1>Welcome back, <span id="adminFirstName">Admin</span> 👋</h1>
+            <p>Berikut aktivitas bisnis Anda hari ini.</p>
         </div>
         <div class="top-header-actions">
-            <div class="date-filter" id="dateFilter">
+            <div class="date-filter">
                 📅 <span id="dateRange">Memuat...</span>
             </div>
             <button class="icon-btn" onclick="toggleLightMode()" title="Light Mode" id="lightBtn">☀️</button>
-            <button class="logout-btn" onclick="confirmLogout()" title="Logout">🚪 Logout</button>
+            <button class="logout-btn" onclick="confirmLogout()">🚪 Logout</button>
         </div>
     </div>
 
@@ -597,7 +555,6 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
             <div class="panel">
                 <div class="panel-header">
                     <h3>🏆 Top Karyawan</h3>
-                    <button class="view-all" onclick="showPage('gaji', document.querySelectorAll('.menu-item')[1])">View All</button>
                 </div>
                 <div class="top-list" id="topKaryawanList"></div>
             </div>
@@ -706,7 +663,7 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
         </div>
     </div>
 </div>
-</div><!-- END APP -->
+</div>
 
 <!-- MODAL PENGATURAN -->
 <div id="modalPengaturan" class="modal">
@@ -717,8 +674,8 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
 
         <hr style="border:none; border-top:1px solid var(--border); margin:20px 0;">
         <h4 style="color:var(--text); margin-bottom:12px; font-size:14px;">🔐 Ganti Username & Password</h4>
-        <div class="form-group"><label>Username Baru:</label><input type="text" id="inputNewUser" placeholder="Biarkan kosong jika tidak diubah"></div>
-        <div class="form-group"><label>Password Baru:</label><input type="text" id="inputNewPass" placeholder="Biarkan kosong jika tidak diubah"></div>
+        <div class="form-group"><label>Username Baru:</label><input type="text" id="inputNewUser" placeholder="Kosongkan jika tidak diubah"></div>
+        <div class="form-group"><label>Password Baru:</label><input type="text" id="inputNewPass" placeholder="Kosongkan jika tidak diubah"></div>
 
         <div class="modal-buttons">
             <button class="btn btn-secondary" onclick="tutupModal('modalPengaturan')">Batal</button>
@@ -796,48 +753,27 @@ body.light .modal-content { background: #ffffff; color: #1e293b; }
 </div>
 
 <script>
-// ========== KONFIGURASI LOGIN DEFAULT ==========
-// Username: arwanabagus
-// Password: 252006
-const DEFAULT_USER = 'arwanabagus';
-const DEFAULT_PASS = '252006';
+// ============================================================
+// KONFIGURASI LOGIN
+// ============================================================
+var DEFAULT_USER = 'arwanabagus';
+var DEFAULT_PASS = '252006';
 
-// Ambil credential dari localStorage (kalau user pernah ganti)
-function getCredentials() {
+function getCred() {
     return {
         user: localStorage.getItem('auth_user') || DEFAULT_USER,
         pass: localStorage.getItem('auth_pass') || DEFAULT_PASS
     };
 }
 
-// ========== DATA ==========
-let db = {
-    karyawan: JSON.parse(localStorage.getItem('db_karyawan')) || [
-        { id: 1, nama: "arwana bagus suharta sinaga", jabatan: "Kasir", gajiPokok: 10000000, noHp: "08123456789" }
-    ],
-    gaji: JSON.parse(localStorage.getItem('db_gaji')) || [],
-    bonus: JSON.parse(localStorage.getItem('db_bonus')) || [],
-    script: JSON.parse(localStorage.getItem('db_script')) || []
-};
-
-function saveDB() { Object.keys(db).forEach(k => localStorage.setItem('db_' + k, JSON.stringify(db[k]))); }
-function formatRp(angka) { return 'Rp ' + (angka || 0).toLocaleString('id-ID'); }
-
-// ========== TOAST ==========
-function toast(msg, type = 'success') {
-    const el = document.createElement('div');
-    el.className = 'toast ' + type;
-    el.innerText = msg;
-    document.getElementById('toastContainer').appendChild(el);
-    setTimeout(() => el.remove(), 3000);
-}
-
-// ========== LOGIN SYSTEM ==========
+// ============================================================
+// LOGIN FUNCTIONS
+// ============================================================
 function doLogin() {
-    const userInput = document.getElementById('loginUser').value.trim();
-    const passInput = document.getElementById('loginPass').value.trim();
-    const remember = document.getElementById('rememberMe').checked;
-    const cred = getCredentials();
+    var userInput = document.getElementById('loginUser').value.trim();
+    var passInput = document.getElementById('loginPass').value.trim();
+    var remember = document.getElementById('rememberMe').checked;
+    var cred = getCred();
 
     if (!userInput || !passInput) {
         showLoginError('❌ Username dan password wajib diisi!');
@@ -854,40 +790,34 @@ function doLogin() {
         }
         document.getElementById('loginError').classList.remove('show');
         showApp();
-        toast('Login berhasil! Selamat datang ' + userInput + ' 👋', 'success');
+        showToast('Login berhasil! Selamat datang 👋', 'success');
     } else {
         showLoginError('❌ Username atau password salah!');
-        // Shake input
-        document.getElementById('loginUser').style.borderColor = '#ef4444';
-        document.getElementById('loginPass').style.borderColor = '#ef4444';
-        setTimeout(() => {
-            document.getElementById('loginUser').style.borderColor = '';
-            document.getElementById('loginPass').style.borderColor = '';
-        }, 1500);
     }
 }
 
 function showLoginError(msg) {
-    const err = document.getElementById('loginError');
+    var err = document.getElementById('loginError');
     err.innerText = msg;
     err.classList.add('show');
-    setTimeout(() => err.classList.remove('show'), 3000);
+    setTimeout(function() { err.classList.remove('show'); }, 3000);
 }
 
 function showApp() {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('appContainer').style.display = 'block';
-    setTimeout(initApp, 50);
+    initApp();
 }
 
-function checkLogin() {
-    const isLoggedIn = localStorage.getItem('auth_logged_in') === 'true' || sessionStorage.getItem('auth_logged_in') === 'true';
-    if (isLoggedIn) {
+function checkLoginOnLoad() {
+    var loggedIn = localStorage.getItem('auth_logged_in') === 'true' 
+                || sessionStorage.getItem('auth_logged_in') === 'true';
+    if (loggedIn) {
         showApp();
     } else {
+        // Tetap tampilkan login (sudah tampil default)
         document.getElementById('loginScreen').style.display = 'flex';
         document.getElementById('appContainer').style.display = 'none';
-        setTimeout(() => document.getElementById('loginUser').focus(), 300);
     }
 }
 
@@ -896,29 +826,65 @@ function confirmLogout() {
     localStorage.removeItem('auth_logged_in');
     localStorage.removeItem('auth_user_logged');
     sessionStorage.removeItem('auth_logged_in');
-    toast('Logout berhasil!', 'info');
-    setTimeout(() => location.reload(), 700);
+    location.reload();
 }
 
-// Enter key untuk login
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') {
-        if (document.activeElement.id === 'loginUser' || document.activeElement.id === 'loginPass') {
+// Enter key pada login
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        var ls = document.getElementById('loginScreen');
+        if (ls && ls.style.display !== 'none') {
             doLogin();
         }
     }
 });
 
-// ========== NAVIGASI ==========
+// ============================================================
+// DATA
+// ============================================================
+var db = {
+    karyawan: JSON.parse(localStorage.getItem('db_karyawan')) || [
+        { id: 1, nama: "arwana bagus suharta sinaga", jabatan: "Kasir", gajiPokok: 10000000, noHp: "08123456789" }
+    ],
+    gaji: JSON.parse(localStorage.getItem('db_gaji')) || [],
+    bonus: JSON.parse(localStorage.getItem('db_bonus')) || [],
+    script: JSON.parse(localStorage.getItem('db_script')) || []
+};
+
+function saveDB() {
+    localStorage.setItem('db_karyawan', JSON.stringify(db.karyawan));
+    localStorage.setItem('db_gaji', JSON.stringify(db.gaji));
+    localStorage.setItem('db_bonus', JSON.stringify(db.bonus));
+    localStorage.setItem('db_script', JSON.stringify(db.script));
+}
+
+function formatRp(angka) {
+    return 'Rp ' + (angka || 0).toLocaleString('id-ID');
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg, type) {
+    type = type || 'success';
+    var el = document.createElement('div');
+    el.className = 'toast ' + type;
+    el.innerText = msg;
+    document.getElementById('toastContainer').appendChild(el);
+    setTimeout(function() { el.remove(); }, 3000);
+}
+
+// ============================================================
+// NAVIGASI
+// ============================================================
 function showPage(page, el) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
     document.getElementById('page-' + page).classList.add('active');
-    document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+    document.querySelectorAll('.menu-item').forEach(function(m) { m.classList.remove('active'); });
     if (el) el.classList.add('active');
     renderAll();
     if (page === 'background') renderBgPicker();
     if (page === 'dashboard') setTimeout(renderCharts, 100);
-    if (window.innerWidth < 768) document.getElementById('sidebar').classList.remove('open');
 }
 
 function bukaModal(id) { document.getElementById(id).classList.add('active'); }
@@ -926,18 +892,22 @@ function tutupModal(id) { document.getElementById(id).classList.remove('active')
 
 function toggleLightMode() {
     document.body.classList.toggle('light');
-    const isLight = document.body.classList.contains('light');
+    var isLight = document.body.classList.contains('light');
     localStorage.setItem('lightMode', isLight);
     document.getElementById('lightBtn').innerText = isLight ? '🌙' : '☀️';
 }
 
 function filterTable(tableId, keyword) {
-    const rows = document.querySelectorAll(`#${tableId} tr`);
-    const k = keyword.toLowerCase();
-    rows.forEach(r => { r.style.display = r.innerText.toLowerCase().includes(k) ? '' : 'none'; });
+    var rows = document.querySelectorAll('#' + tableId + ' tr');
+    var k = keyword.toLowerCase();
+    rows.forEach(function(r) {
+        r.style.display = r.innerText.toLowerCase().includes(k) ? '' : 'none';
+    });
 }
 
-// ========== PENGATURAN ==========
+// ============================================================
+// PENGATURAN
+// ============================================================
 function bukaPengaturan() {
     document.getElementById('inputNamaApp').value = localStorage.getItem('namaApp') || 'GajiKu Pro';
     document.getElementById('inputAdmin').value = localStorage.getItem('adminName') || 'ADMIN GAJI';
@@ -945,28 +915,25 @@ function bukaPengaturan() {
     document.getElementById('inputNewPass').value = '';
     bukaModal('modalPengaturan');
 }
+
 function simpanPengaturan() {
     localStorage.setItem('namaApp', document.getElementById('inputNamaApp').value);
     localStorage.setItem('adminName', document.getElementById('inputAdmin').value);
 
-    const newUser = document.getElementById('inputNewUser').value.trim();
-    const newPass = document.getElementById('inputNewPass').value.trim();
+    var newUser = document.getElementById('inputNewUser').value.trim();
+    var newPass = document.getElementById('inputNewPass').value.trim();
 
-    if (newUser) {
-        localStorage.setItem('auth_user', newUser);
-        toast('Username berhasil diubah!');
-    }
-    if (newPass) {
-        localStorage.setItem('auth_pass', newPass);
-        toast('Password berhasil diubah!');
-    }
+    if (newUser) localStorage.setItem('auth_user', newUser);
+    if (newPass) localStorage.setItem('auth_pass', newPass);
 
-    toast('Pengaturan disimpan!');
-    setTimeout(() => location.reload(), 900);
+    showToast('Pengaturan disimpan!', 'success');
+    setTimeout(function() { location.reload(); }, 800);
 }
 
-// ========== BACKGROUND ==========
-const bgOptions = [
+// ============================================================
+// BACKGROUND
+// ============================================================
+var bgOptions = [
     { name: 'Purple Night', value: 'purple-night' },
     { name: 'Deep Ocean', value: 'ocean' },
     { name: 'Sunset', value: 'sunset' },
@@ -976,18 +943,18 @@ const bgOptions = [
     { name: 'Midnight', value: 'midnight' },
     { name: 'Cosmic', value: 'cosmic' }
 ];
+
 function renderBgPicker() {
-    const current = localStorage.getItem('bgTheme') || 'purple-night';
-    document.getElementById('bgGrid').innerHTML = bgOptions.map(bg => `
-        <div class="bg-option ${bg.value === current ? 'active' : ''}" 
-             onclick="applyBg('${bg.value}')"
-             style="background: ${getBgStyle(bg.value)}">
-            <span>${bg.name}</span>
-        </div>
-    `).join('');
+    var current = localStorage.getItem('bgTheme') || 'purple-night';
+    var html = '';
+    bgOptions.forEach(function(bg) {
+        html += '<div class="bg-option ' + (bg.value === current ? 'active' : '') + '" onclick="applyBg(\'' + bg.value + '\')" style="background: ' + getBgStyle(bg.value) + '"><span>' + bg.name + '</span></div>';
+    });
+    document.getElementById('bgGrid').innerHTML = html;
 }
+
 function getBgStyle(v) {
-    const s = {
+    var s = {
         'purple-night': 'linear-gradient(-45deg, #1e1b4b, #4c1d95, #7c3aed, #1e1b4b)',
         'ocean': 'linear-gradient(-45deg, #0c4a6e, #075985, #0284c7, #0c4a6e)',
         'sunset': 'linear-gradient(-45deg, #7c2d12, #dc2626, #f59e0b, #7c2d12)',
@@ -999,6 +966,7 @@ function getBgStyle(v) {
     };
     return s[v] || s['purple-night'];
 }
+
 function applyBg(value) {
     localStorage.setItem('bgTheme', value);
     localStorage.removeItem('bgApp');
@@ -1007,30 +975,36 @@ function applyBg(value) {
     document.body.style.backgroundSize = '400% 400%';
     document.body.style.animation = 'sunsetMove 20s ease infinite';
     renderBgPicker();
-    toast('Background diganti!');
+    showToast('Background diganti!', 'success');
 }
+
 function applyCustomBg() {
-    const url = document.getElementById('customBgUrl').value.trim();
-    if (!url) return toast('Masukkan URL!', 'error');
+    var url = document.getElementById('customBgUrl').value.trim();
+    if (!url) return showToast('Masukkan URL!', 'error');
     localStorage.setItem('bgApp', url);
     localStorage.removeItem('bgTheme');
     document.body.style.animation = 'none';
-    document.body.style.background = `url('${url}') center/cover fixed`;
+    document.body.style.background = 'url("' + url + '") center/cover fixed';
     renderBgPicker();
-    toast('Background custom diterapkan!');
+    showToast('Background custom diterapkan!', 'success');
 }
 
-// ========== GAJI ==========
+// ============================================================
+// GAJI
+// ============================================================
 function bukaFormGaji() {
-    document.getElementById('inKaryawanGaji').innerHTML = db.karyawan.map(k => `<option value="${k.id}">${k.nama}</option>`).join('');
+    document.getElementById('inKaryawanGaji').innerHTML = db.karyawan.map(function(k) {
+        return '<option value="' + k.id + '">' + k.nama + '</option>';
+    }).join('');
     document.getElementById('inBulan').value = new Date().toISOString().slice(0,7);
     document.getElementById('inGaji').value = '';
     document.getElementById('inTunjangan').value = 0;
     document.getElementById('inPotongan').value = 0;
     bukaModal('modalGaji');
 }
+
 function simpanGaji() {
-    const data = {
+    var data = {
         id: Date.now(),
         bulan: document.getElementById('inBulan').value,
         karyawanId: document.getElementById('inKaryawanGaji').value,
@@ -1039,40 +1013,59 @@ function simpanGaji() {
         potongan: parseInt(document.getElementById('inPotongan').value) || 0,
         status: document.getElementById('inStatusGaji').value
     };
-    if (!data.bulan || !data.gaji) return toast('Bulan dan Gaji wajib diisi!', 'error');
+    if (!data.bulan || !data.gaji) return showToast('Bulan dan Gaji wajib diisi!', 'error');
     db.gaji.push(data);
-    saveDB(); tutupModal('modalGaji'); renderAll(); toast('Gaji disimpan!');
-}
-function hapusGaji(id) {
-    if (!confirm('Hapus data gaji ini?')) return;
-    db.gaji = db.gaji.filter(x => x.id !== id);
-    saveDB(); renderAll(); toast('Gaji dihapus', 'info');
+    saveDB();
+    tutupModal('modalGaji');
+    renderAll();
+    showToast('Gaji disimpan!', 'success');
 }
 
-// ========== BONUS ==========
+function hapusGaji(id) {
+    if (!confirm('Hapus data gaji ini?')) return;
+    db.gaji = db.gaji.filter(function(x) { return x.id !== id; });
+    saveDB();
+    renderAll();
+    showToast('Gaji dihapus', 'info');
+}
+
+// ============================================================
+// BONUS
+// ============================================================
 function bukaFormBonus() {
-    document.getElementById('inKaryawanBonus').innerHTML = db.karyawan.map(k => `<option value="${k.id}">${k.nama}</option>`).join('');
+    document.getElementById('inKaryawanBonus').innerHTML = db.karyawan.map(function(k) {
+        return '<option value="' + k.id + '">' + k.nama + '</option>';
+    }).join('');
     bukaModal('modalBonus');
 }
+
 function simpanBonus() {
-    const data = {
+    var data = {
         id: Date.now(),
         periode: document.getElementById('inPeriode').value + ' ' + document.getElementById('inTahun').value,
         karyawanId: document.getElementById('inKaryawanBonus').value,
         jumlah: parseInt(document.getElementById('inJumlahBonus').value) || 0,
         keterangan: document.getElementById('inKeterangan').value
     };
-    if (!data.jumlah) return toast('Jumlah bonus wajib diisi!', 'error');
+    if (!data.jumlah) return showToast('Jumlah bonus wajib diisi!', 'error');
     db.bonus.push(data);
-    saveDB(); tutupModal('modalBonus'); renderAll(); toast('Bonus disimpan!');
-}
-function hapusBonus(id) {
-    if (!confirm('Hapus bonus ini?')) return;
-    db.bonus = db.bonus.filter(x => x.id !== id);
-    saveDB(); renderAll(); toast('Bonus dihapus', 'info');
+    saveDB();
+    tutupModal('modalBonus');
+    renderAll();
+    showToast('Bonus disimpan!', 'success');
 }
 
-// ========== SCRIPT ==========
+function hapusBonus(id) {
+    if (!confirm('Hapus bonus ini?')) return;
+    db.bonus = db.bonus.filter(function(x) { return x.id !== id; });
+    saveDB();
+    renderAll();
+    showToast('Bonus dihapus', 'info');
+}
+
+// ============================================================
+// SCRIPT
+// ============================================================
 function bukaFormScript() {
     document.getElementById('judulModalScript').innerText = '📝 Simpan Script Baru';
     document.getElementById('editScriptId').value = '';
@@ -1080,120 +1073,152 @@ function bukaFormScript() {
     document.getElementById('inIsiScript').value = '';
     bukaModal('modalScript');
 }
+
 function editScript(id) {
-    const s = db.script.find(x => x.id === id);
-    if (!s) return toast('Script tidak ditemukan!', 'error');
+    var s = db.script.find(function(x) { return x.id === id; });
+    if (!s) return showToast('Script tidak ditemukan!', 'error');
     document.getElementById('judulModalScript').innerText = '✏️ Edit Script';
     document.getElementById('editScriptId').value = id;
     document.getElementById('inNamaScript').value = s.nama;
     document.getElementById('inIsiScript').value = s.isi;
     bukaModal('modalScript');
 }
+
 function simpanScript() {
-    const id = document.getElementById('editScriptId').value;
-    const nama = document.getElementById('inNamaScript').value.trim();
-    const isi = document.getElementById('inIsiScript').value.trim();
-    if (!nama || !isi) return toast('Nama dan isi script wajib diisi!', 'error');
+    var id = document.getElementById('editScriptId').value;
+    var nama = document.getElementById('inNamaScript').value.trim();
+    var isi = document.getElementById('inIsiScript').value.trim();
+    if (!nama || !isi) return showToast('Nama dan isi script wajib diisi!', 'error');
 
     if (id) {
-        const idx = db.script.findIndex(x => x.id == id);
-        db.script[idx] = { ...db.script[idx], nama, isi, tanggal: new Date().toLocaleDateString('id-ID') };
-        toast('Script berhasil diupdate!');
+        var idx = db.script.findIndex(function(x) { return x.id == id; });
+        db.script[idx].nama = nama;
+        db.script[idx].isi = isi;
+        db.script[idx].tanggal = new Date().toLocaleDateString('id-ID');
+        showToast('Script diupdate!', 'success');
     } else {
-        db.script.push({ id: Date.now(), nama, isi, tanggal: new Date().toLocaleDateString('id-ID') });
-        toast('Script disimpan!');
+        db.script.push({ id: Date.now(), nama: nama, isi: isi, tanggal: new Date().toLocaleDateString('id-ID') });
+        showToast('Script disimpan!', 'success');
     }
-    saveDB(); tutupModal('modalScript'); renderAll();
+    saveDB();
+    tutupModal('modalScript');
+    renderAll();
 }
+
 function bukaScript(id) {
-    const s = db.script.find(x => x.id === id);
+    var s = db.script.find(function(x) { return x.id === id; });
     if (!s) return;
-    navigator.clipboard.writeText(s.isi).then(() => {
-        toast('Script "' + s.nama + '" tersalin ke clipboard!');
-    }).catch(() => {
-        const ta = document.createElement('textarea');
-        ta.value = s.isi;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        ta.remove();
-        toast('Script "' + s.nama + '" tersalin!');
-    });
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(s.isi).then(function() {
+            showToast('Script "' + s.nama + '" tersalin!', 'success');
+        }).catch(function() {
+            fallbackCopy(s.isi, s.nama);
+        });
+    } else {
+        fallbackCopy(s.isi, s.nama);
+    }
 }
-let currentViewScript = null;
+
+function fallbackCopy(text, nama) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); showToast('Script "' + nama + '" tersalin!', 'success'); }
+    catch(e) { showToast('Gagal copy!', 'error'); }
+    ta.remove();
+}
+
+var currentViewScript = null;
 function viewScript(id) {
-    const s = db.script.find(x => x.id === id);
+    var s = db.script.find(function(x) { return x.id === id; });
     if (!s) return;
     currentViewScript = s;
     document.getElementById('viewScriptTitle').innerText = '📄 ' + s.nama;
     document.getElementById('viewScriptContent').innerText = s.isi;
     bukaModal('modalViewScript');
 }
+
 function copyFromView() {
     if (!currentViewScript) return;
-    navigator.clipboard.writeText(currentViewScript.isi).then(() => {
-        toast('Script tersalin!');
-    }).catch(() => {
-        const ta = document.createElement('textarea');
-        ta.value = currentViewScript.isi;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        ta.remove();
-        toast('Script tersalin!');
-    });
-}
-function hapusScript(id) {
-    if (!confirm('Hapus script ini?')) return;
-    db.script = db.script.filter(x => x.id !== id);
-    saveDB(); renderAll(); toast('Script dihapus', 'info');
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(currentViewScript.isi).then(function() {
+            showToast('Script tersalin!', 'success');
+        }).catch(function() {
+            fallbackCopy(currentViewScript.isi, currentViewScript.nama);
+        });
+    } else {
+        fallbackCopy(currentViewScript.isi, currentViewScript.nama);
+    }
 }
 
-// ========== EXPORT ==========
+function hapusScript(id) {
+    if (!confirm('Hapus script ini?')) return;
+    db.script = db.script.filter(function(x) { return x.id !== id; });
+    saveDB();
+    renderAll();
+    showToast('Script dihapus', 'info');
+}
+
+// ============================================================
+// EXPORT
+// ============================================================
 function exportCSV(jenis) {
-    const data = db[jenis];
-    if (!data.length) return toast('Data kosong!', 'error');
-    const headers = Object.keys(data[0]);
-    let csv = headers.join(',') + '\n';
-    data.forEach(row => { csv += headers.map(h => `"${row[h] || ''}"`).join(',') + '\n'; });
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const a = document.createElement('a');
+    var data = db[jenis];
+    if (!data.length) return showToast('Data kosong!', 'error');
+    var headers = Object.keys(data[0]);
+    var csv = headers.join(',') + '\n';
+    data.forEach(function(row) {
+        csv += headers.map(function(h) { return '"' + (row[h] || '') + '"'; }).join(',') + '\n';
+    });
+    var blob = new Blob([csv], { type: 'text/csv' });
+    var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `${jenis}_${Date.now()}.csv`;
+    a.download = jenis + '_' + Date.now() + '.csv';
     a.click();
-    toast('Export berhasil!');
+    showToast('Export berhasil!', 'success');
 }
+
 function backupJSON() {
-    const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
+    var blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `backup_gajiku_${Date.now()}.json`;
+    a.download = 'backup_gajiku_' + Date.now() + '.json';
     a.click();
-    toast('Backup berhasil!');
+    showToast('Backup berhasil!', 'success');
 }
+
 function restoreJSON(event) {
-    const file = event.target.files[0];
+    var file = event.target.files[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
+    var reader = new FileReader();
+    reader.onload = function(e) {
         try {
-            const data = JSON.parse(e.target.result);
+            var data = JSON.parse(e.target.result);
             if (!confirm('Restore data? Data saat ini akan diganti.')) return;
-            db = data; saveDB(); renderAll(); toast('Restore berhasil!');
-        } catch (err) { toast('File tidak valid!', 'error'); }
+            db = data;
+            saveDB();
+            renderAll();
+            showToast('Restore berhasil!', 'success');
+        } catch (err) {
+            showToast('File tidak valid!', 'error');
+        }
     };
     reader.readAsText(file);
 }
+
 function resetData() {
     if (!confirm('HAPUS SEMUA DATA? Tidak bisa dibatalkan!')) return;
     localStorage.clear();
     location.reload();
 }
 
-// ========== RENDER ==========
+// ============================================================
+// RENDER
+// ============================================================
 function renderAll() {
-    const totalGaji = db.karyawan.reduce((a, b) => a + b.gajiPokok, 0);
-    const totalBonus = db.bonus.reduce((a, b) => a + b.jumlah, 0);
+    var totalGaji = db.karyawan.reduce(function(a, b) { return a + b.gajiPokok; }, 0);
+    var totalBonus = db.bonus.reduce(function(a, b) { return a + b.jumlah; }, 0);
 
     document.getElementById('statKaryawan').innerText = db.karyawan.length;
     document.getElementById('statGaji').innerText = formatRp(totalGaji);
@@ -1202,103 +1227,86 @@ function renderAll() {
     document.getElementById('revenueTotal').innerText = formatRp(totalGaji);
     document.getElementById('growthTotal').innerText = formatRp(totalBonus);
 
-    const topList = [...db.karyawan].sort((a, b) => b.gajiPokok - a.gajiPokok).slice(0, 5);
-    document.getElementById('topKaryawanList').innerHTML = topList.map((k, i) => {
-        const icons = ['🥇', '🥈', '🥉', '🏅', '🎖️'];
-        const pct = (Math.random() * 20 + 5).toFixed(1);
-        return `
-            <div class="top-item">
-                <div class="avatar-mini">${icons[i] || '👤'}</div>
-                <div class="info">
-                    <strong>${k.nama}</strong>
-                    <small>${k.jabatan}</small>
-                </div>
-                <div>
-                    <div class="amount">${formatRp(k.gajiPokok)}</div>
-                    <div class="pct">+${pct}%</div>
-                </div>
-            </div>
-        `;
+    var topList = db.karyawan.slice().sort(function(a, b) { return b.gajiPokok - a.gajiPokok; }).slice(0, 5);
+    var icons = ['🥇', '🥈', '🥉', '🏅', '🎖️'];
+    document.getElementById('topKaryawanList').innerHTML = topList.map(function(k, i) {
+        var pct = (Math.random() * 20 + 5).toFixed(1);
+        return '<div class="top-item">' +
+            '<div class="avatar-mini">' + (icons[i] || '👤') + '</div>' +
+            '<div class="info"><strong>' + k.nama + '</strong><small>' + k.jabatan + '</small></div>' +
+            '<div><div class="amount">' + formatRp(k.gajiPokok) + '</div><div class="pct">+' + pct + '%</div></div>' +
+            '</div>';
     }).join('') || '<div class="empty">Belum ada karyawan</div>';
 
-    document.getElementById('tabelDashboard').innerHTML = db.karyawan.map((k, i) => `
-        <tr><td>${i+1}</td><td>${k.nama}</td><td>${k.jabatan}</td>
-        <td>${formatRp(k.gajiPokok)}</td>
-        <td><span class="badge badge-green">✓ Aktif</span></td></tr>
-    `).join('') || '<tr><td colspan="5" class="empty">Belum ada data</td></tr>';
+    document.getElementById('tabelDashboard').innerHTML = db.karyawan.map(function(k, i) {
+        return '<tr><td>' + (i+1) + '</td><td>' + k.nama + '</td><td>' + k.jabatan + '</td><td>' + formatRp(k.gajiPokok) + '</td><td><span class="badge badge-green">✓ Aktif</span></td></tr>';
+    }).join('') || '<tr><td colspan="5" class="empty">Belum ada data</td></tr>';
 
-    document.getElementById('tabelGaji').innerHTML = db.gaji.map(g => {
-        const k = db.karyawan.find(x => x.id == g.karyawanId);
-        const total = g.gaji + g.tunjangan - (g.potongan || 0);
-        const warna = g.status === 'Lunas' ? 'badge-green' : 'badge-red';
-        return `<tr><td>${g.bulan}</td><td>${k ? k.nama : '-'}</td><td>${formatRp(g.gaji)}</td>
-        <td>${formatRp(g.tunjangan)}</td><td style="font-weight:bold;">${formatRp(total)}</td>
-        <td><span class="badge ${warna}">${g.status}</span></td>
-        <td><button class="btn btn-danger btn-sm" onclick="hapusGaji(${g.id})">🗑️</button></td></tr>`;
+    document.getElementById('tabelGaji').innerHTML = db.gaji.map(function(g) {
+        var k = db.karyawan.find(function(x) { return x.id == g.karyawanId; });
+        var total = g.gaji + g.tunjangan - (g.potongan || 0);
+        var warna = g.status === 'Lunas' ? 'badge-green' : 'badge-red';
+        return '<tr><td>' + g.bulan + '</td><td>' + (k ? k.nama : '-') + '</td><td>' + formatRp(g.gaji) + '</td>' +
+            '<td>' + formatRp(g.tunjangan) + '</td><td style="font-weight:bold;">' + formatRp(total) + '</td>' +
+            '<td><span class="badge ' + warna + '">' + g.status + '</span></td>' +
+            '<td><button class="btn btn-danger btn-sm" onclick="hapusGaji(' + g.id + ')">🗑️</button></td></tr>';
     }).join('') || '<tr><td colspan="7" class="empty">Belum ada data gaji</td></tr>';
 
-    document.getElementById('tabelBonus').innerHTML = db.bonus.map(b => {
-        const k = db.karyawan.find(x => x.id == b.karyawanId);
-        return `<tr><td>${b.periode}</td><td>${k ? k.nama : '-'}</td>
-        <td style="font-weight:bold; color:#4ade80;">${formatRp(b.jumlah)}</td>
-        <td>${b.keterangan || '-'}</td>
-        <td><button class="btn btn-danger btn-sm" onclick="hapusBonus(${b.id})">🗑️</button></td></tr>`;
+    document.getElementById('tabelBonus').innerHTML = db.bonus.map(function(b) {
+        var k = db.karyawan.find(function(x) { return x.id == b.karyawanId; });
+        return '<tr><td>' + b.periode + '</td><td>' + (k ? k.nama : '-') + '</td>' +
+            '<td style="font-weight:bold; color:#4ade80;">' + formatRp(b.jumlah) + '</td>' +
+            '<td>' + (b.keterangan || '-') + '</td>' +
+            '<td><button class="btn btn-danger btn-sm" onclick="hapusBonus(' + b.id + ')">🗑️</button></td></tr>';
     }).join('') || '<tr><td colspan="5" class="empty">Belum ada bonus</td></tr>';
 
-    document.getElementById('listScript').innerHTML = db.script.map((s, i) => `
-        <div class="script-card" style="animation-delay: ${i * 0.1}s">
-            <div class="script-card-header">
-                <div class="icon">📄</div>
-                <div style="min-width:0; flex:1;">
-                    <h4>${s.nama}</h4>
-                    <small>📅 ${s.tanggal}</small>
-                </div>
-            </div>
-            <div class="script-card-preview" onclick="viewScript(${s.id})" style="cursor:pointer;" title="Klik untuk lihat full script">${s.isi || '(script kosong)'}</div>
-            <div class="script-card-actions">
-                <button type="button" class="btn btn-info btn-sm" onclick="event.stopPropagation(); viewScript(${s.id})" title="Lihat">👁️</button>
-                <button type="button" class="btn btn-success btn-sm" onclick="event.stopPropagation(); bukaScript(${s.id})" title="Copy">📋</button>
-                <button type="button" class="btn btn-warning btn-sm" onclick="event.stopPropagation(); editScript(${s.id})" title="Edit">✏️</button>
-                <button type="button" class="btn btn-danger btn-sm" onclick="event.stopPropagation(); hapusScript(${s.id})" title="Hapus">🗑️</button>
-            </div>
-        </div>
-    `).join('') || '<div class="empty" style="grid-column: 1/-1;">Belum ada script tersimpan</div>';
+    document.getElementById('listScript').innerHTML = db.script.map(function(s) {
+        return '<div class="script-card">' +
+            '<div class="script-card-header"><div class="icon">📄</div>' +
+            '<div style="min-width:0; flex:1;"><h4>' + s.nama + '</h4><small>📅 ' + s.tanggal + '</small></div></div>' +
+            '<div class="script-card-preview" onclick="viewScript(' + s.id + ')" style="cursor:pointer;">' + (s.isi || '(kosong)') + '</div>' +
+            '<div class="script-card-actions">' +
+            '<button type="button" class="btn btn-info btn-sm" onclick="viewScript(' + s.id + ')" title="Lihat">👁️</button>' +
+            '<button type="button" class="btn btn-success btn-sm" onclick="bukaScript(' + s.id + ')" title="Copy">📋</button>' +
+            '<button type="button" class="btn btn-warning btn-sm" onclick="editScript(' + s.id + ')" title="Edit">✏️</button>' +
+            '<button type="button" class="btn btn-danger btn-sm" onclick="hapusScript(' + s.id + ')" title="Hapus">🗑️</button>' +
+            '</div></div>';
+    }).join('') || '<div class="empty" style="grid-column: 1/-1;">Belum ada script tersimpan</div>';
 
     setTimeout(renderCharts, 100);
 }
 
-// ========== CHARTS ==========
-let charts = {};
+// ============================================================
+// CHARTS
+// ============================================================
+var charts = {};
 function renderCharts() {
-    Object.values(charts).forEach(c => c && c.destroy());
+    Object.keys(charts).forEach(function(k) {
+        if (charts[k]) charts[k].destroy();
+    });
     charts = {};
 
-    const purpleGrad = (ctx) => {
-        const g = ctx.createLinearGradient(0, 0, 0, 250);
-        g.addColorStop(0, 'rgba(139,92,246,0.5)');
-        g.addColorStop(1, 'rgba(139,92,246,0)');
-        return g;
-    };
-
-    const c1 = document.getElementById('chartRevenue');
-    if (c1) {
-        const labels = ['May 18', 'May 25', 'Jun 1', 'Jun 8', 'Jun 15', 'Jun 18'];
-        const data1 = labels.map(() => Math.floor(Math.random() * 50000 + 30000));
+    var c1 = document.getElementById('chartRevenue');
+    if (c1 && typeof Chart !== 'undefined') {
+        var labels = ['May 18', 'May 25', 'Jun 1', 'Jun 8', 'Jun 15', 'Jun 18'];
+        var data1 = labels.map(function() { return Math.floor(Math.random() * 50000 + 30000); });
+        var ctx1 = c1.getContext('2d');
+        var grad = ctx1.createLinearGradient(0, 0, 0, 250);
+        grad.addColorStop(0, 'rgba(139,92,246,0.5)');
+        grad.addColorStop(1, 'rgba(139,92,246,0)');
         charts.revenue = new Chart(c1, {
             type: 'line',
             data: {
-                labels,
+                labels: labels,
                 datasets: [{
-                    label: 'Revenue',
                     data: data1,
                     borderColor: '#a78bfa',
-                    backgroundColor: purpleGrad(c1.getContext('2d')),
+                    backgroundColor: grad,
                     tension: 0.4,
                     fill: true,
                     pointBackgroundColor: '#8b5cf6',
                     pointBorderColor: '#fff',
                     pointRadius: 4,
-                    pointHoverRadius: 7,
                     borderWidth: 3
                 }]
             },
@@ -1313,21 +1321,15 @@ function renderCharts() {
         });
     }
 
-    const c2 = document.getElementById('chartGrowth');
-    if (c2) {
-        const labels2 = ['May 18', 'May 25', 'Jun 1', 'Jun 8', 'Jun 15', 'Jun 18'];
-        const data2 = labels2.map(() => Math.floor(Math.random() * 15000 + 5000));
+    var c2 = document.getElementById('chartGrowth');
+    if (c2 && typeof Chart !== 'undefined') {
+        var labels2 = ['May 18', 'May 25', 'Jun 1', 'Jun 8', 'Jun 15', 'Jun 18'];
+        var data2 = labels2.map(function() { return Math.floor(Math.random() * 15000 + 5000); });
         charts.growth = new Chart(c2, {
             type: 'bar',
             data: {
                 labels: labels2,
-                datasets: [{
-                    label: 'Growth',
-                    data: data2,
-                    backgroundColor: 'rgba(139,92,246,0.7)',
-                    borderRadius: 6,
-                    hoverBackgroundColor: '#a78bfa'
-                }]
+                datasets: [{ data: data2, backgroundColor: 'rgba(139,92,246,0.7)', borderRadius: 6 }]
             },
             options: {
                 responsive: true,
@@ -1340,8 +1342,8 @@ function renderCharts() {
         });
     }
 
-    const c3 = document.getElementById('chartDistribusi');
-    if (c3) {
+    var c3 = document.getElementById('chartDistribusi');
+    if (c3 && typeof Chart !== 'undefined') {
         charts.dist = new Chart(c3, {
             type: 'doughnut',
             data: {
@@ -1349,31 +1351,29 @@ function renderCharts() {
                 datasets: [{
                     data: [60, 20, 15, 5],
                     backgroundColor: ['#8b5cf6', '#ec4899', '#06b6d4', '#f59e0b'],
-                    borderWidth: 0,
-                    hoverOffset: 10
+                    borderWidth: 0
                 }]
             },
             options: {
                 responsive: true,
                 cutout: '65%',
                 plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { color: '#94a3b8', font: { size: 11 }, padding: 12, boxWidth: 12 }
-                    }
+                    legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 }, padding: 12, boxWidth: 12 } }
                 }
             }
         });
     }
 }
 
-// ========== PARTIKEL ==========
+// ============================================================
+// PARTIKEL
+// ============================================================
 function createParticles() {
-    const container = document.getElementById('particles');
+    var container = document.getElementById('particles');
     if (!container) return;
     container.innerHTML = '';
-    for (let i = 0; i < 25; i++) {
-        const p = document.createElement('div');
+    for (var i = 0; i < 25; i++) {
+        var p = document.createElement('div');
         p.className = 'particle';
         p.style.left = Math.random() * 100 + '%';
         p.style.animationDuration = (6 + Math.random() * 10) + 's';
@@ -1383,33 +1383,36 @@ function createParticles() {
     }
 }
 
-// ========== INIT APP (setelah login) ==========
+// ============================================================
+// INIT APP
+// ============================================================
 function initApp() {
-    const end = new Date();
-    const start = new Date(); start.setDate(end.getDate() - 30);
-    const fmt = (d) => d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-    const dr = document.getElementById('dateRange');
-    if (dr) dr.innerText = `${fmt(start)} - ${fmt(end)}`;
+    var end = new Date();
+    var start = new Date();
+    start.setDate(end.getDate() - 30);
+    var fmt = function(d) { return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }); };
+    var dr = document.getElementById('dateRange');
+    if (dr) dr.innerText = fmt(start) + ' - ' + fmt(end);
 
     if (localStorage.getItem('lightMode') === 'true') {
         document.body.classList.add('light');
-        const lb = document.getElementById('lightBtn');
+        var lb = document.getElementById('lightBtn');
         if (lb) lb.innerText = '🌙';
     }
 
-    const bgTheme = localStorage.getItem('bgTheme') || 'purple-night';
-    const bgApp = localStorage.getItem('bgApp');
+    var bgTheme = localStorage.getItem('bgTheme') || 'purple-night';
+    var bgApp = localStorage.getItem('bgApp');
     if (bgApp) {
         document.body.style.animation = 'none';
-        document.body.style.background = `url('${bgApp}') center/cover fixed`;
+        document.body.style.background = 'url("' + bgApp + '") center/cover fixed';
     } else {
         document.body.style.background = getBgStyle(bgTheme);
         document.body.style.backgroundSize = '400% 400%';
         document.body.style.animation = 'sunsetMove 20s ease infinite';
     }
 
-    const namaApp = localStorage.getItem('namaApp');
-    const adminName = localStorage.getItem('adminName');
+    var namaApp = localStorage.getItem('namaApp');
+    var adminName = localStorage.getItem('adminName');
     if (namaApp) {
         document.getElementById('appName').innerText = namaApp;
         document.getElementById('logoIcon').innerText = namaApp.charAt(0).toUpperCase();
@@ -1424,20 +1427,11 @@ function initApp() {
     renderAll();
 }
 
-// ========== BOOT ==========
-window.onload = function() {
-    // Cek status login
-    checkLogin();
-};
-
-// Cek juga saat halaman di-reload
-document.addEventListener('DOMContentLoaded', function() {
-    // Auto-hide login screen kalau sudah login
-    const isLoggedIn = localStorage.getItem('auth_logged_in') === 'true' || sessionStorage.getItem('auth_logged_in') === 'true';
-    if (!isLoggedIn) {
-        document.getElementById('loginScreen').style.display = 'flex';
-        document.getElementById('appContainer').style.display = 'none';
-    }
+// ============================================================
+// BOOT
+// ============================================================
+window.addEventListener('load', function() {
+    checkLoginOnLoad();
 });
 </script>
 </body>
