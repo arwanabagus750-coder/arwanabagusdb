@@ -29,6 +29,8 @@ body {
     z-index: 9999;
     padding: 20px;
 }
+#loginScreen.hidden { display: none !important; }
+
 .login-box {
     background: rgba(30, 27, 75, 0.75);
     backdrop-filter: blur(30px);
@@ -46,15 +48,8 @@ body {
     border-radius: 16px; font-size: 26px; font-weight: bold;
     box-shadow: 0 0 40px rgba(139,92,246,0.8);
 }
-.login-box h1 {
-    font-size: 22px; text-align: center;
-    color: #fff; margin-bottom: 8px;
-}
-.login-box .sub {
-    text-align: center;
-    color: rgba(255,255,255,0.6);
-    font-size: 13px; margin-bottom: 25px;
-}
+.login-box h1 { font-size: 22px; text-align: center; color: #fff; margin-bottom: 8px; }
+.login-box .sub { text-align: center; color: rgba(255,255,255,0.6); font-size: 13px; margin-bottom: 25px; }
 .login-error {
     background: rgba(239,68,68,0.15);
     border: 1px solid rgba(239,68,68,0.4);
@@ -179,11 +174,7 @@ body {
 }
 .logout-icon-btn:hover { background: rgba(239,68,68,0.4); }
 
-.main-content {
-    margin-left: 240px;
-    padding: 25px 30px;
-    min-height: 100vh;
-}
+.main-content { margin-left: 240px; padding: 25px 30px; min-height: 100vh; }
 .top-header {
     display: flex; justify-content: space-between;
     align-items: center; margin-bottom: 25px;
@@ -354,9 +345,10 @@ tr:hover { background: rgba(139,92,246,0.08); }
 .badge-green { background: rgba(16,185,129,0.2); color: #34d399; }
 .badge-red { background: rgba(239,68,68,0.2); color: #f87171; }
 
+/* ============ SCRIPT CARD (FIXED) ============ */
 .script-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 18px; margin-top: 20px;
 }
 .script-card {
@@ -365,13 +357,15 @@ tr:hover { background: rgba(139,92,246,0.08); }
     padding: 20px; border-radius: 16px;
     display: flex; flex-direction: column;
     transition: 0.3s;
+    overflow: hidden;
+    min-width: 0;
 }
 .script-card:hover {
     transform: translateY(-5px);
     border-color: #8b5cf6;
     box-shadow: 0 20px 50px rgba(139,92,246,0.5);
 }
-.script-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.script-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; min-width: 0; }
 .script-card-header .icon {
     font-size: 20px;
     background: linear-gradient(135deg, #8b5cf6, #6366f1);
@@ -379,22 +373,33 @@ tr:hover { background: rgba(139,92,246,0.08); }
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
 }
-.script-card h4 { font-size: 14px; color: #fff; margin-bottom: 3px; word-break: break-word; }
+.script-card-header > div:last-child { min-width: 0; flex: 1; }
+.script-card h4 { font-size: 14px; color: #fff; margin-bottom: 3px; word-break: break-word; overflow: hidden; text-overflow: ellipsis; }
 .script-card small { font-size: 11px; color: rgba(255,255,255,0.6); }
 .script-card-preview {
-    background: rgba(0,0,0,0.5);
-    padding: 12px; border-radius: 10px;
-    font-family: 'Consolas', monospace;
-    font-size: 12px; color: #a5f3fc;
-    max-height: 120px; overflow-y: auto;
+    background: rgba(0,0,0,0.55);
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 12px;
+    color: #a5f3fc;
+    max-height: 140px;
+    overflow: auto;
     margin: 12px 0;
     border-left: 3px solid #8b5cf6;
-    white-space: pre-wrap;
-    word-break: break-all;
+    white-space: pre;
+    word-break: normal;
     line-height: 1.5;
+    scrollbar-width: thin;
+    scrollbar-color: #8b5cf6 rgba(0,0,0,0.4);
+    cursor: pointer;
 }
+.script-card-preview::-webkit-scrollbar { width: 8px; height: 8px; }
+.script-card-preview::-webkit-scrollbar-track { background: rgba(0,0,0,0.4); border-radius: 4px; }
+.script-card-preview::-webkit-scrollbar-thumb { background: #8b5cf6; border-radius: 4px; }
+.script-card-preview::-webkit-scrollbar-thumb:hover { background: #a78bfa; }
 .script-card-actions { display: flex; gap: 6px; margin-top: auto; padding-top: 12px; }
-.script-card-actions .btn { flex: 1; justify-content: center; min-width: 60px; font-size: 11px; padding: 8px 6px; }
+.script-card-actions .btn { flex: 1; justify-content: center; min-width: 50px; font-size: 11px; padding: 8px 6px; }
 
 .bg-grid {
     display: grid;
@@ -490,7 +495,8 @@ tr:hover { background: rgba(139,92,246,0.08); }
         </div>
         <button class="login-btn" onclick="doLogin()">🔓 Sign In</button>
 
-        <div class="login-info">
+        <!-- ✅ INFO DEFAULT DISEMBUNYIKAN -->
+        <div class="login-info" style="display:none;">
             💡 <b>Default:</b> Username: <b>arwanabagus</b> | Password: <b>252006</b>
         </div>
 
@@ -547,4 +553,775 @@ tr:hover { background: rgba(139,92,246,0.08); }
     <!-- DASHBOARD -->
     <div id="page-dashboard" class="page active">
         <div class="stats-row">
- 
+            <div class="stat-box">
+                <div class="icon-wrap">👥</div>
+                <h4>Total Karyawan</h4>
+                <div class="value" id="statKaryawan">0</div>
+                <div class="trend">↑ 12.5% vs bulan lalu</div>
+            </div>
+            <div class="stat-box">
+                <div class="icon-wrap">💰</div>
+                <h4>Total Gaji</h4>
+                <div class="value" id="statGaji">Rp 0</div>
+                <div class="trend">↑ 18.2% vs bulan lalu</div>
+            </div>
+            <div class="stat-box">
+                <div class="icon-wrap">📊</div>
+                <h4>Rata-rata Gaji</h4>
+                <div class="value" id="statRata">Rp 0</div>
+                <div class="trend">↑ 8.4% vs bulan lalu</div>
+            </div>
+            <div class="stat-box">
+                <div class="icon-wrap">🎁</div>
+                <h4>Bonus 3 Bulan</h4>
+                <div class="value" id="statBonus">Rp 0</div>
+                <div class="trend">↑ 24.1% vs kuartal lalu</div>
+            </div>
+        </div>
+
+        <div class="dashboard-row">
+            <div class="panel">
+                <div class="panel-header">
+                    <h3>📈 Revenue Overview</h3>
+                    <div class="dropdown">Monthly ▾</div>
+                </div>
+                <div class="big-number" id="revenueTotal">Rp 0</div>
+                <div class="big-trend">↑ 24.8% vs 30 hari terakhir</div>
+                <canvas id="chartRevenue" height="70"></canvas>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header"><h3>🏆 Top Karyawan</h3></div>
+                <div class="top-list" id="topKaryawanList"></div>
+            </div>
+        </div>
+
+        <div class="dashboard-row">
+            <div class="panel">
+                <div class="panel-header">
+                    <h3>📊 Pertumbuhan Gaji</h3>
+                    <div class="dropdown">Weekly ▾</div>
+                </div>
+                <div class="big-number" id="growthTotal">Rp 0</div>
+                <div class="big-trend">↑ 20.5% vs bulan lalu</div>
+                <canvas id="chartGrowth" height="70"></canvas>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header"><h3>🥧 Distribusi Gaji</h3></div>
+                <canvas id="chartDistribusi" height="200"></canvas>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header">
+                <h2>📋 Ringkasan Karyawan</h2>
+            </div>
+            <table>
+                <thead><tr><th>NO</th><th>NAMA</th><th>JABATAN</th><th>TOTAL GAJI</th><th>STATUS</th></tr></thead>
+                <tbody id="tabelDashboard"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- GAJI -->
+    <div id="page-gaji" class="page">
+        <div class="table-container">
+            <div class="table-header">
+                <h2>💰 Daftar Gaji Per Bulan</h2>
+                <button class="btn btn-primary" onclick="bukaFormGaji()">+ Tambah Gaji</button>
+            </div>
+            <table>
+                <thead><tr><th>BULAN</th><th>KARYAWAN</th><th>GAJI POKOK</th><th>TUNJANGAN</th><th>TOTAL</th><th>STATUS</th><th>AKSI</th></tr></thead>
+                <tbody id="tabelGaji"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- BONUS -->
+    <div id="page-bonus" class="page">
+        <div class="table-container">
+            <div class="table-header">
+                <h2>🎁 Daftar Bonus Per 3 Bulan</h2>
+                <button class="btn btn-primary" onclick="bukaFormBonus()">+ Tambah Bonus</button>
+            </div>
+            <table>
+                <thead><tr><th>PERIODE</th><th>KARYAWAN</th><th>JUMLAH BONUS</th><th>KETERANGAN</th><th>AKSI</th></tr></thead>
+                <tbody id="tabelBonus"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- BACKGROUND -->
+    <div id="page-background" class="page">
+        <div class="table-container">
+            <h2 style="color:#e2e8f0;">🖼️ Pilih Background</h2>
+            <div class="bg-grid" id="bgGrid"></div>
+        </div>
+    </div>
+
+    <!-- SCRIPT -->
+    <div id="page-script" class="page">
+        <div class="table-container">
+            <div class="table-header">
+                <h2>📝 Script Tersimpan</h2>
+                <button class="btn btn-primary" onclick="bukaFormScript()">+ Tambah Script</button>
+            </div>
+            <div class="script-grid" id="listScript"></div>
+        </div>
+    </div>
+
+    <!-- EXPORT -->
+    <div id="page-export" class="page">
+        <div class="table-container">
+            <h2 style="color:#e2e8f0;">📤 Export & Backup</h2>
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-top:20px;">
+                <button class="btn btn-success btn-lg" onclick="exportCSV('karyawan')">📋 Export Karyawan</button>
+                <button class="btn btn-success btn-lg" onclick="exportCSV('gaji')">💰 Export Gaji</button>
+                <button class="btn btn-success btn-lg" onclick="exportCSV('bonus')">🎁 Export Bonus</button>
+                <button class="btn btn-primary btn-lg" onclick="backupJSON()">💾 Backup JSON</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- MODAL PENGATURAN -->
+<div id="modalPengaturan" class="modal">
+    <div class="modal-content">
+        <h3>⚙️ Pengaturan</h3>
+        <div class="form-group"><label>Nama Aplikasi:</label><input type="text" id="inputNamaApp"></div>
+        <div class="form-group"><label>Nama Admin:</label><input type="text" id="inputAdmin"></div>
+        <hr style="border:none; border-top:1px solid rgba(148,163,184,0.15); margin:20px 0;">
+        <h4 style="margin-bottom:12px; font-size:14px;">🔐 Ganti Username & Password</h4>
+        <div class="form-group"><label>Username Baru:</label><input type="text" id="inputNewUser" placeholder="Kosongkan jika tidak diubah"></div>
+        <div class="form-group"><label>Password Baru:</label><input type="text" id="inputNewPass" placeholder="Kosongkan jika tidak diubah"></div>
+        <div class="modal-buttons">
+            <button class="btn btn-secondary" onclick="tutupModal('modalPengaturan')">Batal</button>
+            <button class="btn btn-primary" onclick="simpanPengaturan()">Simpan</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL GAJI -->
+<div id="modalGaji" class="modal">
+    <div class="modal-content">
+        <h3>Tambah Gaji</h3>
+        <div class="form-group"><label>Bulan:</label><input type="month" id="inBulan"></div>
+        <div class="form-group"><label>Karyawan:</label><select id="inKaryawanGaji"></select></div>
+        <div class="form-group"><label>Gaji Pokok:</label><input type="number" id="inGaji"></div>
+        <div class="form-group"><label>Tunjangan:</label><input type="number" id="inTunjangan" value="0"></div>
+        <div class="form-group"><label>Status:</label>
+            <select id="inStatusGaji"><option>Lunas</option><option>Belum Dibayar</option></select>
+        </div>
+        <div class="modal-buttons">
+            <button class="btn btn-secondary" onclick="tutupModal('modalGaji')">Batal</button>
+            <button class="btn btn-primary" onclick="simpanGaji()">Simpan</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL BONUS -->
+<div id="modalBonus" class="modal">
+    <div class="modal-content">
+        <h3>Tambah Bonus</h3>
+        <div class="form-group"><label>Periode:</label>
+            <select id="inPeriode">
+                <option>Q1 (Jan-Mar)</option><option>Q2 (Apr-Jun)</option>
+                <option>Q3 (Jul-Sep)</option><option>Q4 (Okt-Des)</option>
+            </select>
+        </div>
+        <div class="form-group"><label>Tahun:</label><input type="number" id="inTahun" value="2026"></div>
+        <div class="form-group"><label>Karyawan:</label><select id="inKaryawanBonus"></select></div>
+        <div class="form-group"><label>Jumlah Bonus:</label><input type="number" id="inJumlahBonus"></div>
+        <div class="form-group"><label>Keterangan:</label><input type="text" id="inKeterangan"></div>
+        <div class="modal-buttons">
+            <button class="btn btn-secondary" onclick="tutupModal('modalBonus')">Batal</button>
+            <button class="btn btn-primary" onclick="simpanBonus()">Simpan</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL SCRIPT -->
+<div id="modalScript" class="modal">
+    <div class="modal-content" style="width:600px;">
+        <h3 id="judulModalScript">📝 Simpan Script</h3>
+        <input type="hidden" id="editScriptId">
+        <div class="form-group"><label>Nama Script:</label><input type="text" id="inNamaScript"></div>
+        <div class="form-group"><label>Isi Script:</label><textarea id="inIsiScript" rows="10" style="font-family:monospace; font-size:13px;"></textarea></div>
+        <div class="modal-buttons">
+            <button class="btn btn-secondary" onclick="tutupModal('modalScript')">Batal</button>
+            <button class="btn btn-primary" onclick="simpanScript()">Simpan</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL VIEW SCRIPT -->
+<div id="modalViewScript" class="modal">
+    <div class="modal-content" style="width:650px;">
+        <h3 id="viewScriptTitle">📄 Lihat Script</h3>
+        <pre id="viewScriptContent" style="background:rgba(0,0,0,0.5); padding:15px; border-radius:10px; color:#a5f3fc; font-family:monospace; font-size:12px; max-height:400px; overflow-y:auto; white-space:pre-wrap; word-break:break-all; border-left:3px solid #8b5cf6;"></pre>
+        <div class="modal-buttons">
+            <button class="btn btn-info" onclick="copyFromView()">📋 Copy</button>
+            <button class="btn btn-secondary" onclick="tutupModal('modalViewScript')">Tutup</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ============================================================
+// KONFIGURASI LOGIN
+// ============================================================
+var DEFAULT_USER = 'arwanabagus';
+var DEFAULT_PASS = '252006';
+
+function getCred() {
+    return {
+        user: localStorage.getItem('auth_user') || DEFAULT_USER,
+        pass: localStorage.getItem('auth_pass') || DEFAULT_PASS
+    };
+}
+
+// ============================================================
+// LOGIN
+// ============================================================
+function doLogin() {
+    var u = document.getElementById('loginUser').value.trim();
+    var p = document.getElementById('loginPass').value.trim();
+    var remember = document.getElementById('rememberMe').checked;
+    var cred = getCred();
+
+    if (!u || !p) {
+        showLoginError('❌ Username dan password wajib diisi!');
+        return;
+    }
+
+    if (u === cred.user && p === cred.pass) {
+        if (remember) {
+            localStorage.setItem('auth_logged_in', 'true');
+        } else {
+            sessionStorage.setItem('auth_logged_in', 'true');
+        }
+        document.getElementById('loginError').classList.remove('show');
+        showApp();
+        showToast('Login berhasil! Selamat datang 👋', 'success');
+    } else {
+        showLoginError('❌ Username atau password salah!');
+    }
+}
+
+function showLoginError(msg) {
+    var err = document.getElementById('loginError');
+    err.innerText = msg;
+    err.classList.add('show');
+    setTimeout(function() { err.classList.remove('show'); }, 3000);
+}
+
+function showApp() {
+    var ls = document.getElementById('loginScreen');
+    ls.classList.add('hidden');
+    ls.style.display = 'none';
+    ls.style.visibility = 'hidden';
+    ls.style.pointerEvents = 'none';
+
+    document.getElementById('appContainer').style.display = 'block';
+    initApp();
+}
+
+function confirmLogout() {
+    if (!confirm('Yakin ingin logout?')) return;
+    localStorage.removeItem('auth_logged_in');
+    sessionStorage.removeItem('auth_logged_in');
+    location.reload();
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        var ls = document.getElementById('loginScreen');
+        if (ls && !ls.classList.contains('hidden') && ls.style.display !== 'none') doLogin();
+    }
+});
+
+// ============================================================
+// DATA
+// ============================================================
+var db = {
+    karyawan: JSON.parse(localStorage.getItem('db_karyawan')) || [
+        { id: 1, nama: "arwana bagus suharta sinaga", jabatan: "Kasir", gajiPokok: 10000000 }
+    ],
+    gaji: JSON.parse(localStorage.getItem('db_gaji')) || [],
+    bonus: JSON.parse(localStorage.getItem('db_bonus')) || [],
+    script: JSON.parse(localStorage.getItem('db_script')) || []
+};
+
+function saveDB() {
+    localStorage.setItem('db_karyawan', JSON.stringify(db.karyawan));
+    localStorage.setItem('db_gaji', JSON.stringify(db.gaji));
+    localStorage.setItem('db_bonus', JSON.stringify(db.bonus));
+    localStorage.setItem('db_script', JSON.stringify(db.script));
+}
+
+function formatRp(n) { return 'Rp ' + (n || 0).toLocaleString('id-ID'); }
+
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg, type) {
+    type = type || 'success';
+    var el = document.createElement('div');
+    el.className = 'toast ' + type;
+    el.innerText = msg;
+    document.getElementById('toastContainer').appendChild(el);
+    setTimeout(function() { el.remove(); }, 3000);
+}
+
+// ============================================================
+// NAVIGASI
+// ============================================================
+function showPage(page, el) {
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    document.getElementById('page-' + page).classList.add('active');
+    document.querySelectorAll('.menu-item').forEach(function(m) { m.classList.remove('active'); });
+    if (el) el.classList.add('active');
+    renderAll();
+    if (page === 'background') renderBgPicker();
+    if (page === 'dashboard') setTimeout(renderCharts, 150);
+}
+
+function bukaModal(id) { document.getElementById(id).classList.add('active'); }
+function tutupModal(id) { document.getElementById(id).classList.remove('active'); }
+
+// ============================================================
+// PENGATURAN
+// ============================================================
+function bukaPengaturan() {
+    document.getElementById('inputNamaApp').value = localStorage.getItem('namaApp') || 'GajiKu Pro';
+    document.getElementById('inputAdmin').value = localStorage.getItem('adminName') || 'ADMIN GAJI';
+    document.getElementById('inputNewUser').value = '';
+    document.getElementById('inputNewPass').value = '';
+    bukaModal('modalPengaturan');
+}
+
+function simpanPengaturan() {
+    localStorage.setItem('namaApp', document.getElementById('inputNamaApp').value);
+    localStorage.setItem('adminName', document.getElementById('inputAdmin').value);
+
+    var nu = document.getElementById('inputNewUser').value.trim();
+    var np = document.getElementById('inputNewPass').value.trim();
+    if (nu) localStorage.setItem('auth_user', nu);
+    if (np) localStorage.setItem('auth_pass', np);
+
+    showToast('Pengaturan disimpan!', 'success');
+    setTimeout(function() { location.reload(); }, 800);
+}
+
+// ============================================================
+// BACKGROUND
+// ============================================================
+var bgOptions = [
+    { name: 'Purple Night', value: 'purple-night' },
+    { name: 'Deep Ocean', value: 'ocean' },
+    { name: 'Sunset', value: 'sunset' },
+    { name: 'Dark Forest', value: 'forest' },
+    { name: 'Royal Blue', value: 'royal' },
+    { name: 'Neon Pink', value: 'neon' },
+    { name: 'Midnight', value: 'midnight' },
+    { name: 'Cosmic', value: 'cosmic' }
+];
+
+function renderBgPicker() {
+    var current = localStorage.getItem('bgTheme') || 'purple-night';
+    var html = '';
+    bgOptions.forEach(function(bg) {
+        html += '<div class="bg-option ' + (bg.value === current ? 'active' : '') + '" onclick="applyBg(\'' + bg.value + '\')" style="background: ' + getBgStyle(bg.value) + '"><span>' + bg.name + '</span></div>';
+    });
+    document.getElementById('bgGrid').innerHTML = html;
+}
+
+function getBgStyle(v) {
+    var s = {
+        'purple-night': 'linear-gradient(-45deg, #1e1b4b, #4c1d95, #7c3aed, #1e1b4b)',
+        'ocean': 'linear-gradient(-45deg, #0c4a6e, #075985, #0284c7, #0c4a6e)',
+        'sunset': 'linear-gradient(-45deg, #7c2d12, #dc2626, #f59e0b, #7c2d12)',
+        'forest': 'linear-gradient(-45deg, #064e3b, #047857, #10b981, #064e3b)',
+        'royal': 'linear-gradient(-45deg, #1e3a8a, #1d4ed8, #3b82f6, #1e3a8a)',
+        'neon': 'linear-gradient(-45deg, #831843, #db2777, #f472b6, #831843)',
+        'midnight': 'linear-gradient(-45deg, #0f172a, #1e293b, #334155, #0f172a)',
+        'cosmic': 'linear-gradient(-45deg, #4c1d95, #7c3aed, #c084fc, #4c1d95)'
+    };
+    return s[v] || s['purple-night'];
+}
+
+function applyBg(value) {
+    localStorage.setItem('bgTheme', value);
+    document.body.style.background = getBgStyle(value);
+    document.body.style.backgroundSize = '400% 400%';
+    document.body.style.animation = 'bgMove 20s ease infinite';
+    renderBgPicker();
+    showToast('Background diganti!', 'success');
+}
+
+// ============================================================
+// GAJI
+// ============================================================
+function bukaFormGaji() {
+    document.getElementById('inKaryawanGaji').innerHTML = db.karyawan.map(function(k) {
+        return '<option value="' + k.id + '">' + k.nama + '</option>';
+    }).join('');
+    document.getElementById('inBulan').value = new Date().toISOString().slice(0,7);
+    document.getElementById('inGaji').value = '';
+    document.getElementById('inTunjangan').value = 0;
+    bukaModal('modalGaji');
+}
+
+function simpanGaji() {
+    var data = {
+        id: Date.now(),
+        bulan: document.getElementById('inBulan').value,
+        karyawanId: document.getElementById('inKaryawanGaji').value,
+        gaji: parseInt(document.getElementById('inGaji').value) || 0,
+        tunjangan: parseInt(document.getElementById('inTunjangan').value) || 0,
+        status: document.getElementById('inStatusGaji').value
+    };
+    if (!data.bulan || !data.gaji) return showToast('Bulan dan Gaji wajib diisi!', 'error');
+    db.gaji.push(data);
+    saveDB();
+    tutupModal('modalGaji');
+    renderAll();
+    showToast('Gaji disimpan!', 'success');
+}
+
+function hapusGaji(id) {
+    if (!confirm('Hapus data gaji ini?')) return;
+    db.gaji = db.gaji.filter(function(x) { return x.id !== id; });
+    saveDB();
+    renderAll();
+    showToast('Gaji dihapus', 'info');
+}
+
+// ============================================================
+// BONUS
+// ============================================================
+function bukaFormBonus() {
+    document.getElementById('inKaryawanBonus').innerHTML = db.karyawan.map(function(k) {
+        return '<option value="' + k.id + '">' + k.nama + '</option>';
+    }).join('');
+    bukaModal('modalBonus');
+}
+
+function simpanBonus() {
+    var data = {
+        id: Date.now(),
+        periode: document.getElementById('inPeriode').value + ' ' + document.getElementById('inTahun').value,
+        karyawanId: document.getElementById('inKaryawanBonus').value,
+        jumlah: parseInt(document.getElementById('inJumlahBonus').value) || 0,
+        keterangan: document.getElementById('inKeterangan').value
+    };
+    if (!data.jumlah) return showToast('Jumlah bonus wajib diisi!', 'error');
+    db.bonus.push(data);
+    saveDB();
+    tutupModal('modalBonus');
+    renderAll();
+    showToast('Bonus disimpan!', 'success');
+}
+
+function hapusBonus(id) {
+    if (!confirm('Hapus bonus ini?')) return;
+    db.bonus = db.bonus.filter(function(x) { return x.id !== id; });
+    saveDB();
+    renderAll();
+    showToast('Bonus dihapus', 'info');
+}
+
+// ============================================================
+// SCRIPT
+// ============================================================
+function bukaFormScript() {
+    document.getElementById('judulModalScript').innerText = '📝 Simpan Script Baru';
+    document.getElementById('editScriptId').value = '';
+    document.getElementById('inNamaScript').value = '';
+    document.getElementById('inIsiScript').value = '';
+    bukaModal('modalScript');
+}
+
+function editScript(id) {
+    var s = db.script.find(function(x) { return x.id === id; });
+    if (!s) return showToast('Script tidak ditemukan!', 'error');
+    document.getElementById('judulModalScript').innerText = '✏️ Edit Script';
+    document.getElementById('editScriptId').value = id;
+    document.getElementById('inNamaScript').value = s.nama;
+    document.getElementById('inIsiScript').value = s.isi;
+    bukaModal('modalScript');
+}
+
+function simpanScript() {
+    var id = document.getElementById('editScriptId').value;
+    var nama = document.getElementById('inNamaScript').value.trim();
+    var isi = document.getElementById('inIsiScript').value.trim();
+    if (!nama || !isi) return showToast('Nama dan isi script wajib diisi!', 'error');
+
+    if (id) {
+        var idx = db.script.findIndex(function(x) { return x.id == id; });
+        db.script[idx].nama = nama;
+        db.script[idx].isi = isi;
+        db.script[idx].tanggal = new Date().toLocaleDateString('id-ID');
+        showToast('Script diupdate!', 'success');
+    } else {
+        db.script.push({ id: Date.now(), nama: nama, isi: isi, tanggal: new Date().toLocaleDateString('id-ID') });
+        showToast('Script disimpan!', 'success');
+    }
+    saveDB();
+    tutupModal('modalScript');
+    renderAll();
+}
+
+function bukaScript(id) {
+    var s = db.script.find(function(x) { return x.id === id; });
+    if (!s) return;
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(s.isi).then(function() {
+            showToast('Script "' + s.nama + '" tersalin!', 'success');
+        }).catch(function() { fallbackCopy(s.isi, s.nama); });
+    } else {
+        fallbackCopy(s.isi, s.nama);
+    }
+}
+
+function fallbackCopy(text, nama) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); showToast('Script "' + nama + '" tersalin!', 'success'); }
+    catch(e) { showToast('Gagal copy!', 'error'); }
+    ta.remove();
+}
+
+var currentViewScript = null;
+function viewScript(id) {
+    var s = db.script.find(function(x) { return x.id === id; });
+    if (!s) return;
+    currentViewScript = s;
+    document.getElementById('viewScriptTitle').innerText = '📄 ' + s.nama;
+    document.getElementById('viewScriptContent').innerText = s.isi;
+    bukaModal('modalViewScript');
+}
+
+function copyFromView() {
+    if (!currentViewScript) return;
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(currentViewScript.isi).then(function() {
+            showToast('Script tersalin!', 'success');
+        }).catch(function() { fallbackCopy(currentViewScript.isi, currentViewScript.nama); });
+    } else {
+        fallbackCopy(currentViewScript.isi, currentViewScript.nama);
+    }
+}
+
+function hapusScript(id) {
+    if (!confirm('Hapus script ini?')) return;
+    db.script = db.script.filter(function(x) { return x.id !== id; });
+    saveDB();
+    renderAll();
+    showToast('Script dihapus', 'info');
+}
+
+// ============================================================
+// EXPORT
+// ============================================================
+function exportCSV(jenis) {
+    var data = db[jenis];
+    if (!data.length) return showToast('Data kosong!', 'error');
+    var headers = Object.keys(data[0]);
+    var csv = headers.join(',') + '\n';
+    data.forEach(function(row) {
+        csv += headers.map(function(h) { return '"' + (row[h] || '') + '"'; }).join(',') + '\n';
+    });
+    var blob = new Blob([csv], { type: 'text/csv' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = jenis + '_' + Date.now() + '.csv';
+    a.click();
+    showToast('Export berhasil!', 'success');
+}
+
+function backupJSON() {
+    var blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'backup_arwana_' + Date.now() + '.json';
+    a.click();
+    showToast('Backup berhasil!', 'success');
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function renderAll() {
+    var totalGaji = db.karyawan.reduce(function(a, b) { return a + b.gajiPokok; }, 0);
+    var totalBonus = db.bonus.reduce(function(a, b) { return a + b.jumlah; }, 0);
+
+    document.getElementById('statKaryawan').innerText = db.karyawan.length;
+    document.getElementById('statGaji').innerText = formatRp(totalGaji);
+    document.getElementById('statRata').innerText = formatRp(db.karyawan.length ? totalGaji / db.karyawan.length : 0);
+    document.getElementById('statBonus').innerText = formatRp(totalBonus);
+    document.getElementById('revenueTotal').innerText = formatRp(totalGaji);
+    document.getElementById('growthTotal').innerText = formatRp(totalBonus);
+
+    var topList = db.karyawan.slice().sort(function(a, b) { return b.gajiPokok - a.gajiPokok; }).slice(0, 5);
+    var icons = ['🥇', '🥈', '🥉', '🏅', '🎖️'];
+    document.getElementById('topKaryawanList').innerHTML = topList.map(function(k, i) {
+        return '<div class="top-item">' +
+            '<div class="avatar-mini">' + (icons[i] || '👤') + '</div>' +
+            '<div class="info"><strong>' + k.nama + '</strong><small>' + k.jabatan + '</small></div>' +
+            '<div><div class="amount">' + formatRp(k.gajiPokok) + '</div></div>' +
+            '</div>';
+    }).join('') || '<div class="empty">Belum ada karyawan</div>';
+
+    document.getElementById('tabelDashboard').innerHTML = db.karyawan.map(function(k, i) {
+        return '<tr><td>' + (i+1) + '</td><td>' + k.nama + '</td><td>' + k.jabatan + '</td><td>' + formatRp(k.gajiPokok) + '</td><td><span class="badge badge-green">✓ Aktif</span></td></tr>';
+    }).join('') || '<tr><td colspan="5" class="empty">Belum ada data</td></tr>';
+
+    document.getElementById('tabelGaji').innerHTML = db.gaji.map(function(g) {
+        var k = db.karyawan.find(function(x) { return x.id == g.karyawanId; });
+        var total = g.gaji + g.tunjangan;
+        var warna = g.status === 'Lunas' ? 'badge-green' : 'badge-red';
+        return '<tr><td>' + g.bulan + '</td><td>' + (k ? k.nama : '-') + '</td><td>' + formatRp(g.gaji) + '</td>' +
+            '<td>' + formatRp(g.tunjangan) + '</td><td style="font-weight:bold;">' + formatRp(total) + '</td>' +
+            '<td><span class="badge ' + warna + '">' + g.status + '</span></td>' +
+            '<td><button class="btn btn-danger btn-sm" onclick="hapusGaji(' + g.id + ')">🗑️</button></td></tr>';
+    }).join('') || '<tr><td colspan="7" class="empty">Belum ada data gaji</td></tr>';
+
+    document.getElementById('tabelBonus').innerHTML = db.bonus.map(function(b) {
+        var k = db.karyawan.find(function(x) { return x.id == b.karyawanId; });
+        return '<tr><td>' + b.periode + '</td><td>' + (k ? k.nama : '-') + '</td>' +
+            '<td style="font-weight:bold; color:#4ade80;">' + formatRp(b.jumlah) + '</td>' +
+            '<td>' + (b.keterangan || '-') + '</td>' +
+            '<td><button class="btn btn-danger btn-sm" onclick="hapusBonus(' + b.id + ')">🗑️</button></td></tr>';
+    }).join('') || '<tr><td colspan="5" class="empty">Belum ada bonus</td></tr>';
+
+    document.getElementById('listScript').innerHTML = db.script.map(function(s) {
+        return '<div class="script-card">' +
+            '<div class="script-card-header"><div class="icon">📄</div>' +
+            '<div><h4>' + s.nama + '</h4><small>📅 ' + s.tanggal + '</small></div></div>' +
+            '<div class="script-card-preview" onclick="viewScript(' + s.id + ')">' + escapeHtml(s.isi || '(kosong)') + '</div>' +
+            '<div class="script-card-actions">' +
+            '<button type="button" class="btn btn-info btn-sm" onclick="viewScript(' + s.id + ')">👁️</button>' +
+            '<button type="button" class="btn btn-success btn-sm" onclick="bukaScript(' + s.id + ')">📋</button>' +
+            '<button type="button" class="btn btn-warning btn-sm" onclick="editScript(' + s.id + ')">✏️</button>' +
+            '<button type="button" class="btn btn-danger btn-sm" onclick="hapusScript(' + s.id + ')">🗑️</button>' +
+            '</div></div>';
+    }).join('') || '<div class="empty" style="grid-column: 1/-1;">Belum ada script tersimpan</div>';
+
+    setTimeout(renderCharts, 150);
+}
+
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+// ============================================================
+// CHARTS
+// ============================================================
+var charts = {};
+function renderCharts() {
+    Object.keys(charts).forEach(function(k) {
+        if (charts[k]) charts[k].destroy();
+    });
+    charts = {};
+    if (typeof Chart === 'undefined') return;
+
+    var c1 = document.getElementById('chartRevenue');
+    if (c1 && document.getElementById('page-dashboard').classList.contains('active')) {
+        var labels = ['May 18', 'May 25', 'Jun 1', 'Jun 8', 'Jun 15', 'Jun 18'];
+        var data1 = labels.map(function() { return Math.floor(Math.random() * 50000 + 30000); });
+        var ctx1 = c1.getContext('2d');
+        var grad = ctx1.createLinearGradient(0, 0, 0, 250);
+        grad.addColorStop(0, 'rgba(139,92,246,0.5)');
+        grad.addColorStop(1, 'rgba(139,92,246,0)');
+        charts.revenue = new Chart(c1, {
+            type: 'line',
+            data: { labels: labels, datasets: [{ data: data1, borderColor: '#a78bfa', backgroundColor: grad, tension: 0.4, fill: true, pointBackgroundColor: '#8b5cf6', pointBorderColor: '#fff', pointRadius: 4, borderWidth: 3 }] },
+            options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { grid: { color: 'rgba(148,163,184,0.1)' }, ticks: { color: '#94a3b8' } }, y: { grid: { color: 'rgba(148,163,184,0.1)' }, ticks: { color: '#94a3b8' } } } }
+        });
+    }
+
+    var c2 = document.getElementById('chartGrowth');
+    if (c2 && document.getElementById('page-dashboard').classList.contains('active')) {
+        var labels2 = ['May 18', 'May 25', 'Jun 1', 'Jun 8', 'Jun 15', 'Jun 18'];
+        var data2 = labels2.map(function() { return Math.floor(Math.random() * 15000 + 5000); });
+        charts.growth = new Chart(c2, {
+            type: 'bar',
+            data: { labels: labels2, datasets: [{ data: data2, backgroundColor: 'rgba(139,92,246,0.7)', borderRadius: 6 }] },
+            options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { color: '#94a3b8' } }, y: { grid: { color: 'rgba(148,163,184,0.1)' }, ticks: { color: '#94a3b8' } } } }
+        });
+    }
+
+    var c3 = document.getElementById('chartDistribusi');
+    if (c3 && document.getElementById('page-dashboard').classList.contains('active')) {
+        charts.dist = new Chart(c3, {
+            type: 'doughnut',
+            data: { labels: ['Gaji Pokok', 'Tunjangan', 'Bonus', 'Potongan'], datasets: [{ data: [60, 20, 15, 5], backgroundColor: ['#8b5cf6', '#ec4899', '#06b6d4', '#f59e0b'], borderWidth: 0 }] },
+            options: { responsive: true, cutout: '65%', plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', padding: 12, boxWidth: 12 } } } }
+        });
+    }
+}
+
+// ============================================================
+// INIT APP
+// ============================================================
+function initApp() {
+    var end = new Date();
+    var start = new Date();
+    start.setDate(end.getDate() - 30);
+    var fmt = function(d) { return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }); };
+    document.getElementById('dateRange').innerText = fmt(start) + ' - ' + fmt(end);
+
+    var bgTheme = localStorage.getItem('bgTheme') || 'purple-night';
+    document.body.style.background = getBgStyle(bgTheme);
+    document.body.style.backgroundSize = '400% 400%';
+    document.body.style.animation = 'bgMove 20s ease infinite';
+
+    var namaApp = localStorage.getItem('namaApp');
+    var adminName = localStorage.getItem('adminName');
+    if (namaApp) {
+        document.getElementById('appName').innerText = namaApp;
+        document.getElementById('logoIcon').innerText = namaApp.charAt(0).toUpperCase();
+    }
+    if (adminName) {
+        document.getElementById('adminName').innerText = adminName;
+        document.getElementById('sidebarAvatar').innerText = adminName.charAt(0).toUpperCase();
+        document.getElementById('adminFirstName').innerText = adminName.split(' ')[0];
+    }
+
+    renderAll();
+}
+
+// ============================================================
+// BOOT
+// ============================================================
+window.addEventListener('load', function() {
+    var loggedIn = localStorage.getItem('auth_logged_in') === 'true' 
+                || sessionStorage.getItem('auth_logged_in') === 'true';
+    if (loggedIn) {
+        showApp();
+    } else {
+        var ls = document.getElementById('loginScreen');
+        ls.classList.remove('hidden');
+        ls.style.display = 'flex';
+        ls.style.visibility = 'visible';
+        ls.style.pointerEvents = 'auto';
+        document.getElementById('appContainer').style.display = 'none';
+        setTimeout(function() { 
+            var inp = document.getElementById('loginUser');
+            if (inp) inp.focus();
+        }, 200);
+    }
+});
+</script>
+</body>
+</html>
